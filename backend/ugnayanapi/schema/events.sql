@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    eventname VARCHAR(255) NOT NULL,
+    description TEXT,
+    date DATE NOT NULL,
+    image VARCHAR(255),
+    qr_code VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); 
