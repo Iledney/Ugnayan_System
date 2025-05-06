@@ -1,0 +1,17 @@
+<body>
+  <div class="login-container">
+
+    <h1>Welcome Back</h1>
+
+    <form (ngSubmit)="login()">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Enter your username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required />
+
+      <button type="submit">Login</button>
+    </form>
+    <p class="auth-link">Don't have an account? Register here</p>
+  </div>
+</body>

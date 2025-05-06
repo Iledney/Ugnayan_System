@@ -1,0 +1,119 @@
+<app-navbar></app-navbar>
+<div class="dashboard-content section" id="dashboard">
+    <div class="dashboard-header">
+        <h1>Welcome to the Dashboard</h1>
+        <button class="update-btn" (click)="openUpdateModal()">Update Dashboard</button>
+    </div>
+    <p class="church-message">Stay updated with church activities, contributions, and more!</p>
+
+    <!-- Dashboard Widgets -->
+    <div class="dashboard-widgets">
+
+        <!-- Daily Verse Widget -->
+        <div class="widget-card verse">
+            <div class="widget-icon">📖</div>
+            <h3>Daily Verse</h3>
+            <blockquote>{{ dashboardData?.daily_verse }}</blockquote>
+        </div>
+
+        <!-- Quick Stats Widget -->
+        <div class="widget-card stats">
+            <div class="widget-icon">📊</div>
+            <h3>Quick Stats</h3>
+            <ul>
+                <li>Total Attendance this Week: <strong>124</strong></li>
+                <li>Contributions This Month: <strong>₱12,560.00</strong></li>
+                <li>Upcoming Events: <strong>3</strong></li>
+            </ul>
+        </div>
+
+        <!-- To-Do / Events Widget -->
+        <div class="widget-card todo">
+            <div class="widget-icon">📝</div>
+            <h3>Reminders</h3>
+            <ul>
+                <li *ngFor="let reminder of dashboardData?.reminders?.reminders">
+                    <span>{{ reminder.icon }}</span>
+                    {{ reminder.title }}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="announcement-section">
+        <h2>📣 Church Announcements</h2>
+        <div class="announcement-carousel">
+            <div class="announcement-card" *ngFor="let announcement of dashboardData?.announcement?.announcements">
+                <div class="announcement-icon">{{ announcement.icon }}</div>
+                <h4>{{ announcement.title }}</h4>
+                <p>{{ announcement.description }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h2>Update Dashboard</h2>
+            <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="daily_verse">Daily Verse:</label>
+                    <input type="text" id="daily_verse" formControlName="daily_verse">
+                </div>
+    
+                <div class="form-group">
+                    <h3>Announcements</h3>
+                    <div formArrayName="announcements">
+                        <div *ngFor="let announcement of announcements.controls; let i=index" [formGroupName]="i">
+                            <input type="text" formControlName="icon" placeholder="Icon">
+                            <input type="text" formControlName="title" placeholder="Title">
+                            <textarea formControlName="description" placeholder="Description"></textarea>
+                            <button type="button" (click)="removeAnnouncement(i)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" (click)="addAnnouncement()">Add Announcement</button>
+                </div>
+    
+                <div class="form-group">
+                    <h3>Reminders</h3>
+                    <div formArrayName="reminders">
+                        <div *ngFor="let reminder of reminders.controls; let i=index" [formGroupName]="i">
+                            <input type="text" formControlName="icon" placeholder="Icon">
+                            <input type="text" formControlName="title" placeholder="Title">
+                            <select formControlName="status">
+                                <option value="pending">Pending</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <button type="button" (click)="removeReminder(i)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" (click)="addReminder()">Add Reminder</button>
+                </div>
+    
+                <div class="modal-buttons">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Section -->
+    <div class="video-tab">
+        <h2>Video Library</h2>
+        <h3>Featured Documentaries</h3>
+        <div class="video-container">
+            <div class="video-box">
+                <iframe src="https://www.youtube.com/embed/z72L9vrgJso" allowfullscreen></iframe>
+            </div>
+            <div class="video-box">
+                <iframe src="https://www.youtube.com/embed/JXmuekfqWxs" allowfullscreen></iframe>
+            </div>
+            <div class="video-box">
+                <iframe src="https://www.youtube.com/embed/s5NVoSjubiA" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>

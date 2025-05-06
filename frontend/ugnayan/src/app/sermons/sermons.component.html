@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<section id="sermons" class="section">
+    <h2>Previous Sermons</h2>
+    <p>Rewatch past services or catch up on missed ones through audio recordings.</p>
+
+    <!-- Sermons List -->
+    <div class="sermons-list">
+        <h3>Available Sermons</h3>
+        <ul id="sermonsList">
+            <li *ngFor="let sermon of sermons">
+                <div class="sermon-item">
+                    <div class="sermon-info">
+                        <strong>{{sermon.title}}</strong>
+                        <span>{{sermon.date}}</span>
+                    </div>
+                    <audio controls *ngIf="sermon.audioFile">
+                        <source [src]="sermon.audioFile" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <button (click)="deleteSermon(sermon.id)" class="delete-btn">Delete</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Add Sermon Form -->
+    <div class="add-sermon-form">
+        <h3>Add New Sermon</h3>
+
+        <form [formGroup]="sermonForm" (ngSubmit)="onSubmit()">
+            <label for="sermonTitle">Sermon Title:</label>
+            <input type="text" id="sermonTitle" formControlName="title" required />
+
+            <label for="sermonDate">Sermon Date:</label>
+            <input type="date" id="sermonDate" formControlName="date" required />
+
+            <label for="sermonAudio">Audio File:</label>
+            <input type="file" id="sermonAudio" (change)="handleFileInput($event)" accept="audio/*" required />
+
+            <button type="submit" [disabled]="!sermonForm.valid">Add Sermon</button>
+        </form>
+    </div>
+    
+</section>

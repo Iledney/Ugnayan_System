@@ -1,0 +1,42 @@
+<section id="attendance" class="section">
+    <h2>Attendance Management</h2>
+
+    <div class="attendance-container">
+        <div class="camera-section" *ngIf="showCamera">
+            <video #videoElement autoplay muted playsinline></video>
+            <canvas #canvasElement hidden></canvas>
+
+            <button (click)="closeCamera()" class="close-camera-btn">Close Camera</button>
+        </div>
+
+        <div class="controls-section">
+            <button (click)="activateCamera()" class="scan-btn" *ngIf="!showCamera">
+                Scan QR Code
+            </button>
+        </div>
+
+        <div class="attendance-records">
+            <h2>Attendance Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Time In</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let record of attendance">
+                        <td>{{record.username}}</td>
+                        <td>{{record.firstname}}</td>
+                        <td>{{record.lastname}}</td>
+                        <td>{{record.timeIn}}</td>
+                        <td>{{record.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

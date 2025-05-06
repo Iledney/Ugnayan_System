@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<section id="violations" class="section hidden">
+    <h2>Violations Tracking</h2>
+    <p>Monitor violations for doctrinal candidates and services.</p>
+    <!-- violations Table -->
+    <div class="violations-table">
+      <h3>Violations Records</h3>
+      <table> 
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Violations</th>
+            <th>Violator</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let violation of violations.data">
+            <td>{{violation.date}}</td>
+            <td>{{violation.violation}}</td>
+            <td>{{violation.userId}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add violations Form -->
+    <div class="add-violations-form">
+      <h3>Add violations Record</h3>
+      <form id="violationsForm" [formGroup]="violationForm" (ngSubmit)="addViolation()">
+        <label for="date">Date:</label>
+        <input type="date" id="date" formControlName="date" required />
+
+        <label for="event">Violations:</label>
+        <input type="text" id="event" formControlName="violation" placeholder="Event Name" required />
+
+        <label for="userId">Violator:</label>
+        <select id="userId" formControlName="userId" required>
+          <option value="">-- Select a user --</option>
+          <option *ngFor="let user of users.data" [value]="user.id">
+            {{user.fullName}}
+          </option>
+        </select>
+
+        <button type="submit">Add Record</button>
+      </form>
+    </div>
+  </section>
+

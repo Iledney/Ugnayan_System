@@ -1,0 +1,147 @@
+#violations {
+    padding: 20px;
+    background-color: #FFFDE3; /* Matches the global background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+    color: #333; /* Matches the global text color */
+    margin: 20px auto;
+    max-width: 1200px; /* Aligns with the dashboard width */
+}
+
+/* Section Title */
+#violations h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2e2e2e; /* Matches the header color */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #b61818; /* Matches the underline color */
+    padding-bottom: 5px;
+}
+
+/* Section Description */
+#violations p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* violations Table */
+.violations-table {
+  width: 100%; /* Ensure the table takes up the full width of its container */
+  border-collapse: collapse; /* Remove gaps between table cells */
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background-color: #fff; /* White background for the table */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  overflow-x: auto; /* Allow horizontal scrolling if content overflows */
+  overflow-y: hidden; /* Prevent vertical overflow */
+}
+
+.violations-table h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 5px;
+  padding: 20px;
+  background-color: #d32f2f; /* Softer red */
+  border-radius: 8px 8px 0 0;
+}
+
+.violations-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.violations-table th,
+.violations-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.violations-table th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    color: #333;
+}
+
+.violations-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Add violations Form */
+.add-violations-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.add-violations-form h3 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #2e2e2e;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #b61818; /* Matches the underline color */
+    padding-bottom: 5px;
+}
+
+.add-violations-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.add-violations-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.add-violations-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    appearance: menulist; /* Shows the dropdown arrow */
+}
+
+.add-violations-form select:focus {
+    outline: none;
+    border-color: #b61818;
+    box-shadow: 0 0 5px rgba(182, 24, 24, 0.3);
+}
+
+.add-violations-form option {
+    padding: 10px;
+}
+
+.add-violations-form button {
+    background-color: #b61818; /* Matches the button color */
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-violations-form button:hover {
+    background-color: #0ccb28; /* Matches the hover color */
+}
