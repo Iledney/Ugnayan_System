@@ -23,7 +23,12 @@ export class DashboardComponent {
     this.updateForm = this.fb.group({
       daily_verse: [''],
       announcements: this.fb.array([]),
-      reminders: this.fb.array([])
+      reminders: this.fb.array([]),
+      quick_stats: this.fb.group({
+        total_attendance: [''],
+        contributions_this_month: [''],
+        upcoming_events: ['']
+      })
     });
   }
 
@@ -35,7 +40,7 @@ export class DashboardComponent {
     try {
       const response = await this.fetchService.getDashboard();
       this.dashboardData = response.data.data;
-      console.log('Dashboard Data:', this.dashboardData);
+      console.log('Fetched Dashboard Data:', this.dashboardData); // Debugging
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     }
@@ -61,7 +66,12 @@ export class DashboardComponent {
   populateForm() {
     if (this.dashboardData) {
       this.updateForm.patchValue({
-        daily_verse: this.dashboardData.daily_verse
+        daily_verse: this.dashboardData.daily_verse,
+        quick_stats: {
+          total_attendance: this.dashboardData.quick_stats.total_attendance,
+          contributions_this_month: this.dashboardData.quick_stats.contributions_this_month,
+          upcoming_events: this.dashboardData.quick_stats.upcoming_events
+        }
       });
 
       // Clear existing arrays
@@ -122,6 +132,7 @@ export class DashboardComponent {
         // Format the data to match the expected structure
         const formattedData = {
           daily_verse: this.updateForm.value.daily_verse,
+          quick_stats: this.updateForm.value.quick_stats, // Include Quick Stats
           announcement: {
             announcements: this.updateForm.value.announcements,
             last_updated: new Date().toISOString()
@@ -131,14 +142,23 @@ export class DashboardComponent {
             last_updated: new Date().toISOString()
           }
         };
-  
-        await this.postService.updateDashboard(formattedData);
+
+        console.log('Submitting Data:', formattedData); // Debugging
+
+        // Send data to the backend
+        const result = await this.postService.updateDashboard(formattedData);
+        console.log('Backend Response:', result.data); // Check backend response
+
+        // Fetch updated data
         await this.fetchDashboardData();
+
+        // Close the modal
         this.closeModal();
       } catch (error) {
         console.error('Error updating dashboard:', error);
       }
+    } else {
+      console.warn('Form is invalid. Please check the inputs.');
     }
   }
-
 }

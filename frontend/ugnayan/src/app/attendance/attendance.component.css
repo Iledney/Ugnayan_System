@@ -7,6 +7,7 @@
     color: #333; /* Matches the global text color */
     margin: 20px auto;
     max-width: 1200px; /* Aligns with the dashboard width */
+    width: 95%;
 }
 
 /* Section Title */
@@ -125,25 +126,29 @@
 }
 
 .attendance-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .camera-section {
-  position: relative;
-  width: 100%;
-  max-width: 640px;
-  margin: 0 auto 20px;
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 20px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 video {
-  width: 100%;
-  height: auto;
-  display: block;
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 480px;
+    object-fit: cover;
 }
 
 .controls-section {
@@ -182,10 +187,11 @@ video {
 }
 
 .attendance-records {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
 }
 
 .attendance-records h2 {
@@ -194,8 +200,9 @@ video {
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
 }
 
 th, td {
@@ -211,4 +218,59 @@ th {
 
 tr:hover {
   background-color: #f9f9f9;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #attendance {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    #attendance h2 {
+        font-size: 20px;
+    }
+
+    .attendance-container {
+        padding: 10px;
+    }
+
+    .camera-section {
+        max-width: 100%;
+    }
+
+    .scan-btn, .close-camera-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .attendance-records {
+        padding: 15px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #attendance h2 {
+        font-size: 18px;
+    }
+
+    .scan-btn, .close-camera-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 6px;
+        font-size: 13px;
+    }
+
+    .close-camera-btn {
+        top: 5px;
+        right: 5px;
+    }
 }

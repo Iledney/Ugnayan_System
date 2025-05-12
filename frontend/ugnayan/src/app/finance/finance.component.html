@@ -2,7 +2,96 @@
 <div class="component-content">
     <h1>Financial Management</h1>
     <p>Track donations, tithes, and manage church financial records.</p>
-    <div class="placeholder-content">
-        <p>Financial management features coming soon...</p>
+
+    <!-- Search Family -->
+    <div>
+        <h2>Search Family by Surname</h2>
+        <div class="search-row">
+            <input type="text" id="searchSurname" placeholder="Enter surname" (input)="filterFamilies($event)" />
+        </div>
+    </div>
+
+    <!-- Family Records -->
+    <div>
+        <h2>Family Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Family ID</th>
+                    <th>Surname</th>
+                    <th>Members</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let family of filteredFamilies">
+                    <td>{{ family.id }}</td>
+                    <td>{{ family.surname }}</td>
+                    <td>
+                        <ul>
+                            <li *ngFor="let member of family.members">
+                                {{ member.firstName }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <button (click)="openManageModal(family)">Manage</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Family -->
+    <div>
+        <h2>Add Family</h2>
+        <div class="add-family-form">
+            <input type="text" [(ngModel)]="newFamily.surname" placeholder="Family Surname" />
+            <button (click)="addFamily()">Add Family</button>
+        </div>
+    </div>
+
+    <!-- Manage Family Modal -->
+    <div class="manage-modal" *ngIf="selectedFamily">
+        <div class="modal-content">
+            <h3>Manage Contributions for {{ selectedFamily.surname }}</h3>
+            
+            <!-- List of Members -->
+            <ul>
+                <li *ngFor="let member of selectedFamily.members">
+                    <div class="member-header">
+                        <span><strong>{{ member.firstName }}</strong></span>
+                    </div>
+
+                    <!-- List of Contributions -->
+                    <ul class="contribution-list">
+                        <li *ngFor="let contribution of member.contributions">
+                            <!-- Display contributions in PHP -->
+                            <span>{{ contribution.date }} - {{ contribution.amount | currency:'PHP' }}</span>
+                            <button (click)="removeContribution(member, contribution)">Remove</button>
+                        </li>
+                    </ul>
+
+                    <!-- Add Contribution Form -->
+                    <div class="add-contribution-form">
+                        <input type="number" [(ngModel)]="newContribution.amount" placeholder="Amount" />
+                        <input type="date" [(ngModel)]="newContribution.date" />
+                        <button (click)="addContribution(member)">Add Contribution</button>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Add Member Form -->
+            <div class="add-member-form">
+                <h4>Add Member</h4>
+                <input type="text" [(ngModel)]="newMember.firstName" placeholder="First Name" />
+                <input type="text" [(ngModel)]="newMember.lastName" placeholder="Last Name" />
+                <button (click)="addMember()">Add Member</button>
+            </div>
+
+            <!-- Modal Actions -->
+            <button (click)="saveContributions()">Save Contributions</button>
+            <button (click)="closeManageModal()">Close</button>
+        </div>
     </div>
 </div>

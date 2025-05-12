@@ -1,24 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Global Styles */
+* {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    box-sizing: border-box;
+}
+
+/* Component Container */
 .component-content {
     padding: 20px;
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Headings */
 h1 {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-p {
-    color: #666;
-    font-size: 16px;
+    color: #2c3e50;
+    font-size: 2.5rem;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.placeholder-content {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+h2 {
+    color: #3498db;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Paragraph */
+p {
+    color: #7f8c8d;
+    font-size: 1rem;
     text-align: center;
-    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Search Row Styling */
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.search-row input[type="text"],
+.search-row input[type="number"],
+.search-row input[type="date"] {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Button Styling */
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 5px; /* Add spacing above buttons */
+}
+
+button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+tr:hover {
+    background: #eaf6ff;
+}
+/* Add Family Section */
+.add-family-form {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    gap: 10px;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 400px;
+    align-items: center; /* Vertically align input and button */
+}
+
+.add-family-form input {
+    flex: 1; /* Allow input to take up remaining space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.add-family-form button {
+    padding: 10px 15px;
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.add-family-form button:hover {
+    background-color: #27ae60;
+}
+  
+/* Modal Styling */
+.manage-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1000;
+    padding: 20px;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  /* Member List Styling */
+  .member-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .contribution-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+  }
+  
+  .contribution-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .contribution-list li span {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .contribution-list li button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .contribution-list li button:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Add Contribution Form */
+  .add-contribution-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .add-contribution-form input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .add-contribution-form button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .add-contribution-form button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Add Member Form */
+  .add-member-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .add-member-form input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .add-member-form button {
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .add-member-form button:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Modal Actions */
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  button:nth-child(1) {
+    background-color: #2ecc71;
+    color: #fff;
+  }
+  
+  button:nth-child(2) {
+    background-color: #e74c3c;
+    color: #fff;
+  }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .component-content {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .search-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-member-form input {
+        width: 100%;
+        margin-right: 0;
+    }
 }

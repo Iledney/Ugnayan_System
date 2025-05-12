@@ -43,7 +43,6 @@ export class EventsComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
     this.getEvents();
   }
@@ -66,8 +65,6 @@ export class EventsComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewImage = reader.result;
-        // this.selectedFile now holds the Base64 string
-        // Save this Base64 string into the form so it goes into JSON
         this.eventForm.patchValue({ image: reader.result });
       };
       reader.readAsDataURL(this.selectedFile);
@@ -94,7 +91,7 @@ export class EventsComponent implements OnInit {
         eventname: form.eventname,
         description: form.description,
         date: form.date,
-        image: form.image // this is Base64 now
+        image: form.image
       };
 
       const res = await this.postService.addEvent(payload);
@@ -108,11 +105,10 @@ export class EventsComponent implements OnInit {
 
   async deleteEvent(id: any) {
     try {
-
       const payload = { id: id };
       const res = await this.postService.deleteEvent(payload);
       console.log('Delete Response:', res);
-      this.getEvents(); // Refresh the events list
+      this.getEvents();
     } catch (err) {
       console.error('Error deleting event:', err);
     }
@@ -140,7 +136,7 @@ export class EventsComponent implements OnInit {
       if (!this.updateForm.valid) {
         return;
       }
-  
+
       const form = this.updateForm.value;
       const payload = {
         eventId: form.id,
@@ -149,11 +145,11 @@ export class EventsComponent implements OnInit {
         date: form.date,
         image: form.image
       };
-  
+
       const res = await this.postService.updateEvent(payload);
       console.log('Update Response:', res);
       this.closeUpdateModal();
-      await this.getEvents(); // Refresh the events list
+      await this.getEvents();
     } catch (err) {
       console.error('Error updating event:', err);
     }
@@ -175,4 +171,3 @@ export class EventsComponent implements OnInit {
     this.selectedEvent = null;
   }
 }
-

@@ -1,33 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold; /* Make all text bold */
+    letter-spacing: 0.5px; /* Add slight spacing between letters */
+}
 .topnav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #2e2e2e;
+    background-color: white; /* Set the background to white */
+    color: black; /* Set the text color to black for contrast */
     padding: 14px 30px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    border-bottom: 2px solid #F2BE22;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Optional: Add a light border for separation */
     position: sticky;
     top: 0;
     z-index: 999;
 }
-
 .branding {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Space between the logo and text */
 }
 
-.logo-img {
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .brand-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+
+.branding .logo-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid white;
 }
+
+.branding .brand-text {
+    font-size: 1.8rem; /* Increase the font size */
+    font-weight: bold; /* Make it bold */
+    color: black; /* Ensure it contrasts with the navbar */
+    text-transform: uppercase; /* Make the text uppercase */
+    letter-spacing: 1px; /* Add slight spacing between letters */
+}
 .nav-links a {
     position: relative;
     margin-left: 24px;
-    color: white;
+    color: #4A4A4A;
     text-decoration: none;
     font-weight: 500;
     padding: 6px 0;
@@ -63,3 +98,4 @@
     transform: scaleX(1);
     background-color: #b61818;
 }
+

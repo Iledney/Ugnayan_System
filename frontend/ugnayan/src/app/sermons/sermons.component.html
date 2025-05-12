@@ -6,12 +6,19 @@
     <!-- Sermons List -->
     <div class="sermons-list">
         <h3>Available Sermons</h3>
-        <ul id="sermonsList">
+
+        <!-- Display message if no sermons are available -->
+        <div *ngIf="sermons.length === 0" class="no-sermons">
+            <p>No sermons available. Please add a new sermon.</p>
+        </div>
+
+        <!-- Sermons List -->
+        <ul id="sermonsList" *ngIf="sermons.length > 0">
             <li *ngFor="let sermon of sermons">
                 <div class="sermon-item">
                     <div class="sermon-info">
-                        <strong>{{sermon.title}}</strong>
-                        <span>{{sermon.date}}</span>
+                        <strong>{{ sermon.title }}</strong>
+                        <span>{{ sermon.date }}</span>
                     </div>
                     <audio controls *ngIf="sermon.audioFile">
                         <source [src]="sermon.audioFile" type="audio/mpeg">
@@ -28,17 +35,29 @@
         <h3>Add New Sermon</h3>
 
         <form [formGroup]="sermonForm" (ngSubmit)="onSubmit()">
+            <!-- Sermon Title -->
             <label for="sermonTitle">Sermon Title:</label>
             <input type="text" id="sermonTitle" formControlName="title" required />
+            <div *ngIf="sermonForm.get('title')?.invalid && sermonForm.get('title')?.touched" class="error">
+                <p>Sermon title is required.</p>
+            </div>
 
+            <!-- Sermon Date -->
             <label for="sermonDate">Sermon Date:</label>
             <input type="date" id="sermonDate" formControlName="date" required />
+            <div *ngIf="sermonForm.get('date')?.invalid && sermonForm.get('date')?.touched" class="error">
+                <p>Sermon date is required.</p>
+            </div>
 
+            <!-- Sermon Audio -->
             <label for="sermonAudio">Audio File:</label>
             <input type="file" id="sermonAudio" (change)="handleFileInput($event)" accept="audio/*" required />
+            <div *ngIf="sermonForm.get('audioFile')?.invalid && sermonForm.get('audioFile')?.touched" class="error">
+                <p>Audio file is required.</p>
+            </div>
 
+            <!-- Submit Button -->
             <button type="submit" [disabled]="!sermonForm.valid">Add Sermon</button>
         </form>
     </div>
-    
 </section>

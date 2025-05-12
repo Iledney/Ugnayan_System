@@ -1,13 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold; /* Make all text bold */
+    letter-spacing: 0.5px; /* Add slight spacing between letters */
+}
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    color: white;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+}
 .dashboard {
     max-width: 1200px;
     margin: auto;
 }
+
+/* Quick Stats Section */
+.form-group h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #50b17c;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus {
+    border-color: #50b17c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(80, 177, 124, 0.3);
+  }
 
 .dashboard-widgets {
     display: flex;
     gap: 1.5rem;
     margin: 2rem 0;
     flex-wrap: wrap;
+}
+
+.dashboard-header {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align items horizontally */
+    justify-content: center; /* Center-align items vertically */
+    margin-bottom: 2rem; /* Keep spacing below the header */
+    margin-top: 2rem; /* Add spacing above the header */
+}
+
+.dashboard-header h1 {
+    color: #333;
+    font-weight: bold; /* Make all text bold */
+    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    text-transform: uppercase; /* Make all text uppercase */
+    text-align: center; /* Center-align the text */
+    font-size: 2.5rem; /* Optional: Adjust font size */
+    font-weight: bold; /* Optional: Make it bold */
+    margin-bottom: 1rem; /* Add spacing below the heading */
+}
+
+.dashboard-widgets {
+    display: flex;
+    gap: 1.5rem; /* Space between cards */
+    margin: 2rem 0; /* Vertical spacing */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    padding: 0 2rem; /* Add horizontal padding to create space from the screen edges */
+}
+
+.church-message {
+    text-align: center; /* Center-align the text */
+    font-size: 1.0rem; /* Adjust font size for better readability */
+    font-weight: 500; /* Slightly bold text */
+    color: #353232; /* Light gray color for better contrast */
+    margin-top: -2.0rem; /* Negative margin to lift the text higher */
+    margin-bottom: 1.5rem; /* Keep spacing below the text */
+    font-family: 'Poppins', sans-serif; /* Ensure consistent font */
 }
 
 .widget-card {
@@ -27,33 +113,29 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-.widget-card h3 {
+.widget-card h1 {
     font-size: 1.4rem;
     margin-bottom: 0.75rem;
     color: #333;
     font-weight: 600;
 }
 
-.widget-icon {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: #4CAF50;
-}
-
 /* Color Variants */
 .widget-card.verse {
-    background: #E3F2FD;
-    border-left: 6px solid #2196F3;
+    background: #ffffff;
+    border-left: 6px solid #8BC34A;
 }
 
+
 .widget-card.stats {
-    background: #F1F8E9;
+    background: #ffffff;
     border-left: 6px solid #8BC34A;
 }
 
 .widget-card.todo {
-    background: #FFF3E0;
-    border-left: 6px solid #FF9800;
+    background: #ffffff;
+    border-left: 6px solid #8BC34A;
+
 }
 
 .daily-verse blockquote {
@@ -72,56 +154,97 @@
     margin-bottom: 0.5rem;
 }
 
-/* ========== Announcements ========== */
+/* Announcement Section */
 .announcement-section {
-    margin: 3rem 0;
+    margin: 3rem 2rem; /* Add spacing around the section */
+    padding: 2rem; /* Add internal spacing */
+    background-color: #f9f9f9; /* Light background for distinction */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center-align the section title */
+    overflow: hidden; /* Hide overflowing content */
 }
 
+/* Church Announcements Heading */
+.announcement-section h2 {
+    margin-top: 0; /* Remove any default margin above the heading */
+    margin-bottom: 1rem; /* Add spacing below the heading */
+    font-size: 1.8rem; /* Adjust font size for better visibility */
+    font-weight: bold; /* Ensure the heading is bold */
+    color: #333; /* Darker color for better readability */
+    text-align: center; /* Center-align the heading */
+    position: relative; /* Allow positioning adjustments */
+    top: -10px; /* Move the heading upwards */
+}
+
+/* Scrollable Carousel */
 .announcement-carousel {
     display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    scroll-snap-type: x mandatory;
+    gap: 1rem; /* Add spacing between cards */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Snap to cards when scrolling */
+    padding-bottom: 1rem; /* Add spacing below the cards */
+    scrollbar-width: thin; /* For Firefox: thin scrollbar */
 }
 
+.announcement-carousel::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
+}
+
+.announcement-carousel::-webkit-scrollbar-thumb {
+    background: #ccc; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded scrollbar thumb */
+}
+
+.announcement-carousel::-webkit-scrollbar-thumb:hover {
+    background: #aaa; /* Darker color on hover */
+}
+
+/* Announcement Cards */
 .announcement-card {
-    flex: 0 0 260px;
+    flex: 0 0 300px; /* Set a fixed width for each card */
     background-color: #fffefa;
     border-left: 5px solid #F2BE22;
-    padding: 1.2rem 1.4rem;
+    padding: 1.5rem; /* Ensure proper spacing inside the card */
     border-radius: 14px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
-    scroll-snap-align: start;
+    scroll-snap-align: start; /* Snap to the start of each card */
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem; /* Add spacing between elements inside the card */
+    overflow: hidden; /* Prevent content overflow */
+    text-align: left; /* Align text to the left for better readability */
 }
 
+
+
+/* Announcement Card Hover Effect */
 .announcement-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
+/* Announcement Icon */
 .announcement-icon {
-    font-size: 30px;
+    font-size: x;
     margin-bottom: 0.5rem;
-    color: #F2BE22;
+    color: #000000;
 }
 
-.announcement-card h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
+/* Announcement Card Hover Effect */
+.announcement-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-.announcement-card p {
-    margin: 0;
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.4;
+
+/* Scrollable Carousel */
+.announcement-carousel {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next line if needed */
+    gap: 1rem;
+    justify-content: center; /* Center-align the announcement cards */
 }
 
 /* ========== Video Section ========== */
@@ -158,65 +281,206 @@
     border-radius: 5px;
 }
 
+/* Modal Background */
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* Ensure it stays above other elements */
 }
 
+/* Modal Content */
 .modal-content {
-    background: white;
+    background-color: #fff;
     padding: 2rem;
-    border-radius: 8px;
-    max-width: 600px;
+    border-radius: 12px;
     width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    max-height: 80vh; /* Limit height to avoid overflow */
 }
 
+
+/* Modal Headings */
+.modal-content h2,
+.modal-content h3 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Form Groups */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
+/* Inputs, Textareas, and Selects */
+input[type="text"],
+textarea,
+select {
     width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #40db52; /* Green border on focus */
+    box-shadow: 0 0 5px rgba(64, 219, 82, 0.3);
+}
+
+/* Buttons */
+/* General Modal Button Styling */
+.modal-content button {
+    padding: 0.8rem 1.5rem; /* Adjust padding for better size */
+    background-color: #40db52; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem; /* Adjust font size */
+    font-weight: 600; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 0.5rem; /* Add spacing between buttons */
+}
+
+/* Hover Effect */
+.modal-content button:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Active Effect */
+.modal-content button:active {
+    background-color: #3e8e41; /* Even darker green when clicked */
+    transform: translateY(1px); /* Slight press effect */
+}
+
+/* Danger/Remove Button Styling */
+.modal-content button.remove-btn {
+    background-color: #dc3545; /* Red background */
+}
+
+.modal-content button.remove-btn:hover {
+    background-color: #b02a37; /* Darker red on hover */
+}
+
+/* Danger/Remove Button */
+button[type="button"] {
+    background-color: #dc3545; /* Red background for remove buttons */
+    margin-right: 0.5rem; /* Add spacing between buttons */
+}
+
+button[type="button"]:hover {
+    background-color: #b02a37; /* Darker red on hover */
+}
+
+/* Modal Footer Buttons */
 .modal-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1rem; /* Add spacing between buttons */
+    margin-top: 2rem;
+}
+/* Responsive Design */
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 1rem;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
 }
 
+
+/* ========== Update Button ========== */
 .update-btn {
-    background: #4CAF50;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    background: #40db52; /* Green background */
+    color: white; /* White text */
+    padding: 0.8rem 1.5rem; /* Adjust padding for better size */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem; /* Adjust font size */
+    font-weight: 600; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 2rem auto; /* Add spacing above and center-align the button */
+    display: block; /* Center-align the button */
+    position: relative; /* Ensure it doesn't overlap with the footer */
+    z-index: 1; /* Ensure it stays above other elements */
 }
 
+.update-btn:hover {
+    background: #45a049; /* Darker green on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.update-btn:active {
+    background: #3e8e41; /* Even darker green when clicked */
+    transform: translateY(1px); /* Slight press effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}
+
+/* Ensure the button doesn't overlap with the footer */
+.dashboard-content {
+    padding-bottom: 5rem; /* Add space at the bottom of the content */
+}
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+}
+
+
+footer {
+    background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 999;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer i {
+    color: red;
+    margin: 0 10px;
+}
+
+footer a {
+    color: greenyellow;
+    text-decoration: none;
 }
