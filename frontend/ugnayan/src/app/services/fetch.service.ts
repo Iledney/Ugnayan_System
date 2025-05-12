@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class FetchService {
 
-  baseUrl = 'http://localhost/ugnayan_sys/backend/ugnayanapi/';
+  baseUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/';
   
   getViolations(){
     return axios.get(this.baseUrl + 'violations');
@@ -20,6 +21,14 @@ export class FetchService {
     return axios.get(this.baseUrl + 'events');
   }
 
+  getSurnames() {
+    return axios.get(this.baseUrl + 'surnames');
+  }
+
+  getUserContributions(userId: number) {
+    return axios.get(this.baseUrl + 'user-contributions/' + userId);
+  }
+
   getSermons() {
     return axios.get(this.baseUrl + 'sermons');
   }
@@ -30,6 +39,6 @@ export class FetchService {
 
   getDashboard() {
     return axios.get(this.baseUrl + 'dashboard');
-}
-  
+  }
+
 }

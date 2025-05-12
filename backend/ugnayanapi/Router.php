@@ -37,6 +37,7 @@ require_once('./controllers/regsiter.php');
 require_once('./controllers/attendance.php');
 require_once('./controllers/sermons.php');
 require_once('./controllers/dashboard.php');
+require_once('./controllers/finance.php');
 
 $con = new DatabaseAccess();
 $pdo = $con->connect();
@@ -48,6 +49,8 @@ $register = new UserController($pdo);
 $attendance = new Attendance($pdo);
 $sermon = new Sermon($pdo);
 $dashboard = new Dashboard($pdo);
+$finance = new Finance($pdo);
+
 
 // Check if 'request' parameter is set in the request
 if (isset($_REQUEST['request'])) {
@@ -111,6 +114,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'updatedashboard':
                 echo json_encode($dashboard->updateDashboard($data));
                 break;
+            case 'addcontribution':
+                echo json_encode($finance->addContribution($data));
+                break;
             case 'deleteevent':
                 echo json_encode($events->deleteEvent($data));
                 break;
@@ -139,6 +145,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'events':
                 echo json_encode($events->getEvents());
+                break;
+
+            case 'surnames':
+                echo json_encode($finance->getUserSurnames());
+                break;
+
+            case 'users-by-lastname':
+                if (isset($request[1])) {
+                    echo json_encode($finance->getUsersByLastname($request[1]));
+                } else {
+                    echo json_encode([
+                        'status' => 400,
+                        'message' => 'Lastname parameter is required'
+                    ]);
+                }
+                break;
+
+            case 'user-contributions':
+                if (isset($request[1])) {
+                    echo json_encode($finance->getUserContributions($request[1]));
+                } else {
+                    echo json_encode([
+                        'status' => 400,
+                        'message' => 'User ID parameter is required'
+                    ]);
+                }
                 break;
 
             case 'sermons':

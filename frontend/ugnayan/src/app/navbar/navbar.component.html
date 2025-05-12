@@ -4,15 +4,21 @@
         <img src="assets/UGNAYAN.PNG" alt="Ugnayan Logo" class="logo">
         <span class="brand-text">Ugnayan</span>
     </div>
-    <nav class="nav-links">
-        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/finance" routerLinkActive="active">Finance</a>
-        <a routerLink="/events" routerLinkActive="active">Events</a>
-        <a routerLink="/violations" routerLinkActive="active">Violations</a>
-        <a routerLink="/sermons" routerLinkActive="active">Sermons</a>
-        
-        <!-- Add Login and Register Links -->
-        <a class="auth-link" routerLink="/">Logout</a>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" (click)="toggleMenu()" [class.active]="isMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="nav-links" [class.active]="isMenuOpen">
+        <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
+        <a routerLink="/finance" routerLinkActive="active" (click)="closeMenu()">Finance</a>
+        <a routerLink="/events" routerLinkActive="active" (click)="closeMenu()">Events</a>
+        <a routerLink="/violations" routerLinkActive="active" (click)="closeMenu()">Violations</a>
+        <a routerLink="/sermons" routerLinkActive="active" (click)="closeMenu()">Sermons</a>
+        <a class="auth-link" routerLink="/" (click)="closeMenu()">Logout</a>
     </nav>
 </header>
 

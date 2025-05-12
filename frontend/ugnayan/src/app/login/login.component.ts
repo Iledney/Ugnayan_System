@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +23,21 @@ export class LoginComponent {
     try {
       const response = await this.authService.login(this.username, this.password);
       console.log('Login successful:', response.data);
-      // Store user data if needed
-      // localStorage.setItem('user', JSON.stringify(response.data.user));
-      // localStorage.setItem('token', response.data.token);
       
-      // Uncomment to navigate after successful login
-      this.router.navigate(['/dashboard']);
+      // Store JWT token
+      localStorage.setItem('token', response.data.jwt);
+      
+      // Decode JWT to get user info
+      const decoded: any = jwtDecode(response.data.jwt);
+      const userData = decoded.data;
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // Redirect based on isAdmin
+      if (userData && userData.isAdmin === 0) {
+        this.router.navigate(['/user-profile']);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
     } catch (error) {
       console.error('Login failed:', error);
       // Handle specific error cases if needed

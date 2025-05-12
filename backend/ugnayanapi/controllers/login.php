@@ -8,19 +8,22 @@ require_once(__DIR__ . '/../config/db.php');
 require_once(__DIR__ . '/../utils/secretKey.php');
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-class Login {
+class Login
+{
     private $conn;
     private $secretKey;
 
-    public function __construct() {
+    public function __construct()
+    {
         $databaseService = new DatabaseAccess();
         $this->conn = $databaseService->connect();
 
         $keys = new Secret();
         $this->secretKey = $keys->generateSecretKey();
     }
-    
-    public function loginUser($username, $password) {
+
+    public function loginUser($username, $password)
+    {
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -31,6 +34,12 @@ class Login {
                 'message' => 'Invalid email or password'
             ];
         }
+
+        $qrCodeUrl = '';
+        if (!empty($user['qr_code'])) {
+            $qrCodeUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/uploads/qrcodes/' . $user['qr_code'];
+        }
+
         $payload = [
             'iss' => 'localhost',
             'aud' => 'localhost',
@@ -39,7 +48,9 @@ class Login {
                 'id' => $user['id'],
                 'firstname' => $user['firstname'],
                 'lastname' => $user['lastname'],
-                'username' => $user['username']
+                'username' => $user['username'],
+                'isAdmin' => $user['isAdmin'],
+                'qr_code' => $qrCodeUrl
             ],
         ];
 
@@ -47,7 +58,7 @@ class Login {
 
         return [
             'status' => 200,
-            'jwt' => $jwt,  
+            'jwt' => $jwt,
             'message' => 'Login Successful'
         ];
     }
@@ -55,7 +66,8 @@ class Login {
 
 
 
-    public function logoutUser() {
+    public function logoutUser()
+    {
 
         setcookie("jwt", "", time() - 3600, '/');
 
@@ -63,4 +75,3 @@ class Login {
         http_response_code(200);
     }
 }
-?>

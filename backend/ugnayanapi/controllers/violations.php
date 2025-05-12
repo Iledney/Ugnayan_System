@@ -73,7 +73,6 @@ class Violations extends GlobalUtil{
             return $this->sendErrorResponse("Failed to get users" . $errmsg, 400);
         }
     }
-    
 
     
 

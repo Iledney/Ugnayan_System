@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import jsQR from 'jsqr';
 import { PostService } from '../services/post.service';
 import { FetchService } from '../services/fetch.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 interface AttendanceRecord {
   username: string;
@@ -16,7 +17,7 @@ interface AttendanceRecord {
 @Component({
   selector: 'app-attendance',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
   templateUrl: './attendance.component.html',
   styleUrl: './attendance.component.css'
 })

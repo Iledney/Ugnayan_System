@@ -1,7 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FetchService } from '../services/fetch.service';
+import { PostService } from '../services/post.service';
+
+interface User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  username: string;
+}
+
+interface Contribution {
+  user_id: number;
+  amount: number;
+  contribution_date: string;
+}
+
+interface UserContribution {
+  id: number;
+  user_id: number;
+  amount: number;
+  contribution_date: string;
+  firstname: string;
+  lastname: string;
+}
 
 @Component({
   selector: 'app-finance',
@@ -10,109 +34,109 @@ import { NavbarComponent } from '../navbar/navbar.component';
   templateUrl: './finance.component.html',
   styleUrls: ['./finance.component.css']
 })
-export class FinanceComponent {
-  families: any[] = []; // Array to store family data
-  filteredFamilies: any[] = []; // Array to store filtered families
-  newFamily = { surname: '', members: [] }; // Object to store new family data
-  selectedFamily: any = null; // Currently selected family for managing members
-  newMember = { firstName: '', lastName: '', contribution: 0 }; // Object to store new member data
-  newContribution = { amount: 0, date: '' }; // Object to store new contribution data
+export class FinanceComponent implements OnInit {
+  surnames: string[] = [];
+  filteredSurnames: string[] = [];
+  searchTerm: string = '';
+  selectedUsers: User[] = [];
+  selectedSurname: string = '';
+  userContributions: UserContribution[] = [];
+  selectedUserId: number | null = null;
+  
+  // Modal properties
+  showModal: boolean = false;
+  selectedUser: User | null = null;
+  contribution: Contribution = {
+    user_id: 0,
+    amount: 0,
+    contribution_date: new Date().toISOString().split('T')[0]
+  };
 
-  constructor() {
-    // Load families from localStorage on initialization
-    const storedFamilies = localStorage.getItem('families');
-    this.families = storedFamilies ? JSON.parse(storedFamilies) : [];
-    this.filteredFamilies = [...this.families]; // Initialize filtered families
+  constructor(private fetchService: FetchService, private postService: PostService) {}
+
+  ngOnInit() {
+    this.fetchSurnames();
   }
 
-  // Save families to localStorage
-  saveToLocalStorage(): void {
-    localStorage.setItem('families', JSON.stringify(this.families));
+  async fetchSurnames() {
+    try {
+      const response = await this.fetchService.getSurnames();
+      const data = response.data as { status: string; data: Array<{ lastname: string }>; statusCode: number };
+      this.surnames = data.data.map(item => item.lastname);
+      this.filteredSurnames = [...this.surnames];
+    } catch (error) {
+      console.error('Error fetching surnames:', error);
+    }
   }
 
-  // Filter families by surname
-  filterFamilies(event: any): void {
-    const searchValue = event.target.value.toLowerCase();
-    this.filteredFamilies = this.families.filter(family =>
-      family.surname.toLowerCase().includes(searchValue)
+  async fetchUsersByLastname(lastname: string) {
+    try {
+      const response = await this.postService.getUsersByLastname(lastname);
+      const data = response.data as { status: string; data: User[]; statusCode: number };
+      this.selectedUsers = data.data;
+      this.selectedSurname = lastname;
+      this.userContributions = []; // Clear previous contributions
+      this.selectedUserId = null;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }
+
+  async fetchUserContributions(userId: number) {
+    try {
+      const response = await this.fetchService.getUserContributions(userId);
+      const data = response.data as { status: string; data: UserContribution[]; statusCode: number };
+      this.userContributions = data.data;
+      this.selectedUserId = userId;
+    } catch (error) {
+      console.error('Error fetching contributions:', error);
+    }
+  }
+
+  filterSurnames(event: Event) {
+    const searchValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.searchTerm = searchValue;
+    
+    if (!searchValue) {
+      this.filteredSurnames = [...this.surnames];
+      return;
+    }
+
+    this.filteredSurnames = this.surnames.filter(surname => 
+      surname.toLowerCase().includes(searchValue)
     );
   }
 
-  // Add a new family
-  addFamily(): void {
-    if (this.newFamily.surname.trim() === '') {
-      alert('Family surname cannot be empty.');
-      return;
-    }
-    const newId = this.families.length + 1;
-    const newFamily = { id: newId, surname: this.newFamily.surname, members: [] };
-    this.families.push(newFamily);
-    this.filteredFamilies = [...this.families]; // Update filtered families
-    this.newFamily.surname = ''; // Clear the input field
-    this.saveToLocalStorage(); // Save to localStorage
-    alert(`Family "${newFamily.surname}" added successfully.`);
+  openContributionModal(user: User) {
+    this.selectedUser = user;
+    this.contribution.user_id = user.id;
+    this.showModal = true;
   }
 
-  // Open the manage modal for a family
-  openManageModal(family: any): void {
-    this.selectedFamily = family; // Use a reference, not a clone
+  closeModal() {
+    this.showModal = false;
+    this.selectedUser = null;
+    this.contribution = {
+      user_id: 0,
+      amount: 0,
+      contribution_date: new Date().toISOString().split('T')[0]
+    };
   }
 
-  // Close the manage modal
-  closeManageModal(): void {
-    this.selectedFamily = null;
-    this.newContribution = { amount: 0, date: '' }; // Reset new contribution form
-  }
-
-  // Save contributions for the selected family
-  saveContributions(): void {
-    this.saveToLocalStorage(); // Save to localStorage
-    alert('Contributions saved successfully.');
-    this.closeManageModal();
-  }
-
-  // Add a new contribution to a member
-  addContribution(member: any): void {
-    if (this.newContribution.amount <= 0 || this.newContribution.date.trim() === '') {
-      alert('Please enter a valid amount and date.');
-      return;
-    }
-
-    // Clone the new contribution object to avoid shared references
-    const newContribution = { ...this.newContribution };
-    member.contributions.push(newContribution); // Add the new contribution to the member
-    this.newContribution = { amount: 0, date: '' }; // Reset the form
-    this.saveToLocalStorage(); // Save to localStorage
-    alert(`Contribution of ${newContribution.amount} added for ${member.firstName}.`);
-  }
-
-  // Remove a contribution from a member
-  removeContribution(member: any, contribution: any): void {
-    const index = member.contributions.indexOf(contribution);
-    if (index !== -1) {
-      member.contributions.splice(index, 1); // Remove the contribution
-      this.saveToLocalStorage(); // Save to localStorage
-      alert(`Contribution of ${contribution.amount} on ${contribution.date} removed.`);
+  async addContribution() {
+    try {
+      await this.postService.addContribution(this.contribution);
+      this.closeModal();
+      // Refresh contributions if we're viewing a user's contributions
+      if (this.selectedUserId) {
+        await this.fetchUserContributions(this.selectedUserId);
+      }
+    } catch (error) {
+      console.error('Error adding contribution:', error);
     }
   }
 
-  // Add a new member to the selected family
-  addMember(): void {
-    if (!this.selectedFamily) {
-      alert('No family selected.');
-      return;
-    }
-
-    if (this.newMember.firstName.trim() === '' || this.newMember.lastName.trim() === '') {
-      alert('Both first name and last name are required.');
-      return;
-    }
-
-    // Clone the new member object to avoid shared references
-    const newMember = { ...this.newMember, contributions: [] };
-    this.selectedFamily.members.push(newMember); // Add the new member to the selected family
-    this.newMember = { firstName: '', lastName: '', contribution: 0 }; // Reset the form
-    this.saveToLocalStorage(); // Save to localStorage
-    alert(`Member "${newMember.firstName} ${newMember.lastName}" added successfully.`);
+  getTotalContributions(): number {
+    return this.userContributions.reduce((total, contribution) => total + contribution.amount, 0);
   }
 }

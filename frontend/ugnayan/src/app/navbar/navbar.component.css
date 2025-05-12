@@ -4,6 +4,9 @@
     font-family: 'Poppins', sans-serif;
     font-weight: bold; /* Make all text bold */
     letter-spacing: 0.5px; /* Add slight spacing between letters */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 .topnav {
     display: flex;
@@ -34,7 +37,7 @@
   
   .logo {
     height: 40px;
-    margin-right: 10px;
+    width: auto;
   }
   
   .brand-name {
@@ -59,9 +62,13 @@
     text-transform: uppercase; /* Make the text uppercase */
     letter-spacing: 1px; /* Add slight spacing between letters */
 }
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
 .nav-links a {
     position: relative;
-    margin-left: 24px;
     color: #4A4A4A;
     text-decoration: none;
     font-weight: 500;
@@ -97,5 +104,115 @@
 .nav-links a.active::after {
     transform: scaleX(1);
     background-color: #b61818;
+}
+
+.auth-link {
+    background-color: #b61818;
+    color: white !important;
+    padding: 8px 16px !important;
+    border-radius: 4px;
+    transition: background-color 0.3s ease !important;
+}
+
+.auth-link:hover {
+    background-color: #0ccb28 !important;
+    transform: translateY(-2px);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1000;
+}
+
+.mobile-menu-btn span {
+    width: 100%;
+    height: 3px;
+    background-color: #4A4A4A;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .topnav {
+        padding: 10px 20px;
+    }
+
+    .brand-text {
+        font-size: 1.5rem;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: white;
+        flex-direction: column;
+        padding: 80px 20px 20px;
+        gap: 20px;
+        transition: right 0.3s ease;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links a {
+        width: 100%;
+        padding: 12px 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .auth-link {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .topnav {
+        padding: 8px 15px;
+    }
+
+    .brand-text {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        height: 30px;
+    }
+
+    .nav-links {
+        width: 85%;
+    }
 }
 

@@ -1,276 +1,216 @@
-#attendance {
-    padding: 20px;
-    background-color: #FFFDE3; /* Matches the global background color */
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Global Styles */
+* {
     font-family: 'Poppins', sans-serif;
-    color: #333; /* Matches the global text color */
-    margin: 20px auto;
-    max-width: 1200px; /* Aligns with the dashboard width */
-    width: 95%;
-}
-
-/* Section Title */
-#attendance h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #2e2e2e; /* Matches the header color */
-    margin-bottom: 15px;
-    border-bottom: 2px solid #b61818; /* Matches the underline color */
-    padding-bottom: 5px;
-}
-
-/* Section Description */
-#attendance p {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-/* Attendance Table */
-.attendance-table {
-  width: 100%; /* Ensure the table takes up the full width of its container */
-  border-collapse: collapse; /* Remove gaps between table cells */
-  margin-top: 10px;
-  margin-bottom: 20px;
-  background-color: #fff; /* White background for the table */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  overflow-x: auto; /* Allow horizontal scrolling if content overflows */
-  overflow-y: hidden; /* Prevent vertical overflow */
-}
-
-.attendance-table h3 {
-  font-size: 20px;
-  font-weight: 500;
-  color: white;
-  margin-bottom: 5px;
-  padding: 20px;
-  background-color: #d32f2f; /* Softer red */
-  border-radius: 8px 8px 0 0;
-}
-
-.attendance-table table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-}
-
-.attendance-table th,
-.attendance-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.attendance-table th {
-    background-color: #f4f4f4;
-    font-weight: 600;
-    color: #333;
-}
-
-.attendance-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Add Attendance Form */
-.add-attendance-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
-
-.add-attendance-form h3 {
-    font-size: 20px;
-    font-weight: 500;
-    color: #2e2e2e;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #b61818; /* Matches the underline color */
-    padding-bottom: 5px;
-}
-
-.add-attendance-form label {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 5px;
-}
-
-.add-attendance-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-}
-
-.add-attendance-form button {
-    background-color: #b61818; /* Matches the button color */
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.add-attendance-form button:hover {
-    background-color: #0ccb28; /* Matches the hover color */
-}
-
-.attendance-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    width: 100%;
+    font-weight: bold;
+    letter-spacing: 0.5px;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
+/* Component Container */
+.section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h2 {
+    color: #3498db;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Attendance Container */
+.attendance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Camera Section */
 .camera-section {
     position: relative;
     width: 100%;
     max-width: 640px;
-    margin: 0 auto 20px;
-    background: #000;
+    margin: 0 auto;
+    background-color: #f8f9fa;
     border-radius: 8px;
-    overflow: hidden;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-video {
+.camera-section video {
     width: 100%;
-    height: auto;
-    display: block;
-    max-height: 480px;
-    object-fit: cover;
-}
-
-.controls-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.scan-btn, .close-camera-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.scan-btn {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.scan-btn:hover {
-  background-color: #45a049;
+    border-radius: 8px;
+    background-color: #000;
 }
 
 .close-camera-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #f44336;
-  color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
 }
 
 .close-camera-btn:hover {
-  background-color: #d32f2f;
+    background-color: #c0392b;
 }
 
+/* Controls Section */
+.controls-section {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.scan-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scan-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Attendance Records */
 .attendance-records {
-    background: white;
+    background-color: #ffffff;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    overflow-x: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .attendance-records h2 {
-  margin: 0 0 20px 0;
-  color: #333;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    background: #ffffff;
     min-width: 600px;
 }
 
 th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
 th {
-  background-color: #f5f5f5;
-  font-weight: 600;
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
 }
 
 tr:hover {
-  background-color: #f9f9f9;
+    background: #eaf6ff;
+}
+
+/* Status Styling */
+.status-present {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.status-late {
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+.status-absent {
+    color: #e74c3c;
+    font-weight: bold;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    #attendance {
+    .section {
         padding: 15px;
-        margin: 10px auto;
+        margin: 10px;
     }
 
-    #attendance h2 {
-        font-size: 20px;
-    }
-
-    .attendance-container {
-        padding: 10px;
+    h2 {
+        font-size: 1.5rem;
     }
 
     .camera-section {
-        max-width: 100%;
+        padding: 15px;
     }
 
-    .scan-btn, .close-camera-btn {
-        padding: 8px 16px;
-        font-size: 14px;
+    .scan-btn {
+        width: 100%;
+        max-width: 300px;
     }
 
     .attendance-records {
         padding: 15px;
     }
-
-    th, td {
-        padding: 8px;
-        font-size: 14px;
-    }
 }
 
 @media screen and (max-width: 480px) {
-    #attendance h2 {
-        font-size: 18px;
+    .section {
+        padding: 10px;
+        margin: 5px;
     }
 
-    .scan-btn, .close-camera-btn {
-        padding: 6px 12px;
-        font-size: 13px;
+    h2 {
+        font-size: 1.3rem;
     }
 
-    th, td {
-        padding: 6px;
-        font-size: 13px;
+    .camera-section {
+        padding: 10px;
     }
 
     .close-camera-btn {
-        top: 5px;
-        right: 5px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .scan-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
     }
 }

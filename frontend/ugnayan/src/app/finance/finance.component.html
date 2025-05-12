@@ -3,95 +3,145 @@
     <h1>Financial Management</h1>
     <p>Track donations, tithes, and manage church financial records.</p>
 
-    <!-- Search Family -->
-    <div>
-        <h2>Search Family by Surname</h2>
+    <!-- Search Section -->
+    <div class="search-section">
+        <h2>Search Records</h2>
         <div class="search-row">
-            <input type="text" id="searchSurname" placeholder="Enter surname" (input)="filterFamilies($event)" />
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search by surname..." 
+                    (input)="filterSurnames($event)"
+                    [value]="searchTerm"
+                />
+            </div>
+            <div class="search-info" *ngIf="searchTerm">
+                Found {{ filteredSurnames.length }} result{{ filteredSurnames.length !== 1 ? 's' : '' }}
+            </div>
         </div>
     </div>
 
-    <!-- Family Records -->
-    <div>
-        <h2>Family Records</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Family ID</th>
-                    <th>Surname</th>
-                    <th>Members</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let family of filteredFamilies">
-                    <td>{{ family.id }}</td>
-                    <td>{{ family.surname }}</td>
-                    <td>
-                        <ul>
-                            <li *ngFor="let member of family.members">
-                                {{ member.firstName }}
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <button (click)="openManageModal(family)">Manage</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- Finance Records -->
+    <div class="records-section">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Surname</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let surname of filteredSurnames" (click)="fetchUsersByLastname(surname)" style="cursor: pointer;">
+                        <td>{{ surname }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Add Family -->
-    <div>
-        <h2>Add Family</h2>
-        <div class="add-family-form">
-            <input type="text" [(ngModel)]="newFamily.surname" placeholder="Family Surname" />
-            <button (click)="addFamily()">Add Family</button>
+        <!-- No Results Message -->
+        <div class="no-results" *ngIf="filteredSurnames.length === 0">
+            <p>No surnames found matching "{{ searchTerm }}"</p>
+        </div>
+
+        <!-- Selected Users -->
+        <div class="selected-users" *ngIf="selectedUsers.length > 0">
+            <h3>Users with surname: {{ selectedSurname }}</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of selectedUsers" (click)="fetchUserContributions(user.id)" style="cursor: pointer;">
+                            <td>{{ user.firstname }} {{ user.lastname }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>
+                                <button class="add-btn" (click)="openContributionModal(user); $event.stopPropagation()">Add Contribution</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Contributions -->
+        <div class="user-contributions" *ngIf="userContributions.length > 0">
+            <h3>Contribution History</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let contribution of userContributions">
+                            <td>{{ contribution.contribution_date | date:'mediumDate' }}</td>
+                            <td>₱{{ contribution.amount | number:'1.2-2' }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>₱{{ getTotalContributions() | number:'1.2-2' }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- Manage Family Modal -->
-    <div class="manage-modal" *ngIf="selectedFamily">
-        <div class="modal-content">
-            <h3>Manage Contributions for {{ selectedFamily.surname }}</h3>
-            
-            <!-- List of Members -->
-            <ul>
-                <li *ngFor="let member of selectedFamily.members">
-                    <div class="member-header">
-                        <span><strong>{{ member.firstName }}</strong></span>
-                    </div>
-
-                    <!-- List of Contributions -->
-                    <ul class="contribution-list">
-                        <li *ngFor="let contribution of member.contributions">
-                            <!-- Display contributions in PHP -->
-                            <span>{{ contribution.date }} - {{ contribution.amount | currency:'PHP' }}</span>
-                            <button (click)="removeContribution(member, contribution)">Remove</button>
-                        </li>
-                    </ul>
-
-                    <!-- Add Contribution Form -->
-                    <div class="add-contribution-form">
-                        <input type="number" [(ngModel)]="newContribution.amount" placeholder="Amount" />
-                        <input type="date" [(ngModel)]="newContribution.date" />
-                        <button (click)="addContribution(member)">Add Contribution</button>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- Add Member Form -->
-            <div class="add-member-form">
-                <h4>Add Member</h4>
-                <input type="text" [(ngModel)]="newMember.firstName" placeholder="First Name" />
-                <input type="text" [(ngModel)]="newMember.lastName" placeholder="Last Name" />
-                <button (click)="addMember()">Add Member</button>
+<!-- Contribution Modal -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Contribution</h3>
+            <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="user-info" *ngIf="selectedUser">
+                <p><strong>Name:</strong> {{ selectedUser.firstname }} {{ selectedUser.lastname }}</p>
+                <p><strong>Username:</strong> {{ selectedUser.username }}</p>
             </div>
 
-            <!-- Modal Actions -->
-            <button (click)="saveContributions()">Save Contributions</button>
-            <button (click)="closeManageModal()">Close</button>
+            <form class="contribution-form" (ngSubmit)="addContribution()">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input 
+                        type="number" 
+                        id="amount" 
+                        [(ngModel)]="contribution.amount" 
+                        name="amount" 
+                        required
+                        min="0"
+                        step="0.01"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contribution_date">Date</label>
+                    <input 
+                        type="date" 
+                        id="contribution_date" 
+                        [(ngModel)]="contribution.contribution_date" 
+                        name="contribution_date" 
+                        required
+                    >
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+                    <button type="submit" class="submit-btn">Add Contribution</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
