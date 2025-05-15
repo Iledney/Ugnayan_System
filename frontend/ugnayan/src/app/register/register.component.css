@@ -1,129 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold; /* Make all text bold */
+    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    background: linear-gradient(135deg, #50b17c 0%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Register Container */
 .register-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #FFFDE3;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    padding: 3rem; /* Increased padding for better spacing */
+    border-radius: 15px; /* Softer rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Soft shadow for a modern look */
+    width: 100%;
+    max-width: 600px; /* Wider container */
+    background: white;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    text-align: center; /* Keep content centered */
 }
 
+
+/* Decorative Design */
+.register-container::before,
+.register-container::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #50b17c, #ffffff);
+    border-radius: 50%;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.register-container::before {
+    top: -50px;
+    right: -50px;
+}
+
+.register-container::after {
+    bottom: -50px;
+    left: -50px;
+}
+
+/* Header Styling */
 .register-container h2 {
-  color: #2e2e2e;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2rem; /* Increased font size for better visibility */
+  font-weight: 700; /* Make the header bold */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
   text-align: center;
-  border-bottom: 2px solid #b61818;
-  padding-bottom: 10px;
 }
 
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Increased gap for better spacing */
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 700px; /* Wider form */
+    margin: 0 auto; /* Center the form */
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center; /* Align label and input vertically */
+    justify-content: space-between; /* Space between label and input */
+    width: 100%;
+    position: relative; /* Ensure error messages don't shift layout */
 }
 
-.form-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
+label {
+    color: #555;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    flex: 1; /* Allow label to take up space */
+    margin-right: 1rem; /* Add spacing between label and input */
 }
 
-.form-group input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-  font-family: 'Poppins', sans-serif;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+input {
+    flex: 2; /* Allow input to take up more space */
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #b61818;
-  box-shadow: 0 0 5px rgba(182, 24, 24, 0.2);
+input:focus {
+    outline: none;
+    border-color: #50b17c;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(80, 177, 124, 0.2);
 }
 
-.form-group input.is-invalid {
-  border-color: #dc3545;
+/* Error Input Styling */
+input.error {
+    border-color: #e74c3c;
+    background-color: #ffecec;
 }
 
 .error-message {
-  color: #dc3545;
-  font-size: 12px;
-  margin-top: 4px;
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+    position: absolute; /* Prevent shifting of layout */
+    bottom: -1.5rem; /* Position error message below input */
+    left: 0;
 }
 
-button[type="submit"] {
-  background-color: #b61818;
-  color: #fff;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
+/* Button Styling */
+button {
+    background: linear-gradient(135deg, #50b17c, #3a8f68); /* Gradient button */
+    color: white;
+    padding: 1rem; /* Increased padding for larger button */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem; /* Slightly larger font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 500px; /* Increased max width for buttons */
+    margin: 1rem auto 0; /* Center the button */
 }
 
-button[type="submit"]:hover:not(:disabled) {
-  background-color: #0ccb28;
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(80, 177, 124, 0.3);
 }
 
-button[type="submit"]:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(80, 177, 124, 0.4);
 }
 
 /* Responsive Design */
-@media screen and (max-width: 768px) {
-  .register-container {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
+@media (max-width: 768px) {
+    .register-container {
+        padding: 2rem;
+        margin: 1rem;
+    }
 
-  .register-container h2 {
-    font-size: 20px;
-  }
+    .register-container h2 {
+        font-size: 1.8rem;
+    }
 
-  .form-group input {
-    font-size: 13px;
-  }
+    .form-group {
+        flex-direction: column; /* Stack label and input vertically */
+        align-items: flex-start;
+    }
 
-  button[type="submit"] {
-    font-size: 14px;
-    padding: 10px;
-  }
+    label {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 0.9rem;
+    }
 }
 
-@media screen and (max-width: 480px) {
-  .register-container {
-    margin: 0.5rem;
-    padding: 1rem;
-  }
+@media (max-width: 480px) {
+    .register-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
 
-  .register-container h2 {
-    font-size: 18px;
-  }
+    .register-container h2 {
+        font-size: 1.5rem;
+    }
 
-  .form-group label {
-    font-size: 13px;
-  }
-
-  .form-group input {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  button[type="submit"] {
-    font-size: 13px;
-    padding: 8px;
-  }
+    input,
+    button {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
 }
