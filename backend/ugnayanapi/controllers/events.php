@@ -23,7 +23,7 @@ class EventController extends GlobalUtil
             // Process the results to ensure image URLs are complete
             foreach ($result as &$event) {
                 if (!empty($event['image'])) {
-                    $event['image'] = 'http://localhost/ugnayan_sys/backend/ugnayanapi/uploads/' . $event['image'];
+                    $event['image'] = 'http://localhost/ugnayan_system/backend/ugnayanapi/uploads/' . $event['image'];
                 }
             }
             

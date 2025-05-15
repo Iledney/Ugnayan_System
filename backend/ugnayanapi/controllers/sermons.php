@@ -23,7 +23,7 @@ class Sermon extends GlobalUtil
             // Process the results to ensure image URLs are complete
             foreach ($result as &$sermon) {
                 if (!empty($sermon['audioFile'])) {
-                    $sermon['audioFile'] = 'http://localhost/ugnayan_sys/backend/ugnayanapi/uploads/sermons/' . $sermon['audioFile'];
+                    $sermon['audioFile'] = 'http://localhost/ugnayan_system/backend/ugnayanapi/uploads/sermons/' . $sermon['audioFile'];
                 }
             }
             

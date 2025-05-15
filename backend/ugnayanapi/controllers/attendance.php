@@ -61,6 +61,18 @@ class Attendance extends GlobalUtil{
             
             $date = $data->date; // Date when the attendance is being added
             
+            // Check if attendance record already exists for this user and event
+            $checkQuery = "SELECT id FROM attendance WHERE userId = :userId AND eventId = :eventId";
+            $checkStmt = $this->pdo->prepare($checkQuery);
+            $checkStmt->execute([
+                'userId' => $userId,
+                'eventId' => $eventId
+            ]);
+            
+            if ($checkStmt->rowCount() > 0) {
+                return $this->sendErrorResponse("Attendance record already exists for this user and event.", 400);
+            }
+            
             // Add attendance to the attendance table
             $query = "INSERT INTO attendance (userId, eventId, date, created_at, status) 
                       VALUES (:userId, :eventId, :date, NOW(), 'Present')";

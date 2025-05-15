@@ -76,7 +76,7 @@ class UserController extends GlobalUtil
 
             return $this->sendResponse([
                 'message' => 'User registered successfully',
-                'qr_code' => 'http://localhost/ugnayan_sys/backend/ugnayanapi/uploads/qrcodes/' . $qrCode
+                'qr_code' => 'http://localhost/ugnayan_system/backend/ugnayanapi/uploads/qrcodes/' . $qrCode
             ], 200);
         } catch (\PDOException $e) {
             error_log("Database error: " . $e->getMessage());
