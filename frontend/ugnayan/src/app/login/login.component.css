@@ -35,7 +35,6 @@ h3, label, button, .auth-link a {
 
 /* Body Styling */
 body {
-    background: linear-gradient(135deg, #50b17c 0%, #ffffff 100%); /* Non-white gradient background */
     min-height: 100vh;
     display: flex;
     align-items: center;
