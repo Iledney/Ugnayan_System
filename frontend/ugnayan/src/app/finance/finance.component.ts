@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FetchService } from '../services/fetch.service';
 import { PostService } from '../services/post.service';
-import { FooterComponent } from '../footer/footer.component';
 
 interface User {
   id: number;
@@ -28,12 +27,18 @@ interface UserContribution {
   lastname: string;
 }
 
+interface MonthlyBreakdown {
+  name: string;
+  total: number;
+  percentage: number;
+}
+
 @Component({
   selector: 'app-finance',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent],
   templateUrl: './finance.component.html',
-  styleUrls: ['./finance.component.css']
+  styleUrl: './finance.component.css'
 })
 export class FinanceComponent implements OnInit {
   surnames: string[] = [];
@@ -43,6 +48,7 @@ export class FinanceComponent implements OnInit {
   selectedSurname: string = '';
   userContributions: UserContribution[] = [];
   selectedUserId: number | null = null;
+  monthlyBreakdown: MonthlyBreakdown[] = [];
   
   // Modal properties
   showModal: boolean = false;
@@ -57,6 +63,7 @@ export class FinanceComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSurnames();
+    this.calculateMonthlyBreakdown();
   }
 
   async fetchSurnames() {
@@ -114,6 +121,76 @@ export class FinanceComponent implements OnInit {
     );
   }
 
+  getTotalContributions(): number {
+    return this.userContributions.reduce((total, contribution) => total + contribution.amount, 0);
+  }
+
+  getWeeklyTotal(): number {
+    const now = new Date();
+    const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+    
+    return this.userContributions
+      .filter(contribution => new Date(contribution.contribution_date) >= weekStart)
+      .reduce((total, contribution) => total + contribution.amount, 0);
+  }
+
+  getMonthlyTotal(): number {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    return this.userContributions
+      .filter(contribution => new Date(contribution.contribution_date) >= monthStart)
+      .reduce((total, contribution) => total + contribution.amount, 0);
+  }
+
+  getUserTotalContributions(userId: number): number {
+    return this.userContributions
+      .filter(contribution => contribution.user_id === userId)
+      .reduce((total, contribution) => total + contribution.amount, 0);
+  }
+
+  getLastContributionDate(userId: number): Date | null {
+    const userContributions = this.userContributions
+      .filter(contribution => contribution.user_id === userId)
+      .sort((a, b) => new Date(b.contribution_date).getTime() - new Date(a.contribution_date).getTime());
+    
+    return userContributions.length > 0 ? new Date(userContributions[0].contribution_date) : null;
+  }
+
+  calculateMonthlyBreakdown() {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    
+    // Calculate totals for each month
+    const monthlyTotals = months.map((name, index) => {
+      const monthStart = new Date(currentYear, index, 1);
+      const monthEnd = new Date(currentYear, index + 1, 0);
+      
+      const total = this.userContributions
+        .filter(contribution => {
+          const date = new Date(contribution.contribution_date);
+          return date >= monthStart && date <= monthEnd;
+        })
+        .reduce((sum, contribution) => sum + contribution.amount, 0);
+      
+      return { name, total };
+    });
+    
+    // Calculate percentages based on the highest month
+    const maxTotal = Math.max(...monthlyTotals.map(month => month.total));
+    
+    this.monthlyBreakdown = monthlyTotals.map(month => ({
+      name: month.name,
+      total: month.total,
+      percentage: maxTotal > 0 ? (month.total / maxTotal) * 100 : 0
+    }));
+  }
+
   openContributionModal(user: User) {
     this.selectedUser = user;
     this.contribution.user_id = user.id;
@@ -132,13 +209,11 @@ export class FinanceComponent implements OnInit {
 
   async addContribution() {
     try {
-      // Validate amount
       if (!this.contribution.amount || this.contribution.amount <= 0) {
         alert('Please enter a valid amount greater than 0');
         return;
       }
 
-      // Validate date
       if (!this.contribution.contribution_date) {
         alert('Please select a date');
         return;
@@ -149,24 +224,14 @@ export class FinanceComponent implements OnInit {
       console.log('Server response:', result);
       
       if (result.data && result.data.data) {
-        const { contribution, monthly_total } = result.data.data;
-        
-        // Add the new contribution to the list if we're viewing that user's contributions
+        // Refresh the user's contributions if we're viewing them
         if (this.selectedUserId === this.contribution.user_id) {
           await this.fetchUserContributions(this.selectedUserId);
         }
-
-        // Update dashboard data
-        const dashboardResponse = await this.fetchService.getDashboard();
-        if (dashboardResponse.data && dashboardResponse.data.data) {
-          const dashboard = dashboardResponse.data.data;
-          if (!dashboard.quick_stats) {
-            dashboard.quick_stats = {};
-          }
-          dashboard.quick_stats.contributions_this_month = monthly_total;
-        }
         
-        // Show success message
+        // Recalculate monthly breakdown
+        this.calculateMonthlyBreakdown();
+        
         alert('Contribution added successfully!');
         this.closeModal();
       } else {
@@ -178,9 +243,5 @@ export class FinanceComponent implements OnInit {
       const errorMessage = error.response?.data?.message || 'Please try again.';
       alert('Failed to add contribution: ' + errorMessage);
     }
-  }
-
-  getTotalContributions(): number {
-    return this.userContributions.reduce((total, contribution) => total + contribution.amount, 0);
   }
 }

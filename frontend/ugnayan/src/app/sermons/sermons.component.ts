@@ -4,14 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FetchService } from '../services/fetch.service';
 import { PostService } from '../services/post.service';
-import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-sermons',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, FooterComponent],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './sermons.component.html',
-  styleUrls: ['./sermons.component.css']
+  styleUrl: './sermons.component.css'
 })
 export class SermonsComponent implements OnInit {
   sermons: any[] = []; // Array to store sermons

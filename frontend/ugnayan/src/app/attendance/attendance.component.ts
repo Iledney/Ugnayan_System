@@ -34,6 +34,7 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   lastScannedTime: number = 0;
   scanCooldown: number = 2000; // 2 seconds cooldown between scans
   cameraError: string = '';
+  showAttendanceModal = false;
 
   constructor(
     private post: PostService,
@@ -190,6 +191,16 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 100);
   }
 
+  openAttendanceModal() {
+    this.showAttendanceModal = true;
+    document.body.classList.add('modal-open');
+  }
+
+  closeAttendanceModal() {
+    this.showAttendanceModal = false;
+    document.body.classList.remove('modal-open');
+  }
+
   private async handleQRCode(data: string) {
     try {
       const qrData = JSON.parse(data);
@@ -220,8 +231,9 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('Attendance added:', res);
           this.scanStatus = 'Matagumpay na na-record ang attendance!';
           
-          // Refresh attendance list
+          // Refresh attendance list and show modal
           await this.getAttendance();
+          this.openAttendanceModal();
           
           // Reset status after delay
           setTimeout(() => {

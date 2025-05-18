@@ -5,12 +5,11 @@ import { FetchService } from '../services/fetch.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, FormGroup, FormArray } from '@angular/forms';
 import { PostService } from '../services/post.service';
-import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavbarComponent, RouterModule, CommonModule, ReactiveFormsModule, FooterComponent],
+  imports: [NavbarComponent, RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -32,6 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   updateForm: FormGroup;
   showModal = false;
   private refreshInterval: any;
+  currentDate: Date = new Date();
 
   constructor(private fetchService: FetchService, private postService: PostService, private fb: FormBuilder) {
     this.updateForm = this.fb.group({
@@ -48,9 +48,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchDashboardData();
+    // Update current date
+    this.currentDate = new Date();
+    
     // Refresh dashboard data every 30 seconds
     this.refreshInterval = setInterval(() => {
       this.fetchDashboardData();
+      this.currentDate = new Date(); // Update the date on each refresh
     }, 30000);
   }
 

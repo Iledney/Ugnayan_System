@@ -7,12 +7,11 @@ import { PostService } from '../services/post.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AttendanceComponent } from '../attendance/attendance.component';
-import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, AttendanceComponent, FooterComponent],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, AttendanceComponent],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })

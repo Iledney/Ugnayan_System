@@ -24,26 +24,29 @@
                 <div class="scan-overlay">
                     <div class="scan-area">
                         <div class="scan-line"></div>
-                        <div class="corner-tl"></div>
-                        <div class="corner-tr"></div>
-                        <div class="corner-bl"></div>
-                        <div class="corner-br"></div>
                     </div>
                 </div>
-                <div class="camera-status">
-                    <span class="status-text">{{scanStatus}}</span>
+                <div class="scan-message">
+                    {{scanStatus}}
                 </div>
             </div>
-            <button (click)="closeCamera()" class="close-camera-btn">
-                <i class="fas fa-times"></i>
+            <button (click)="closeCamera()" class="close-camera">
                 Close Camera
             </button>
         </div>
+    </div>
 
-        <!-- Attendance Records -->
-        <div class="attendance-records">
-            <h3>Attendance Records</h3>
-            <div class="table-container">
+    <!-- Attendance Modal -->
+    <div class="attendance-modal" *ngIf="showAttendanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Attendance Records</h2>
+                <button class="close-modal" (click)="closeAttendanceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="attendance-table">
                 <table>
                     <thead>
                         <tr>
@@ -61,11 +64,9 @@
                             <td>{{record.lastname}}</td>
                             <td>{{record.timeIn}}</td>
                             <td>
-                                <span class="status-badge" [ngClass]="{
-                                    'status-present': record.status === 'Present',
-                                    'status-late': record.status === 'Late',
-                                    'status-absent': record.status === 'Absent'
-                                }">{{record.status}}</span>
+                                <span class="status-badge" [ngClass]="record.status.toLowerCase()">
+                                    {{record.status}}
+                                </span>
                             </td>
                         </tr>
                     </tbody>

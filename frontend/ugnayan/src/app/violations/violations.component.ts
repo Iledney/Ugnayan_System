@@ -4,12 +4,11 @@ import { FetchService } from '../services/fetch.service';
 import { CommonModule } from '@angular/common';
 import { PostService } from '../services/post.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-violations',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, FooterComponent],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './violations.component.html',
   styleUrl: './violations.component.css'
 })
