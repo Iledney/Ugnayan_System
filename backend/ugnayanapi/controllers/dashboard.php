@@ -50,7 +50,7 @@ class Dashboard extends GlobalUtil
     private function getTotalMembers()
     {
         try {
-            $sql = "SELECT COUNT(id) as total FROM user WHERE isAdmin = 0";
+            $sql = "SELECT COUNT(id) as total FROM users WHERE isAdmin = 0";
             $stmt = $this->pdo->query($sql);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total'] ?? 0;
@@ -62,10 +62,7 @@ class Dashboard extends GlobalUtil
     private function getMonthlyContributions()
     {
         try {
-            $sql = "SELECT COALESCE(SUM(amount), 0) as total 
-                   FROM finance 
-                   WHERE MONTH(contribution_date) = MONTH(CURRENT_DATE()) 
-                   AND YEAR(contribution_date) = YEAR(CURRENT_DATE())";
+            $sql = "SELECT COALESCE(SUM(amount), 0) as total FROM finance";
             $stmt = $this->pdo->query($sql);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total'] ?? 0;
@@ -77,11 +74,9 @@ class Dashboard extends GlobalUtil
     private function getMonthlyAttendance()
     {
         try {
-            $sql = "SELECT COUNT(attendance_id) as total 
+            $sql = "SELECT COUNT(id) as total 
                    FROM attendance 
-                   WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) 
-                   AND YEAR(created_at) = YEAR(CURRENT_DATE())
-                   AND attendance_status = 'Present'";
+                   WHERE status = 'Present'";
             $stmt = $this->pdo->query($sql);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total'] ?? 0;
@@ -93,10 +88,7 @@ class Dashboard extends GlobalUtil
     private function getMonthlyEvents()
     {
         try {
-            $sql = "SELECT COUNT(id) as total 
-                   FROM events 
-                   WHERE MONTH(date) = MONTH(CURRENT_DATE()) 
-                   AND YEAR(date) = YEAR(CURRENT_DATE())";
+            $sql = "SELECT COUNT(id) as total FROM events";
             $stmt = $this->pdo->query($sql);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total'] ?? 0;
@@ -116,7 +108,6 @@ class Dashboard extends GlobalUtil
             // Encode JSON data
             $announcement = json_encode($data->announcement);
             $reminders = json_encode($data->reminders);
-            $quick_stats = json_encode($data->quick_stats);
     
             if ($exists) {
                 // Update existing record
@@ -124,7 +115,6 @@ class Dashboard extends GlobalUtil
                        SET daily_verse = ?, 
                            announcement = ?, 
                            reminders = ?,
-                           quick_stats = ?,
                            updated_at = CURRENT_TIMESTAMP
                        WHERE id = ?";
                 
@@ -133,20 +123,18 @@ class Dashboard extends GlobalUtil
                     $data->daily_verse,
                     $announcement,
                     $reminders,
-                    $quick_stats,
                     $exists['id']
                 ]);
             } else {
                 // Insert new record if none exists
-                $sql = "INSERT INTO dashboard (daily_verse, announcement, reminders, quick_stats) 
-                       VALUES (?, ?, ?, ?)";
+                $sql = "INSERT INTO dashboard (daily_verse, announcement, reminders) 
+                       VALUES (?, ?, ?)";
                 
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
                     $data->daily_verse,
                     $announcement,
-                    $reminders,
-                    $quick_stats
+                    $reminders
                 ]);
             }
             

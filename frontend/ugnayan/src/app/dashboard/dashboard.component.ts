@@ -16,11 +16,6 @@ import { PostService } from '../services/post.service';
 export class DashboardComponent implements OnInit, OnDestroy {
   dashboardData: any = {
     daily_verse: '',
-    quick_stats: {
-      total_attendance: 0,
-      contributions_this_month: 0,
-      upcoming_events: 0
-    },
     announcement: {
       announcements: []
     },
@@ -46,12 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateForm = this.fb.group({
       daily_verse: [''],
       announcements: this.fb.array([]),
-      reminders: this.fb.array([]),
-      quick_stats: this.fb.group({
-        total_attendance: [0],
-        contributions_this_month: [0],
-        upcoming_events: [0]
-      })
+      reminders: this.fb.array([])
     });
   }
 
@@ -84,11 +74,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // Update dashboard data
         this.dashboardData = {
           daily_verse: data.daily_verse || '',
-          quick_stats: {
-            total_attendance: 0,
-            contributions_this_month: 0,
-            upcoming_events: 0
-          },
           announcement: data.announcement || { announcements: [] },
           reminders: data.reminders || { reminders: [] },
           activities: []
@@ -96,11 +81,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         // Update stats
         this.stats = {
-          total_members: 0,
-          monthly_contributions: 0,
-          monthly_attendance: 0,
-          monthly_events: 0
+          total_members: data.total_members || 0,
+          monthly_contributions: data.monthly_contributions || 0,
+          monthly_attendance: data.monthly_attendance || 0,
+          monthly_events: data.monthly_events || 0
         };
+
+        // Fetch and process events
+        try {
+          const eventsResponse = await this.fetchService.getEvents();
+          if (eventsResponse.data && eventsResponse.data.status === 'success') {
+            const events = Array.isArray(eventsResponse.data.data) ? eventsResponse.data.data : [];
+            // Convert events to activities format
+            this.dashboardData.activities = events.map((event: any) => ({
+              date: event.date,
+              name: event.eventname,
+              category: 'Event',
+              status: new Date(event.date) > new Date() ? 'Upcoming' : 'Past'
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching events:', error);
+        }
 
         console.log('Updated Dashboard Data:', this.dashboardData);
       }
@@ -129,12 +131,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   populateForm() {
     if (this.dashboardData) {
       this.updateForm.patchValue({
-        daily_verse: this.dashboardData.daily_verse,
-        quick_stats: {
-          total_attendance: this.dashboardData.quick_stats.total_attendance,
-          contributions_this_month: this.dashboardData.quick_stats.contributions_this_month,
-          upcoming_events: this.dashboardData.quick_stats.upcoming_events
-        }
+        daily_verse: this.dashboardData.daily_verse
       });
 
       // Clear existing arrays
@@ -198,7 +195,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       try {
         const formattedData = {
           daily_verse: this.updateForm.value.daily_verse,
-          quick_stats: this.updateForm.value.quick_stats,
           announcement: {
             announcements: this.updateForm.value.announcements || []
           },
