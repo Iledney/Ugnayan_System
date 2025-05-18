@@ -5,6 +5,13 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
 
 class UserController extends GlobalUtil
 {
@@ -37,7 +44,7 @@ class UserController extends GlobalUtil
             // Hash password
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            // Generate QR code (e.g., for user ID or username)
+            // Generate QR code with enhanced styling
             $qrCode = '';
             $qrDir = __DIR__ . '/../uploads/qrcodes/';
             if (!file_exists($qrDir)) {
@@ -50,9 +57,26 @@ class UserController extends GlobalUtil
                 'lastname' => $lastname
             ]);
 
-            $qr = QrCode::create($qrData);
+            // Create QR code with modern styling
+            $qr = QrCode::create($qrData)
+                ->setSize(300)
+                ->setMargin(10)
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
+                ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
+                ->setForegroundColor(new Color(80, 177, 124)) // #50b17c
+                ->setBackgroundColor(new Color(255, 255, 255));
+
+            // Create label
+            $label = Label::create('Ugnayan')
+                ->setFont(new NotoSans(14))
+                ->setAlignment(new LabelAlignmentCenter())
+                ->setTextColor(new Color(52, 152, 219)); // #3498db
+
+            // Generate QR code
             $writer = new PngWriter();
-            $qrResult = $writer->write($qr);
+            $qrResult = $writer->write($qr, null, $label);
+            
             $qrFileName = uniqid() . '.png';
             $qrPath = $qrDir . $qrFileName;
             $qrResult->saveToFile($qrPath);

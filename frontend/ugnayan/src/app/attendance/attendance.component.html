@@ -2,43 +2,71 @@
     <h2>Attendance Management</h2>
 
     <div class="attendance-container">
-        <div class="camera-section" *ngIf="showCamera">
-            <video #videoElement autoplay muted playsinline></video>
-            <canvas #canvasElement hidden></canvas>
-
-            <button (click)="closeCamera()" class="close-camera-btn">Close Camera</button>
-        </div>
-
+        <!-- Camera Controls -->
         <div class="controls-section">
             <button (click)="activateCamera()" class="scan-btn" *ngIf="!showCamera">
+                <i class="fas fa-qrcode"></i>
                 Scan QR Code
+            </button>
+            
+            <!-- Error Message -->
+            <div class="error-message" *ngIf="cameraError">
+                <i class="fas fa-exclamation-circle"></i>
+                {{cameraError}}
+            </div>
+        </div>
+
+        <!-- Camera Section -->
+        <div class="camera-section" *ngIf="showCamera">
+            <div class="camera-wrapper">
+                <video #videoElement autoplay playsinline></video>
+                <canvas #canvasElement></canvas>
+                <div class="scan-overlay">
+                    <div class="scan-area">
+                        <div class="scan-line"></div>
+                        <div class="corner-tl"></div>
+                        <div class="corner-tr"></div>
+                        <div class="corner-bl"></div>
+                        <div class="corner-br"></div>
+                    </div>
+                </div>
+                <div class="camera-status">
+                    <span class="status-text">{{scanStatus}}</span>
+                </div>
+            </div>
+            <button (click)="closeCamera()" class="close-camera-btn">
+                <i class="fas fa-times"></i>
+                Close Camera
             </button>
         </div>
 
+        <!-- Attendance Records -->
         <div class="attendance-records">
-            <h2>Attendance Records</h2>
+            <h3>Attendance Records</h3>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>Username</th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Time In</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let record of attendance">
+                        <tr *ngFor="let record of attendance" class="record-row">
                             <td>{{record.username}}</td>
                             <td>{{record.firstname}}</td>
                             <td>{{record.lastname}}</td>
                             <td>{{record.timeIn}}</td>
-                            <td [ngClass]="{
-                                'status-present': record.status === 'Present',
-                                'status-late': record.status === 'Late',
-                                'status-absent': record.status === 'Absent'
-                            }">{{record.status}}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="{
+                                    'status-present': record.status === 'Present',
+                                    'status-late': record.status === 'Late',
+                                    'status-absent': record.status === 'Absent'
+                                }">{{record.status}}</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,40 +1,53 @@
 <app-navbar></app-navbar>
-<div class="dashboard-content section" id="dashboard">
+<div class="dashboard">
     <div class="dashboard-header">
         <h1>Welcome to the Dashboard</h1>
+        <p class="church-message">Stay connected with your church community. Access updates, track contributions, and engage with church activities all in one place.</p>
     </div>
-    <p class="church-message">Stay updated with church activities, contributions, and more!</p>
 
     <!-- Dashboard Widgets -->
     <div class="dashboard-widgets">
-
         <!-- Daily Verse Widget -->
         <div class="widget-card verse">
             <h3>Daily Verse</h3>
+            <div class="daily-verse">
             <blockquote>{{ dashboardData?.daily_verse }}</blockquote>
+            </div>
         </div>
 
         <!-- Quick Stats Widget -->
         <div class="widget-card stats">
             <h3>Quick Stats</h3>
+            <div class="quick-stats">
             <ul>
-                <li>Total Attendance this Week: <strong>{{ dashboardData?.quick_stats?.total_attendance }}</strong></li>
-                <li>Contributions This Month: <strong>₱{{ dashboardData?.quick_stats?.contributions_this_month }}</strong></li>
-                <li>Upcoming Events: <strong>{{ dashboardData?.quick_stats?.upcoming_events }}</strong></li>
+                    <li>
+                        <span>Total Attendance this Week:</span>
+                        <strong>{{ dashboardData?.quick_stats?.total_attendance }}</strong>
+                    </li>
+                    <li>
+                        <span>Contributions This Month:</span>
+                        <strong>₱{{ dashboardData?.quick_stats?.contributions_this_month }}</strong>
+                    </li>
+                    <li>
+                        <span>Upcoming Events:</span>
+                        <strong>{{ dashboardData?.quick_stats?.upcoming_events }}</strong>
+                    </li>
             </ul>
+            </div>
         </div>
 
-        <!-- To-Do / Events Widget -->
+        <!-- Reminders Widget -->
         <div class="widget-card todo">
             <h3>Reminders</h3>
+            <div class="quick-stats">
             <ul>
                 <li *ngFor="let reminder of dashboardData?.reminders?.reminders">
-                    <span>{{ reminder.icon }}</span>
-                    {{ reminder.title }}
+                        <span>{{ reminder.title }}</span>
+                        <i [class]="reminder.icon"></i>
                 </li>
             </ul>
+            </div>
         </div>
-
     </div>
 
     <!-- Announcements Section -->
@@ -42,76 +55,10 @@
         <h2>Church Announcements</h2>
         <div class="announcement-carousel">
             <div class="announcement-card" *ngFor="let announcement of dashboardData?.announcement?.announcements">
-                <div class="announcement-icon">{{ announcement.icon }}</div>
+                <i [class]="announcement.icon"></i>
                 <h4>{{ announcement.title }}</h4>
                 <p>{{ announcement.description }}</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal" *ngIf="showModal">
-        <div class="modal-content">
-            <h2>UPDATE DASHBOARD</h2>
-            <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="daily_verse">Daily Verse:</label>
-                    <input type="text" id="daily_verse" formControlName="daily_verse">
-                </div>
-
-                <div class="form-group">
-                    <h3>Quick Stats</h3>
-                    <div formGroupName="quick_stats">
-                        <div>
-                            <label for="total_attendance">Total Attendance this Week:</label>
-                            <input type="number" id="total_attendance" formControlName="total_attendance">
-                        </div>
-                        <div>
-                            <label for="contributions_this_month">Contributions This Month:</label>
-                            <input type="number" id="contributions_this_month" formControlName="contributions_this_month">
-                        </div>
-                        <div>
-                            <label for="upcoming_events">Upcoming Events:</label>
-                            <input type="number" id="upcoming_events" formControlName="upcoming_events">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <h3>Announcements</h3>
-                    <div formArrayName="announcements">
-                        <div *ngFor="let announcement of announcements.controls; let i=index" [formGroupName]="i">
-                            <input type="text" formControlName="icon" placeholder="Icon">
-                            <input type="text" formControlName="title" placeholder="Title">
-                            <textarea formControlName="description" placeholder="Description"></textarea>
-                            <button type="button" (click)="removeAnnouncement(i)">Remove</button>
-                        </div>
-                    </div>
-                    <button type="button" (click)="addAnnouncement()">Add Announcement</button>
-                </div>
-
-                <div class="form-group">
-                    <h3>Reminders</h3>
-                    <div formArrayName="reminders">
-                        <div *ngFor="let reminder of reminders.controls; let i=index" [formGroupName]="i">
-                            <input type="text" formControlName="icon" placeholder="Icon">
-                            <input type="text" formControlName="title" placeholder="Title">
-                            <select formControlName="status">
-                                <option value="pending">Pending</option>
-                                <option value="upcoming">Upcoming</option>
-                                <option value="completed">Completed</option>
-                            </select>
-                            <button type="button" (click)="removeReminder(i)">Remove</button>
-                        </div>
-                    </div>
-                    <button type="button" (click)="addReminder()">Add Reminder</button>
-                </div>
-
-                <div class="modal-buttons">
-                    <button type="submit">Save Changes</button>
-                    <button type="button" (click)="closeModal()">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -133,14 +80,75 @@
     </div>
 
     <!-- Update Dashboard Button -->
-    <div class="update-dashboard-section">
-        <button class="update-btn" (click)="openUpdateModal()">UPDATE DASHBOARD</button>
+    <button class="update-btn" (click)="openUpdateModal()">
+        Update Dashboard
+    </button>
+
+    <!-- Modal -->
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h2>Update Dashboard</h2>
+            <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="daily_verse">Daily Verse</label>
+                    <input type="text" id="daily_verse" formControlName="daily_verse">
+                </div>
+
+                <div class="form-group">
+                    <h3>Quick Stats</h3>
+                    <div formGroupName="quick_stats">
+                        <div>
+                            <label for="total_attendance">Total Attendance this Week</label>
+                            <input type="number" id="total_attendance" formControlName="total_attendance">
+                        </div>
+                        <div>
+                            <label for="contributions_this_month">Contributions This Month</label>
+                            <input type="number" id="contributions_this_month" formControlName="contributions_this_month">
+                        </div>
+                        <div>
+                            <label for="upcoming_events">Upcoming Events</label>
+                            <input type="number" id="upcoming_events" formControlName="upcoming_events">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h3>Announcements</h3>
+                    <div formArrayName="announcements">
+                        <div *ngFor="let announcement of announcements.controls; let i=index" [formGroupName]="i" class="announcement-form-item">
+                            <input type="text" formControlName="icon" placeholder="Icon Class (e.g. fas fa-bell)">
+                            <input type="text" formControlName="title" placeholder="Announcement Title">
+                            <textarea formControlName="description" placeholder="Announcement Description"></textarea>
+                            <button type="button" class="remove-btn" (click)="removeAnnouncement(i)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" (click)="addAnnouncement()">Add Announcement</button>
+                </div>
+
+                <div class="form-group">
+                    <h3>Reminders</h3>
+                    <div formArrayName="reminders">
+                        <div *ngFor="let reminder of reminders.controls; let i=index" [formGroupName]="i" class="reminder-form-item">
+                            <input type="text" formControlName="icon" placeholder="Icon Class (e.g. fas fa-clock)">
+                            <input type="text" formControlName="title" placeholder="Reminder Title">
+                            <select formControlName="status">
+                                <option value="pending">Pending</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <button type="button" class="remove-btn" (click)="removeReminder(i)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" (click)="addReminder()">Add Reminder</button>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<footer>
-    <p>
-        <i class="fa fa-heart"></i>
-        <strong>Lupon Ugnayan</strong> - Empowering communities through connection and collaboration.
-    </p>
-</footer>
+<app-footer></app-footer>

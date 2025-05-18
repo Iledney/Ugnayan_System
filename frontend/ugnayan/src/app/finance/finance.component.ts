@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FetchService } from '../services/fetch.service';
 import { PostService } from '../services/post.service';
+import { FooterComponent } from '../footer/footer.component';
 
 interface User {
   id: number;
@@ -30,7 +31,7 @@ interface UserContribution {
 @Component({
   selector: 'app-finance',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './finance.component.html',
   styleUrls: ['./finance.component.css']
 })
@@ -85,11 +86,17 @@ export class FinanceComponent implements OnInit {
   async fetchUserContributions(userId: number) {
     try {
       const response = await this.fetchService.getUserContributions(userId);
-      const data = response.data as { status: string; data: UserContribution[]; statusCode: number };
-      this.userContributions = data.data;
-      this.selectedUserId = userId;
+      if (response.data && response.data.data) {
+        this.userContributions = response.data.data;
+        this.selectedUserId = userId;
+        console.log('Fetched contributions:', this.userContributions);
+      } else {
+        console.error('Invalid response format:', response);
+        this.userContributions = [];
+      }
     } catch (error) {
       console.error('Error fetching contributions:', error);
+      this.userContributions = [];
     }
   }
 
@@ -125,14 +132,51 @@ export class FinanceComponent implements OnInit {
 
   async addContribution() {
     try {
-      await this.postService.addContribution(this.contribution);
-      this.closeModal();
-      // Refresh contributions if we're viewing a user's contributions
-      if (this.selectedUserId) {
-        await this.fetchUserContributions(this.selectedUserId);
+      // Validate amount
+      if (!this.contribution.amount || this.contribution.amount <= 0) {
+        alert('Please enter a valid amount greater than 0');
+        return;
       }
-    } catch (error) {
+
+      // Validate date
+      if (!this.contribution.contribution_date) {
+        alert('Please select a date');
+        return;
+      }
+
+      console.log('Sending contribution:', this.contribution);
+      const result = await this.postService.addContribution(this.contribution);
+      console.log('Server response:', result);
+      
+      if (result.data && result.data.data) {
+        const { contribution, monthly_total } = result.data.data;
+        
+        // Add the new contribution to the list if we're viewing that user's contributions
+        if (this.selectedUserId === this.contribution.user_id) {
+          await this.fetchUserContributions(this.selectedUserId);
+        }
+
+        // Update dashboard data
+        const dashboardResponse = await this.fetchService.getDashboard();
+        if (dashboardResponse.data && dashboardResponse.data.data) {
+          const dashboard = dashboardResponse.data.data;
+          if (!dashboard.quick_stats) {
+            dashboard.quick_stats = {};
+          }
+          dashboard.quick_stats.contributions_this_month = monthly_total;
+        }
+        
+        // Show success message
+        alert('Contribution added successfully!');
+        this.closeModal();
+      } else {
+        console.error('Invalid server response:', result);
+        alert('Failed to add contribution. Please try again.');
+      }
+    } catch (error: any) {
       console.error('Error adding contribution:', error);
+      const errorMessage = error.response?.data?.message || 'Please try again.';
+      alert('Failed to add contribution: ' + errorMessage);
     }
   }
 

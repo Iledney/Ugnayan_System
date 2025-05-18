@@ -1,51 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-style: normal;
+    letter-spacing: 0.3px;
 }
 
 .profile-container {
     min-height: 100vh;
     padding: 2rem;
-    margin-left: 250px;
-    background: #f8f9fa;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+    backdrop-filter: blur(10px);
+    margin-left: 250px; /* Add space for sidenav */
 }
 
 .profile-card {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 2rem auto;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+}
+
+/* Header Section */
+.profile-header {
+    background: linear-gradient(135deg, #50b17c, #3498db);
+    padding: 2.5rem 2rem;
+    position: relative;
     overflow: hidden;
 }
 
-.profile-header {
-    background: #2ecc71;
-    padding: 2rem;
-    position: relative;
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
+    background-size: 20px 20px;
+    opacity: 0.1;
 }
 
 .profile-header h1 {
     color: white;
-    font-size: 1.75rem;
+    font-size: 2.2rem;
     font-weight: 600;
     margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
+/* Profile Information */
 .profile-info {
     padding: 2rem;
     background: white;
 }
 
 .info-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    position: relative;
     padding-left: 1rem;
-    border-left: 3px solid #2ecc71;
+    border-left: 3px solid #50b17c;
 }
 
 .info-group:last-child {
@@ -54,63 +82,86 @@
 
 .info-group label {
     color: #666;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
     display: block;
     font-weight: 500;
 }
 
 .info-group p {
-    color: #1a1a1a;
-    font-size: 1.125rem;
+    color: #2c3e50;
+    font-size: 1.2rem;
     font-weight: 500;
     margin: 0;
 }
 
+/* QR Code Section */
 .profile-qr {
-    padding: 2rem;
+    padding: 3rem 2rem;
     text-align: center;
-    background: #f8f9fa;
-    border-top: 1px solid #e1e1e1;
+    background: linear-gradient(135deg, rgba(80, 177, 124, 0.05), rgba(52, 152, 219, 0.05));
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .profile-qr label {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #2ecc71;
+    color: #50b17c;
     margin-bottom: 1.5rem;
     display: block;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .qr-img {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     padding: 1rem;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 1.5rem;
-    border: 2px solid rgba(46, 204, 113, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(80, 177, 124, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: block;
+    margin: 0 auto;
+}
+
+.qr-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #50b17c;
 }
 
 .download-btn {
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 1.5rem;
-    background: #2ecc71;
+    padding: 1.2rem 2.5rem;
+    background: linear-gradient(135deg, #50b17c, #3498db);
     color: white;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.9375rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
 }
 
 .download-btn:hover {
-    background: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #3498db, #50b17c);
 }
 
+/* Responsive Design */
 @media screen and (max-width: 768px) {
     .profile-container {
         margin-left: 0;
@@ -118,15 +169,15 @@
     }
     
     .profile-card {
-        margin: 0;
+        margin: 1rem;
     }
     
     .profile-header {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .profile-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     
     .profile-info {
@@ -134,20 +185,20 @@
     }
     
     .info-group {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
     }
     
     .info-group p {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .qr-img {
-        width: 180px;
-        height: 180px;
+        width: 200px;
+        height: 200px;
     }
     
     .download-btn {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.875rem;
+        padding: 1rem 2rem;
+        font-size: 1rem;
     }
 }

@@ -1,21 +1,23 @@
 <app-navbar></app-navbar>
-<section id="violations" class="section hidden">
+<section id="violations" class="section">
+    <div class="section-header">
     <h2>Violations Tracking</h2>
-    <p>Monitor violations for doctrinal candidates and services.</p>
-    <!-- violations Table -->
+    </div>
+
+    <!-- Violations Table -->
     <div class="violations-table">
       <h3>Violations Records</h3>
       <table> 
         <thead>
           <tr>
             <th>Date</th>
-            <th>Violations</th>
+                    <th>Violation</th>
             <th>Violator</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let violation of violations.data">
-            <td>{{violation.date}}</td>
+                    <td>{{violation.date | date:'mediumDate'}}</td>
             <td>{{violation.violation}}</td>
             <td>{{violation.userId}}</td>
           </tr>
@@ -23,26 +25,51 @@
       </table>
     </div>
 
-    <!-- Add violations Form -->
+    <!-- Add Violations Form -->
     <div class="add-violations-form">
-      <h3>Add violations Record</h3>
+        <h3>Add Violation Record</h3>
       <form id="violationsForm" [formGroup]="violationForm" (ngSubmit)="addViolation()">
-        <label for="date">Date:</label>
-        <input type="date" id="date" formControlName="date" required />
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input 
+                    type="date" 
+                    id="date" 
+                    formControlName="date" 
+                    required 
+                />
+            </div>
 
-        <label for="event">Violations:</label>
-        <input type="text" id="event" formControlName="violation" placeholder="Event Name" required />
+            <div class="form-group">
+                <label for="event">Violation Type</label>
+                <input 
+                    type="text" 
+                    id="event" 
+                    formControlName="violation" 
+                    placeholder="Enter violation details" 
+                    required 
+                />
+            </div>
 
-        <label for="userId">Violator:</label>
-        <select id="userId" formControlName="userId" required>
+            <div class="form-group">
+                <label for="userId">Select Violator</label>
+                <select 
+                    id="userId" 
+                    formControlName="userId" 
+                    required
+                >
           <option value="">-- Select a user --</option>
           <option *ngFor="let user of users.data" [value]="user.id">
             {{user.fullName}}
           </option>
         </select>
+            </div>
 
-        <button type="submit">Add Record</button>
+            <button type="submit" [disabled]="!violationForm.valid">
+                <i class="fas fa-plus"></i>
+                Add Record
+            </button>
       </form>
     </div>
   </section>
 
+<app-footer></app-footer>

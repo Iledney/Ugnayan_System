@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -15,6 +15,8 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +48,14 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
+  togglePassword(field: 'password' | 'confirm') {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+
   async onSubmit() {
     if (this.registerForm.invalid) {
       return;
@@ -59,7 +69,7 @@ export class RegisterComponent implements OnInit {
         ...this.registerForm.value,
         isAdmin: 0 // Default to regular user
       };
-      delete formData.confirmPassword; // Alising sa data list para di an sumama sa backend
+      delete formData.confirmPassword;
 
       const response = await this.authService.register(formData);
       console.log('Registration successful:', response.data);

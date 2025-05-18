@@ -18,7 +18,6 @@
                 <label>Username</label>
                 <p>{{ user.username }}</p>
             </div>
-
         </div>
 
         <div class="profile-qr" *ngIf="user.qr_code">
@@ -26,6 +25,5 @@
             <img [src]="user.qr_code" alt="QR Code" class="qr-img" />
             <a [href]="user.qr_code" download="qr_code.png" class="download-btn">Download QR Code</a>
         </div>
-
     </div>
 </div>

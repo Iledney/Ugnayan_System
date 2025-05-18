@@ -10,12 +10,18 @@ import { RouterModule, Router } from '@angular/router';
   styleUrl: './sidenav.component.css'
 })
 export class SidenavComponent {
+    isOpen = true;
+
     constructor(private router: Router) {}
 
     menuItems = [
         { path: '/home', icon: 'home', label: 'Home' },
         { path: '/user-profile', icon: 'person', label: 'Profile' }
     ];
+
+    toggleSidenav() {
+        this.isOpen = !this.isOpen;
+    }
 
     logout() {
         // Clear any stored authentication data

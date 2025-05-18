@@ -1,7 +1,17 @@
 <app-navbar></app-navbar>
 <section id="events" class="section hidden">
   <h2>Events Management</h2>
-  <p>Create and manage church events and activities.</p>
+
+  <!-- Message Displays -->
+  <div class="message success-message" *ngIf="successMessage">
+    <i class="material-icons">check_circle</i>
+    {{ successMessage }}
+  </div>
+  <div class="message error-message" *ngIf="errorMessage">
+    <i class="material-icons">error</i>
+    {{ errorMessage }}
+  </div>
+
   <!-- events Table -->
   <div class="events-table">
     <h3>Events Records</h3>
@@ -104,3 +114,5 @@
   </div>
 
 </section>
+
+<app-footer></app-footer>

@@ -1,17 +1,31 @@
-<div class="topnav">
+<!-- Toggle Button (OUTSIDE of sidenav) -->
+<button class="toggle-btn" (click)="toggleSidenav()">
+    <i class="material-icons">menu</i>
+  </button>
+  
+  <!-- Sidenav -->
+  <div class="sidenav" [class.active]="isOpen">
     <div class="branding">
-        <img src="assets/images/logo.png" alt="Logo" class="logo-img">
-        <span class="brand-text">Ugnayan</span>
+      <img src="assets/UGNAYAN.PNG" alt="Ugnayan Logo" class="logo" />
+      <span class="brand-text">Ugnayan</span>
     </div>
-    <div class="nav-links">
-        <a routerLink="/home" routerLinkActive="active">
-            Home
-        </a>
-        <a routerLink="/user-profile" routerLinkActive="active">
-            Profile
-        </a>
-        <a (click)="logout()" class="logout-link">
-            Logout
-        </a>
+  
+    <nav class="nav-links">
+      <a routerLink="/home" routerLinkActive="active">
+        <i class="material-icons">home</i>
+        <span>Home</span>
+      </a>
+      <a routerLink="/user-profile" routerLinkActive="active">
+        <i class="material-icons">person</i>
+        <span>Profile</span>
+      </a>
+    </nav>
+  
+    <div class="logout-container">
+      <button class="logout-button" (click)="logout()">
+        <i class="material-icons">logout</i>
+        <span>Logout</span>
+      </button>
     </div>
-</div>
+  </div>
+  

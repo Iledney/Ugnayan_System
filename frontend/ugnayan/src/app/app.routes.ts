@@ -9,8 +9,11 @@ import { ViolationsComponent } from './violations/violations.component';
 import { RegisterComponent } from './register/register.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { HomeComponent } from './home/home.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: WelcomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'attendance/:id', component: AttendanceComponent },
   { path: 'events', component: EventsComponent },
@@ -20,5 +23,5 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'home', component: HomeComponent },
-  { path: '**', redirectTo: 'dashboard' }, // Catch all route for 404s
+  { path: '**', redirectTo: '' } // Redirect to welcome page for 404s
 ];

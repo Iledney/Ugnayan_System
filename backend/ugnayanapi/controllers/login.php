@@ -31,7 +31,7 @@ class Login
         if (!$user || !password_verify($password, $user['password'])) {
             return [
                 'status' => 401,
-                'message' => 'Invalid email or password'
+                'message' => 'Invalid username or password'
             ];
         }
 
@@ -63,15 +63,9 @@ class Login
         ];
     }
 
-
-
-
     public function logoutUser()
     {
-
         setcookie("jwt", "", time() - 3600, '/');
-
-
         http_response_code(200);
     }
 }
