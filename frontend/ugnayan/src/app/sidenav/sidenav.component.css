@@ -3,18 +3,19 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
+    width: 280px;
     height: 100vh;
-    background-color: #ffffff;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.08);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-100%);
     z-index: 1000;
     overflow-y: auto;
+    backdrop-filter: blur(10px);
 }
 
 .sidenav.active {
@@ -24,48 +25,58 @@
 /* Toggle Button */
 .toggle-btn {
     position: fixed;
-    top: 0.5rem;
+    top: 1rem;
     left: 1rem;
     background: white;
     border: none;
-    border-radius: 8px;
-    padding: 0.5rem;
+    border-radius: 12px;
+    padding: 0.75rem;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     z-index: 999;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .toggle-btn:hover {
-    background: #f8f9fa;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(45deg, #f8f9fa, white);
+    transform: translateY(-2px) rotate(180deg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .toggle-btn .material-icons {
     font-size: 24px;
-    color: #8B4513;
+    color: #50b17c;
+    transition: transform 0.3s ease;
 }
 
 /* Branding */
 .branding {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 0 2rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem;
+    gap: 1.2rem;
+    padding: 1.5rem 0 2rem 0;
+    border-bottom: 2px solid rgba(80, 177, 124, 0.1);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.branding:hover {
+    transform: translateX(5px);
 }
 
 .logo {
-    height: 40px;
-    width: auto;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .brand-text {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #8B4513;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     letter-spacing: 0.5px;
 }
 
@@ -73,94 +84,144 @@
 .nav-links {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.6rem;
     margin-top: 1rem;
     flex: 1;
     min-height: 0;
+    padding: 0.5rem;
 }
 
 .nav-links a {
-    color: #5D4037;
+    color: #2c3e50;
     text-decoration: none;
     font-weight: 500;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    transition: all 0.3s ease;
+    gap: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    background: transparent;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(45deg, rgba(80, 177, 124, 0.1), rgba(52, 152, 219, 0.1));
+    transition: width 0.3s ease;
+    z-index: -1;
+    border-radius: 12px;
+}
+
+.nav-links a:hover::before,
+.nav-links a.active::before {
+    width: 100%;
 }
 
 .nav-links a span {
-    font-size: 1rem;
+    font-size: 1.05rem;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    background: linear-gradient(45deg, #8B4513, #A0522D);
-    color: white;
-    transform: translateX(4px);
-}
-
-.nav-links a:hover span,
-.nav-links a.active span {
-    opacity: 1;
+    color: #50b17c;
+    transform: translateX(8px);
+    font-weight: 600;
 }
 
 .nav-links a .material-icons {
-    font-size: 20px;
+    font-size: 22px;
     min-width: 24px;
+    transition: transform 0.3s ease;
+    color: #50b17c;
+}
+
+.nav-links a:hover .material-icons,
+.nav-links a.active .material-icons {
+    transform: scale(1.1);
+    color: #3498db;
 }
 
 /* Logout Section */
 .logout-container {
     margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(139, 69, 19, 0.1);
-    margin-bottom: 4rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid rgba(80, 177, 124, 0.1);
+    margin-bottom: 3rem;
     position: relative;
     z-index: 1000;
 }
 
 .logout-button {
     width: 100%;
-    background: none;
+    background: linear-gradient(45deg, rgba(80, 177, 124, 0.05), rgba(52, 152, 219, 0.05));
     border: none;
-    color: #8B4513;
+    color: #50b17c;
     cursor: pointer;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    gap: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .logout-button:hover {
-    background-color: rgba(139, 69, 19, 0.1);
-    color: #A0522D;
+    background: linear-gradient(45deg, rgba(80, 177, 124, 0.1), rgba(52, 152, 219, 0.1));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(80, 177, 124, 0.1);
 }
 
 .logout-button .material-icons {
-    font-size: 20px;
+    font-size: 22px;
+    transition: transform 0.3s ease;
+    color: #50b17c;
+}
+
+.logout-button:hover .material-icons {
+    transform: rotate(-90deg);
+    color: #3498db;
 }
 
 .logout-button span {
-    font-size: 1rem;
+    font-size: 1.05rem;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .sidenav {
-        width: 280px;
+        width: 300px;
+        padding: 1.2rem;
     }
     
     .toggle-btn {
-        display: flex;
+        top: 0.8rem;
+        left: 0.8rem;
+        padding: 0.6rem;
+    }
+    
+    .brand-text {
+        font-size: 1.4rem;
+    }
+    
+    .nav-links a {
+        padding: 0.9rem 1rem;
+    }
+    
+    .nav-links a span {
+        font-size: 1rem;
+    }
+    
+    .logout-button {
+        padding: 0.9rem 1rem;
     }
 }

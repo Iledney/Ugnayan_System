@@ -11,9 +11,8 @@
 .profile-container {
     min-height: 100vh;
     padding: 2rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
-    backdrop-filter: blur(10px);
-    margin-left: 250px; /* Add space for sidenav */
+    background: #f8f9fa;
+    margin-left: 280px;
 }
 
 .profile-card {
@@ -21,46 +20,28 @@
     margin: 2rem auto;
     background: white;
     border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transform: translateY(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .profile-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 /* Header Section */
 .profile-header {
-    background: linear-gradient(135deg, #50b17c, #3498db);
-    padding: 2.5rem 2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
-                linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
-    background-size: 20px 20px;
-    opacity: 0.1;
+    background: white;
+    padding: 2rem;
+    border-bottom: 1px solid #eee;
 }
 
 .profile-header h1 {
-    color: white;
+    color: #2c3e50;
     font-size: 2.2rem;
     font-weight: 600;
-    margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
+    margin-bottom: 0.5rem;
 }
 
 /* Profile Information */
@@ -70,10 +51,18 @@
 }
 
 .info-group {
-    margin-bottom: 1.8rem;
-    position: relative;
-    padding-left: 1rem;
-    border-left: 3px solid #50b17c;
+    margin-bottom: 1.5rem;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid #50b17c;
+    transition: all 0.3s ease;
+}
+
+.info-group:hover {
+    transform: translateX(5px);
+    border-left-color: #3498db;
+    background: #f0f2f5;
 }
 
 .info-group:last-child {
@@ -101,18 +90,14 @@
 .profile-qr {
     padding: 3rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, rgba(80, 177, 124, 0.05), rgba(52, 152, 219, 0.05));
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    background: white;
+    border-top: 1px solid #eee;
 }
 
 .profile-qr label {
+    color: #50b17c;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #50b17c;
     margin-bottom: 1.5rem;
     display: block;
     text-transform: uppercase;
@@ -127,7 +112,7 @@
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     border: 2px solid rgba(80, 177, 124, 0.2);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     display: block;
     margin: 0 auto;
 }
@@ -141,24 +126,24 @@
 .download-btn {
     display: inline-flex;
     align-items: center;
-    padding: 1.2rem 2.5rem;
-    background: linear-gradient(135deg, #50b17c, #3498db);
+    padding: 1rem 2rem;
+    background: #50b17c;
     color: white;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 .download-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(135deg, #3498db, #50b17c);
+    background: #3498db;
 }
 
 /* Responsive Design */
@@ -173,7 +158,7 @@
     }
     
     .profile-header {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
     }
     
     .profile-header h1 {
@@ -185,7 +170,8 @@
     }
     
     .info-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
     }
     
     .info-group p {
@@ -198,7 +184,7 @@
     }
     
     .download-btn {
-        padding: 1rem 2rem;
-        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 }
