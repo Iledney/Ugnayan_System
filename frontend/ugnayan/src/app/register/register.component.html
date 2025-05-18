@@ -58,13 +58,18 @@
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        placeholder="Enter your password"
-        [class.is-invalid]="f['password'].touched && f['password'].invalid"
-      />
+      <div class="password-input">
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          [class.is-invalid]="f['password'].touched && f['password'].invalid"
+        />
+        <button type="button" class="show-password" (click)="togglePassword('password')">
+          <i class="material-icons">visibility_off</i>
+        </button>
+      </div>
       <div class="error-message" *ngIf="f['password'].touched && f['password'].invalid">
         <span *ngIf="f['password'].errors?.['required']">Password is required</span>
         <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
@@ -73,13 +78,18 @@
 
     <div class="form-group">
       <label for="confirmPassword">Confirm Password</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        formControlName="confirmPassword"
-        placeholder="Confirm your password"
-        [class.is-invalid]="f['confirmPassword'].touched && (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))"
-      />
+      <div class="password-input">
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          [class.is-invalid]="f['confirmPassword'].touched && (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))"
+        />
+        <button type="button" class="show-password" (click)="togglePassword('confirm')">
+          <i class="material-icons">visibility_off</i>
+        </button>
+      </div>
       <div class="error-message" *ngIf="f['confirmPassword'].touched && (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))">
         <span *ngIf="f['confirmPassword'].errors?.['required']">Please confirm your password</span>
         <span *ngIf="registerForm.hasError('mismatch')">Passwords do not match</span>
@@ -92,5 +102,9 @@
 
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
+
+  <p class="auth-link">
+    Already have an account? <a routerLink="/login">Login here</a>
+  </p>
 </div>
   

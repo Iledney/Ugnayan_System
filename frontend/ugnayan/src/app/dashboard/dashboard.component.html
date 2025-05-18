@@ -1,146 +1,231 @@
 <app-navbar></app-navbar>
-<div class="dashboard-content section" id="dashboard">
-    <div class="dashboard-header">
-        <h1>Welcome to the Dashboard</h1>
-    </div>
-    <p class="church-message">Stay updated with church activities, contributions, and more!</p>
+<div class="dashboard-container">
+    <!-- Header Section -->
+    <header class="dashboard-header">
+        <h1>Church Dashboard</h1>
+        <p class="date">Today: {{currentDate | date:'EEEE, MMMM d, y'}}</p>
+        <button class="update-btn" (click)="openUpdateModal()">
+            <i class="fas fa-edit"></i> Update Dashboard
+        </button>
+    </header>
 
-    <!-- Dashboard Widgets -->
-    <div class="dashboard-widgets">
+    <!-- Daily Verse Section -->
+    <section class="daily-verse">
+        <h2><i class="fas fa-book-bible"></i> Daily Verse</h2>
+        <p>{{ dashboardData.daily_verse || 'No verse set for today' }}</p>
+    </section>
 
-        <!-- Daily Verse Widget -->
-        <div class="widget-card verse">
-            <h3>Daily Verse</h3>
-            <blockquote>{{ dashboardData?.daily_verse }}</blockquote>
-        </div>
-
-        <!-- Quick Stats Widget -->
-        <div class="widget-card stats">
-            <h3>Quick Stats</h3>
-            <ul>
-                <li>Total Attendance this Week: <strong>{{ dashboardData?.quick_stats?.total_attendance }}</strong></li>
-                <li>Contributions This Month: <strong>₱{{ dashboardData?.quick_stats?.contributions_this_month }}</strong></li>
-                <li>Upcoming Events: <strong>{{ dashboardData?.quick_stats?.upcoming_events }}</strong></li>
-            </ul>
-        </div>
-
-        <!-- To-Do / Events Widget -->
-        <div class="widget-card todo">
-            <h3>Reminders</h3>
-            <ul>
-                <li *ngFor="let reminder of dashboardData?.reminders?.reminders">
-                    <span>{{ reminder.icon }}</span>
-                    {{ reminder.title }}
-                </li>
-            </ul>
-        </div>
-
-    </div>
-
-    <!-- Announcements Section -->
-    <div class="announcement-section">
-        <h2>Church Announcements</h2>
-        <div class="announcement-carousel">
-            <div class="announcement-card" *ngFor="let announcement of dashboardData?.announcement?.announcements">
-                <div class="announcement-icon">{{ announcement.icon }}</div>
-                <h4>{{ announcement.title }}</h4>
-                <p>{{ announcement.description }}</p>
+    <!-- Stats Cards Section -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-details">
+                <h3>Total Members</h3>
+                <p class="stat-number">{{ dashboardData.quick_stats.total_members || 0 }}</p>
+                <p class="stat-trend">Active Members</p>
             </div>
         </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="stat-details">
+                <h3>Monthly Contributions</h3>
+                <p class="stat-number">₱{{ dashboardData.quick_stats.contributions_this_month | number:'1.2-2' }}</p>
+                <p class="stat-trend">This Month's Total</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-church"></i>
+            </div>
+            <div class="stat-details">
+                <h3>Service Attendance</h3>
+                <p class="stat-number">{{ dashboardData.quick_stats.total_attendance || 0 }}</p>
+                <p class="stat-trend">Last Service</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-details">
+                <h3>Events This Month</h3>
+                <p class="stat-number">{{ dashboardData.quick_stats.upcoming_events || 0 }}</p>
+                <p class="stat-trend">Scheduled Events</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="dashboard-grid">
+        <!-- Recent Activities Table -->
+        <section class="dashboard-section activities-section">
+            <h2>Recent Activities</h2>
+            <div class="table-container">
+                <table class="activities-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Activity</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let activity of dashboardData.activities">
+                            <td>{{ activity.date | date:'MMM d' }}</td>
+                            <td>{{ activity.name }}</td>
+                            <td>{{ activity.category }}</td>
+                            <td><span class="status {{ activity.status.toLowerCase() }}">{{ activity.status }}</span></td>
+                        </tr>
+                        <tr *ngIf="!dashboardData.activities?.length">
+                            <td colspan="4" class="no-data">No recent activities</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="dashboard-section summary-section">
+            <!-- Announcements -->
+            <div class="summary-card">
+                <h3>Announcements</h3>
+                <ul class="announcement-list">
+                    <li *ngFor="let announcement of dashboardData.announcement?.announcements">
+                        <i [class]="'fas ' + announcement.icon"></i>
+                        <div class="announcement-details">
+                            <h4>{{ announcement.title }}</h4>
+                            <p>{{ announcement.description }}</p>
+                        </div>
+                    </li>
+                    <li *ngIf="!dashboardData.announcement?.announcements?.length" class="no-data">
+                        No announcements
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Reminders -->
+            <div class="summary-card">
+                <h3>Reminders</h3>
+                <ul class="reminder-list">
+                    <li *ngFor="let reminder of dashboardData.reminders?.reminders">
+                        <i [class]="'fas ' + reminder.icon"></i>
+                        <div class="reminder-details">
+                            <h4>{{ reminder.title }}</h4>
+                            <span class="status {{ reminder.status }}">{{ reminder.status }}</span>
+                        </div>
+                    </li>
+                    <li *ngIf="!dashboardData.reminders?.reminders?.length" class="no-data">
+                        No reminders
+                    </li>
+                </ul>
+            </div>
+        </section>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal" *ngIf="showModal">
-        <div class="modal-content">
-            <h2>UPDATE DASHBOARD</h2>
+<!-- Update Modal -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Update Dashboard</h3>
+            <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
             <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                <!-- Daily Verse -->
                 <div class="form-group">
-                    <label for="daily_verse">Daily Verse:</label>
-                    <input type="text" id="daily_verse" formControlName="daily_verse">
+                    <label for="daily_verse">Daily Verse</label>
+                    <textarea 
+                        id="daily_verse" 
+                        formControlName="daily_verse" 
+                        rows="3"
+                        placeholder="Enter today's verse..."
+                    ></textarea>
                 </div>
 
-                <div class="form-group">
-                    <h3>Quick Stats</h3>
-                    <div formGroupName="quick_stats">
+                <!-- Quick Stats -->
+                <div class="form-group" formGroupName="quick_stats">
+                    <h4>Quick Stats</h4>
+                    <div class="stats-grid">
                         <div>
-                            <label for="total_attendance">Total Attendance this Week:</label>
-                            <input type="number" id="total_attendance" formControlName="total_attendance">
+                            <label for="total_attendance">Service Attendance</label>
+                            <input 
+                                type="number" 
+                                id="total_attendance" 
+                                formControlName="total_attendance"
+                                min="0"
+                            >
                         </div>
                         <div>
-                            <label for="contributions_this_month">Contributions This Month:</label>
-                            <input type="number" id="contributions_this_month" formControlName="contributions_this_month">
-                        </div>
-                        <div>
-                            <label for="upcoming_events">Upcoming Events:</label>
-                            <input type="number" id="upcoming_events" formControlName="upcoming_events">
+                            <label for="upcoming_events">Upcoming Events</label>
+                            <input 
+                                type="number" 
+                                id="upcoming_events" 
+                                formControlName="upcoming_events"
+                                min="0"
+                            >
                         </div>
                     </div>
                 </div>
 
+                <!-- Announcements -->
                 <div class="form-group">
-                    <h3>Announcements</h3>
+                    <h4>
+                        Announcements 
+                        <button type="button" class="add-btn" (click)="addAnnouncement()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </h4>
                     <div formArrayName="announcements">
-                        <div *ngFor="let announcement of announcements.controls; let i=index" [formGroupName]="i">
-                            <input type="text" formControlName="icon" placeholder="Icon">
-                            <input type="text" formControlName="title" placeholder="Title">
-                            <textarea formControlName="description" placeholder="Description"></textarea>
-                            <button type="button" (click)="removeAnnouncement(i)">Remove</button>
+                        <div *ngFor="let announcement of announcements.controls; let i=index" [formGroupName]="i" class="announcement-item">
+                            <input formControlName="icon" placeholder="Icon class (e.g., fa-info-circle)">
+                            <input formControlName="title" placeholder="Title">
+                            <input formControlName="description" placeholder="Description">
+                            <button type="button" class="remove-btn" (click)="removeAnnouncement(i)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    <button type="button" (click)="addAnnouncement()">Add Announcement</button>
                 </div>
 
+                <!-- Reminders -->
                 <div class="form-group">
-                    <h3>Reminders</h3>
+                    <h4>
+                        Reminders 
+                        <button type="button" class="add-btn" (click)="addReminder()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </h4>
                     <div formArrayName="reminders">
-                        <div *ngFor="let reminder of reminders.controls; let i=index" [formGroupName]="i">
-                            <input type="text" formControlName="icon" placeholder="Icon">
-                            <input type="text" formControlName="title" placeholder="Title">
+                        <div *ngFor="let reminder of reminders.controls; let i=index" [formGroupName]="i" class="reminder-item">
+                            <input formControlName="icon" placeholder="Icon class (e.g., fa-clock)">
+                            <input formControlName="title" placeholder="Title">
                             <select formControlName="status">
                                 <option value="pending">Pending</option>
-                                <option value="upcoming">Upcoming</option>
                                 <option value="completed">Completed</option>
+                                <option value="ongoing">Ongoing</option>
                             </select>
-                            <button type="button" (click)="removeReminder(i)">Remove</button>
+                            <button type="button" class="remove-btn" (click)="removeReminder(i)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    <button type="button" (click)="addReminder()">Add Reminder</button>
                 </div>
 
-                <div class="modal-buttons">
-                    <button type="submit">Save Changes</button>
-                    <button type="button" (click)="closeModal()">Cancel</button>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+                    <button type="submit" class="submit-btn">Update Dashboard</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <!-- Video Section -->
-    <div class="video-tab">
-        <h2>Video Library</h2>
-        <h3>Featured Documentaries</h3>
-        <div class="video-container">
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/z72L9vrgJso" allowfullscreen></iframe>
-            </div>
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/JXmuekfqWxs" allowfullscreen></iframe>
-            </div>
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/s5NVoSjubiA" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- Update Dashboard Button -->
-    <div class="update-dashboard-section">
-        <button class="update-btn" (click)="openUpdateModal()">UPDATE DASHBOARD</button>
-    </div>
 </div>
-
-<footer>
-    <p>
-        <i class="fa fa-heart"></i>
-        <strong>Lupon Ugnayan</strong> - Empowering communities through connection and collaboration.
-    </p>
-</footer>

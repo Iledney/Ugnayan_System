@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import jsQR from 'jsqr';
 import { PostService } from '../services/post.service';
@@ -21,132 +21,193 @@ interface AttendanceRecord {
   templateUrl: './attendance.component.html',
   styleUrl: './attendance.component.css'
 })
-export class AttendanceComponent implements OnInit, OnDestroy {
+export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() eventId: string | undefined;
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
 
   showCamera = false;
-  attendanceRecords: AttendanceRecord[] = [];
-  attendance: any = '';
-  private stream: MediaStream | null = null;
-  private scanInterval: any;
-  attendanceForm: FormGroup;
+  scanInterval: any;
+  stream: MediaStream | null = null;
+  attendance: AttendanceRecord[] = [];
+  scanStatus: string = 'Click "Scan QR Code" to start';
+  lastScannedTime: number = 0;
+  scanCooldown: number = 2000; // 2 seconds cooldown between scans
+  cameraError: string = '';
+  showAttendanceModal = false;
 
-  constructor(private fb: FormBuilder, private post: PostService, private fetch: FetchService) {
-    this.attendanceForm = this.fb.group({
-      name: ['', Validators.required],
-      timeIn: ['', Validators.required],
-      status: ['Present', Validators.required]
-    });
-  }
+  constructor(
+    private post: PostService,
+    private fetch: FetchService
+  ) {}
 
   ngOnInit() {
     this.getAttendance();
+  }
+
+  ngAfterViewInit() {
+    this.activateCamera();
   }
 
   ngOnDestroy() {
     this.closeCamera();
   }
 
-  // NEW METHOD: Activate camera only after DOM is rendered
-  activateCamera() {
-    this.showCamera = true;
-    setTimeout(() => {
-      this.openCamera();
-    }, 100);
-  }
-
-  async openCamera() {
-    if (!this.videoElement?.nativeElement || !this.canvasElement?.nativeElement) {
-      console.warn('ViewChild elements not yet initialized');
-      return;
-    }
-
+  async activateCamera() {
     try {
+      // First check if camera permissions are granted
+      const permissions = await navigator.permissions.query({ name: 'camera' as PermissionName });
+      if (permissions.state === 'denied') {
+        throw new Error('Camera permission denied. Please enable camera access in your browser settings.');
+      }
+
+      // Show camera UI first
+      this.showCamera = true;
+
+      // Wait a bit for the DOM to update and elements to be available
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      if (!this.videoElement || !this.canvasElement) {
+        throw new Error('Camera elements not found. Please refresh the page and try again.');
+      }
+
+      // Try to get the camera stream
       this.stream = await navigator.mediaDevices.getUserMedia({
-        video: {
+        video: { 
           facingMode: 'environment',
           width: { ideal: 1280 },
           height: { ideal: 720 }
         }
       });
-      this.videoElement.nativeElement.srcObject = this.stream;
+      
+      const video = this.videoElement.nativeElement;
+      video.srcObject = this.stream;
+      
+      // Wait for video to be ready
+      await new Promise((resolve, reject) => {
+        video.onloadedmetadata = () => {
+          video.play()
+            .then(() => resolve(true))
+            .catch(error => {
+              console.error('Error playing video:', error);
+              reject(new Error('Error starting video stream. Please try again.'));
+            });
+        };
+        video.onerror = () => {
+          reject(new Error('Error loading video stream. Please try again.'));
+        };
+      });
+
+      this.scanStatus = 'Camera ready';
+      this.cameraError = '';
       this.startQRScanning();
-    } catch (err: any) {
-      console.error('Error accessing camera:', err.name, err.message, err);
-      alert(`Camera error: ${err.name} - ${err.message}`);
+    } catch (error: any) {
+      console.error('Error accessing camera:', error);
+      this.cameraError = error.message || 'Error accessing camera. Please check permissions.';
+      this.scanStatus = 'Camera error occurred';
+      this.showCamera = false;
+      
+      // If stream was created but error occurred later, clean it up
+      if (this.stream) {
+        this.stream.getTracks().forEach(track => track.stop());
+        this.stream = null;
+      }
     }
   }
 
   closeCamera() {
-    if (this.stream) {
-      this.stream.getTracks().forEach(track => track.stop());
-      this.stream = null;
-    }
+    // Clear scanning interval
     if (this.scanInterval) {
       clearInterval(this.scanInterval);
+      this.scanInterval = null;
     }
+    
+    // Stop all tracks in the stream
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => {
+        track.stop();
+        track.enabled = false;
+      });
+      this.stream = null;
+    }
+
+    // Clear video source
+    if (this.videoElement?.nativeElement) {
+      this.videoElement.nativeElement.srcObject = null;
+      this.videoElement.nativeElement.load();
+    }
+    
     this.showCamera = false;
+    this.scanStatus = 'I-click ang "Scan QR Code" para mag-scan';
+    this.cameraError = '';
   }
 
   private startQRScanning() {
+    if (!this.videoElement?.nativeElement || !this.canvasElement?.nativeElement) {
+      this.cameraError = 'Camera components not found. Please refresh and try again.';
+      this.closeCamera();
+      return;
+    }
+
     const video = this.videoElement.nativeElement;
     const canvas = this.canvasElement.nativeElement;
     const context = canvas.getContext('2d');
 
+    if (!context) {
+      this.cameraError = 'Could not initialize camera context';
+      this.closeCamera();
+      return;
+    }
+
     this.scanInterval = setInterval(() => {
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        canvas.height = video.videoHeight;
-        canvas.width = video.videoWidth;
-        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+        try {
+          // Set canvas dimensions to match video
+          canvas.height = video.videoHeight;
+          canvas.width = video.videoWidth;
+          
+          // Draw the video frame to the canvas
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          
+          // Get the image data for QR code scanning
+          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-        if (imageData) {
           const code = jsQR(imageData.data, imageData.width, imageData.height, {
             inversionAttempts: 'dontInvert',
           });
 
           if (code) {
-            this.handleQRCode(code.data);
+            const currentTime = Date.now();
+            if (currentTime - this.lastScannedTime > this.scanCooldown) {
+              this.handleQRCode(code.data);
+              this.lastScannedTime = currentTime;
+            }
           }
+        } catch (error) {
+          console.error('Error scanning QR code:', error);
+          this.scanStatus = 'Error scanning QR code. Please try again.';
         }
       }
     }, 100);
   }
 
-  async getAttendance() {
-    try {
-        const res = await this.fetch.fetchAttendance();
-        console.log('Raw Attendance Response:', res);
+  openAttendanceModal() {
+    this.showAttendanceModal = true;
+    document.body.classList.add('modal-open');
+  }
 
-        const allRecords = res.data?.data || [];
-        
-        // Filter records by eventId (if eventId is defined)
-        const filteredRecords = this.eventId 
-            ? allRecords.filter((record: any) => record.event_id === this.eventId)
-            : allRecords;
+  closeAttendanceModal() {
+    this.showAttendanceModal = false;
+    document.body.classList.remove('modal-open');
+  }
 
-        // Map the backend response to match the expected structure
-        this.attendance = filteredRecords.map((record: any) => ({
-            username: record.user_username,
-            firstname: record.user_firstname,
-            lastname: record.user_lastname,
-            timeIn: record.created_at,
-            status: record.attendance_status,
-        }));
-
-        console.log('Mapped and Filtered Attendance Records:', this.attendance);
-    } catch (err) {
-        console.error('Error fetching attendance:', err);
-    }
-}
-  
   private async handleQRCode(data: string) {
     try {
-      const qrData = JSON.parse(data); // Expecting keys: username, firstname, lastname
-  
+      const qrData = JSON.parse(data);
+
       if (qrData.username && qrData.firstname && qrData.lastname) {
+        this.scanStatus = 'Na-detect ang QR Code! Nagpo-process...';
+
         const newRecord: AttendanceRecord = {
           username: qrData.username,
           firstname: qrData.firstname,
@@ -155,29 +216,65 @@ export class AttendanceComponent implements OnInit, OnDestroy {
           status: 'Present'
         };
         
-        console.log("New Rec: ", newRecord)
-  
-        // Push the record to the attendance array
-        this.attendanceRecords.push(newRecord);
-  
-        // Now, send the attendance record to the backend
+        // Add visual feedback
+        this.addWithAnimation(newRecord);
+
+        // Send to backend
         const attendancePayload = {
-          username: qrData.username,  // Assuming qrData contains the userId
-          eventId: this.eventId,     // The eventId should be passed down from the parent component
+          username: qrData.username,
+          eventId: this.eventId,
           date: new Date().toLocaleString()
         };
-  
-        // Send attendance to the backend via PostService
-        const res = await this.post.addAttendance(attendancePayload);
-        console.log('Attendance added:', res);
-        this.getAttendance()
-        this.closeCamera();
+
+        try {
+          const res = await this.post.addAttendance(attendancePayload);
+          console.log('Attendance added:', res);
+          this.scanStatus = 'Matagumpay na na-record ang attendance!';
+          
+          // Refresh attendance list and show modal
+          await this.getAttendance();
+          this.openAttendanceModal();
+          
+          // Reset status after delay
+          setTimeout(() => {
+            this.scanStatus = 'Handa na mag-scan ng susunod na QR code...';
+          }, 2000);
+        } catch (error) {
+          console.error('Error adding attendance:', error);
+          this.scanStatus = 'Error sa pag-record ng attendance. Pakisubukan ulit.';
+        }
       } else {
+        this.scanStatus = 'Hindi tamang QR code format. Pakisubukan ulit.';
         console.warn('Incomplete QR data:', qrData);
       }
     } catch (error) {
+      this.scanStatus = 'Hindi tamang QR code. Pakisubukan ulit.';
       console.error('Invalid QR code data:', error);
     }
   }
-  
+
+  private addWithAnimation(record: AttendanceRecord) {
+    // Add record to the beginning of the array for better visibility
+    this.attendance.unshift(record);
+    
+    // Limit the number of visible records if needed
+    if (this.attendance.length > 50) {
+      this.attendance = this.attendance.slice(0, 50);
+    }
+  }
+
+  async getAttendance() {
+    try {
+      const response = await this.fetch.fetchAttendance(this.eventId!);
+      this.attendance = response.data.map((record: any) => ({
+        username: record.username,
+        firstname: record.firstname,
+        lastname: record.lastname,
+        timeIn: new Date(record.date).toLocaleString(),
+        status: record.status || 'Present'
+      }));
+    } catch (error) {
+      console.error('Error fetching attendance:', error);
+    }
+  }
 }

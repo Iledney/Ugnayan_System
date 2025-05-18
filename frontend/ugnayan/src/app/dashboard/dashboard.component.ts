@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FetchService } from '../services/fetch.service';
@@ -13,11 +13,25 @@ import { PostService } from '../services/post.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
-
-  dashboardData: any = '';
+export class DashboardComponent implements OnInit, OnDestroy {
+  dashboardData: any = {
+    daily_verse: '',
+    quick_stats: {
+      total_attendance: 0,
+      contributions_this_month: 0,
+      upcoming_events: 0
+    },
+    announcement: {
+      announcements: []
+    },
+    reminders: {
+      reminders: []
+    }
+  };
   updateForm: FormGroup;
   showModal = false;
+  private refreshInterval: any;
+  currentDate: Date = new Date();
 
   constructor(private fetchService: FetchService, private postService: PostService, private fb: FormBuilder) {
     this.updateForm = this.fb.group({
@@ -25,22 +39,56 @@ export class DashboardComponent {
       announcements: this.fb.array([]),
       reminders: this.fb.array([]),
       quick_stats: this.fb.group({
-        total_attendance: [''],
-        contributions_this_month: [''],
-        upcoming_events: ['']
+        total_attendance: [0],
+        contributions_this_month: [0],
+        upcoming_events: [0]
       })
     });
   }
 
   ngOnInit() {
     this.fetchDashboardData();
+    // Update current date
+    this.currentDate = new Date();
+    
+    // Refresh dashboard data every 30 seconds
+    this.refreshInterval = setInterval(() => {
+      this.fetchDashboardData();
+      this.currentDate = new Date(); // Update the date on each refresh
+    }, 30000);
+  }
+
+  ngOnDestroy() {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
   }
 
   async fetchDashboardData() {
     try {
       const response = await this.fetchService.getDashboard();
-      this.dashboardData = response.data.data;
-      console.log('Fetched Dashboard Data:', this.dashboardData); // Debugging
+      if (response.data && response.data.data) {
+        const data = response.data.data;
+        
+        // Ensure quick_stats exists and has default values
+        if (!data.quick_stats) {
+          data.quick_stats = {
+            total_attendance: 0,
+            contributions_this_month: 0,
+            upcoming_events: 0
+          };
+        }
+
+        // Convert contributions_this_month to number and format to 2 decimal places
+        if (data.quick_stats.contributions_this_month !== undefined) {
+          const amount = Number(data.quick_stats.contributions_this_month);
+          data.quick_stats.contributions_this_month = amount;
+        }
+
+        // Update the dashboard data
+        this.dashboardData = data;
+        console.log('Updated dashboard data:', this.dashboardData);
+      }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     }

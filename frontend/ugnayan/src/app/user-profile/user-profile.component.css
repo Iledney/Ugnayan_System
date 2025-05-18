@@ -21,24 +21,32 @@
     max-width: 800px;
     margin-top: 2rem;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Section */
 .profile-header {
     background: linear-gradient(45deg, #2ecc71, #27ae60);
     padding: 2rem;
-    position: relative;
+    border-bottom: 1px solid #eee;
 }
 
 .profile-header h1 {
-    color: white;
-    font-size: 1.75rem;
+    color: #2c3e50;
+    font-size: 2.2rem;
     font-weight: 600;
-    margin: 0;
+    margin-bottom: 0.5rem;
 }
 
+/* Profile Information */
 .profile-info {
     padding: 2rem;
     background: white;
@@ -60,16 +68,17 @@
 
 .info-group label {
     color: #666;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
     display: block;
     font-weight: 500;
 }
 
 .info-group p {
-    color: #1a1a1a;
-    font-size: 1.125rem;
+    color: #2c3e50;
+    font-size: 1.2rem;
     font-weight: 500;
     margin: 0;
 }
@@ -81,7 +90,7 @@
 }
 
 .profile-qr {
-    padding: 2rem;
+    padding: 3rem 2rem;
     text-align: center;
     background: #f8f9fa;
     border-top: 1px solid #e1e1e1;
@@ -91,17 +100,18 @@
 }
 
 .profile-qr label {
-    font-size: 1rem;
+    color: #50b17c;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #2ecc71;
     margin-bottom: 1.5rem;
     display: block;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .qr-img {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     padding: 1rem;
     background: white;
     border-radius: 12px;
@@ -136,6 +146,7 @@
     transform: translateY(-2px);
 }
 
+/* Responsive Design */
 @media screen and (max-width: 768px) {
     .profile-container {
         padding: 1rem;
@@ -150,7 +161,7 @@
     }
     
     .profile-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     
     .profile-info {
@@ -159,12 +170,12 @@
     }
     
     .qr-img {
-        width: 180px;
-        height: 180px;
+        width: 200px;
+        height: 200px;
     }
     
     .download-btn {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.875rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 }

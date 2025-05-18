@@ -2,43 +2,72 @@
     <h2>Attendance Management</h2>
 
     <div class="attendance-container">
-        <div class="camera-section" *ngIf="showCamera">
-            <video #videoElement autoplay muted playsinline></video>
-            <canvas #canvasElement hidden></canvas>
-
-            <button (click)="closeCamera()" class="close-camera-btn">Close Camera</button>
-        </div>
-
+        <!-- Camera Controls -->
         <div class="controls-section">
             <button (click)="activateCamera()" class="scan-btn" *ngIf="!showCamera">
+                <i class="fas fa-qrcode"></i>
                 Scan QR Code
             </button>
+            
+            <!-- Error Message -->
+            <div class="error-message" *ngIf="cameraError">
+                <i class="fas fa-exclamation-circle"></i>
+                {{cameraError}}
+            </div>
         </div>
 
-        <div class="attendance-records">
-            <h2>Attendance Records</h2>
-            <div class="table-container">
+        <!-- Camera Section -->
+        <div class="camera-section" *ngIf="showCamera">
+            <div class="camera-wrapper">
+                <video #videoElement autoplay playsinline></video>
+                <canvas #canvasElement></canvas>
+                <div class="scan-overlay">
+                    <div class="scan-area">
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+                <div class="scan-message">
+                    {{scanStatus}}
+                </div>
+            </div>
+            <button (click)="closeCamera()" class="close-camera">
+                Close Camera
+            </button>
+        </div>
+    </div>
+
+    <!-- Attendance Modal -->
+    <div class="attendance-modal" *ngIf="showAttendanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Attendance Records</h2>
+                <button class="close-modal" (click)="closeAttendanceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="attendance-table">
                 <table>
                     <thead>
                         <tr>
                             <th>Username</th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Time In</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let record of attendance">
+                        <tr *ngFor="let record of attendance" class="record-row">
                             <td>{{record.username}}</td>
                             <td>{{record.firstname}}</td>
                             <td>{{record.lastname}}</td>
                             <td>{{record.timeIn}}</td>
-                            <td [ngClass]="{
-                                'status-present': record.status === 'Present',
-                                'status-late': record.status === 'Late',
-                                'status-absent': record.status === 'Absent'
-                            }">{{record.status}}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="record.status.toLowerCase()">
+                                    {{record.status}}
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

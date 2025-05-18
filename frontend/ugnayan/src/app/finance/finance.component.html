@@ -1,101 +1,103 @@
 <app-navbar></app-navbar>
-<div class="component-content">
-    <h1>Financial Management</h1>
-    <p>Track donations, tithes, and manage church financial records.</p>
-
-    <!-- Search Section -->
-    <div class="search-section">
-        <h2>Search Records</h2>
-        <div class="search-row">
-            <div class="search-input-wrapper">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Search by surname..." 
-                    (input)="filterSurnames($event)"
-                    [value]="searchTerm"
-                />
+<div class="finance-container">
+    <header class="finance-header">
+        <h1>Financial Management</h1>
+        <div class="summary-cards">
+            <div class="summary-card total">
+                <h3>Total Contributions</h3>
+                <p class="amount">₱{{ getTotalContributions() | number:'1.2-2' }}</p>
+                <p class="trend">Total contributions to date</p>
             </div>
-            <div class="search-info" *ngIf="searchTerm">
+            <div class="summary-card weekly">
+                <h3>This Week</h3>
+                <p class="amount">₱{{ getWeeklyTotal() | number:'1.2-2' }}</p>
+                <p class="trend">Current week's contributions</p>
+            </div>
+            <div class="summary-card monthly">
+                <h3>This Month</h3>
+                <p class="amount">₱{{ getMonthlyTotal() | number:'1.2-2' }}</p>
+                <p class="trend">Current month's contributions</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="finance-content">
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-header">
+                <h2>Member Contributions</h2>
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        placeholder="Search by surname..." 
+                        (input)="filterSurnames($event)"
+                        [value]="searchTerm"
+                    />
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="search-results" *ngIf="searchTerm">
                 Found {{ filteredSurnames.length }} result{{ filteredSurnames.length !== 1 ? 's' : '' }}
+                <ul class="surname-list" *ngIf="filteredSurnames.length > 0">
+                    <li *ngFor="let surname of filteredSurnames" (click)="fetchUsersByLastname(surname)">
+                        {{ surname }}
+                    </li>
+                </ul>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Finance Records -->
-    <div class="records-section">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Surname</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let surname of filteredSurnames" (click)="fetchUsersByLastname(surname)" style="cursor: pointer;">
-                        <td>{{ surname }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- No Results Message -->
-        <div class="no-results" *ngIf="filteredSurnames.length === 0">
-            <p>No surnames found matching "{{ searchTerm }}"</p>
-        </div>
-
-        <!-- Selected Users -->
-        <div class="selected-users" *ngIf="selectedUsers.length > 0">
-            <h3>Users with surname: {{ selectedSurname }}</h3>
+        <!-- Transactions Table -->
+        <section class="transactions-section">
             <div class="table-container">
-                <table>
+                <table class="transactions-table">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Username</th>
-                            <th>Action</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of selectedUsers" (click)="fetchUserContributions(user.id)" style="cursor: pointer;">
-                            <td>{{ user.firstname }} {{ user.lastname }}</td>
-                            <td>{{ user.username }}</td>
+                        <tr *ngFor="let user of selectedUsers">
                             <td>
-                                <button class="add-btn" (click)="openContributionModal(user); $event.stopPropagation()">Add Contribution</button>
+                                <div class="member-info">
+                                    <span class="name">{{ user.firstname }} {{ user.lastname }}</span>
+                                    <span class="username">{{'@' + user.username }}</span>
+                                </div>
+                            </td>
+                            <td class="amount">₱{{ getUserTotalContributions(user.id) | number:'1.2-2' }}</td>
+                            <td>{{ getLastContributionDate(user.id) | date:'mediumDate' }}</td>
+                            <td><span class="status completed">Active</span></td>
+                            <td>
+                                <button class="action-btn view" (click)="fetchUserContributions(user.id)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn add" (click)="openContributionModal(user)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
 
-        <!-- User Contributions -->
-        <div class="user-contributions" *ngIf="userContributions.length > 0">
-            <h3>Contribution History</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let contribution of userContributions">
-                            <td>{{ contribution.contribution_date | date:'mediumDate' }}</td>
-                            <td>₱{{ contribution.amount | number:'1.2-2' }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><strong>Total</strong></td>
-                            <td><strong>₱{{ getTotalContributions() | number:'1.2-2' }}</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
+        <!-- Monthly Breakdown -->
+        <section class="breakdown-section">
+            <h2>Monthly Breakdown</h2>
+            <div class="breakdown-grid">
+                <div class="month-card" *ngFor="let month of monthlyBreakdown">
+                    <h4>{{ month.name }}</h4>
+                    <p class="amount">₱{{ month.total | number:'1.2-2' }}</p>
+                    <div class="progress-bar">
+                        <div class="progress" [style.width]="month.percentage + '%'"></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 </div>
 
 <!-- Contribution Modal -->

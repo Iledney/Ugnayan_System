@@ -11,31 +11,24 @@
 
 /* Component Container */
 .section {
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 1400px;
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
 }
 
 /* Headings */
 h2 {
-    color: #3498db;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 2.8rem;
+    font-weight: 800;
     text-align: center;
-    background: linear-gradient(90deg, #50b17c, #3a8f68);
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #50b17c, #3498db);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    padding-bottom: 1rem;
+    letter-spacing: -0.5px;
 }
 
 h2:after {
@@ -66,48 +59,43 @@ h3 {
 
 /* Attendance Container */
 .attendance-container {
-    display: grid;
-    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
-    padding: 1rem;
-}
-
-@media (min-width: 1200px) {
-    .attendance-container {
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
-    }
 }
 
 /* Camera Section */
 .camera-section {
-    position: relative;
     width: 100%;
     background: #1a1a1a;
     border-radius: 24px;
-    padding: 2rem;
+    padding: 1rem;
+    padding-bottom: 5rem;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-    order: -1;
+    position: relative;
+    margin-bottom: 2rem;
 }
 
 .camera-wrapper {
-    position: relative;
     width: 100%;
+    max-width: 100%;
+    position: relative;
     border-radius: 20px;
     overflow: hidden;
     background: #000;
-    aspect-ratio: 1/1;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(80, 177, 124, 0.3);
-    max-width: 600px;
-    margin: 0 auto;
+    aspect-ratio: 16/9;
 }
 
-.camera-section video {
+video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scaleX(-1);
+}
+
+canvas {
+    display: none;
 }
 
 .scan-overlay {
@@ -123,8 +111,8 @@ h3 {
 }
 
 .scan-area {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     border: 3px solid #50b17c;
     border-radius: 24px;
     position: relative;
@@ -172,9 +160,10 @@ h3 {
     animation: scan 2s linear infinite;
 }
 
+/* Camera Status */
 .camera-status {
     position: absolute;
-    bottom: 2rem;
+    bottom: -60px;
     left: 0;
     width: 100%;
     text-align: center;
@@ -182,220 +171,113 @@ h3 {
 }
 
 .status-text {
-    background: linear-gradient(135deg, 
-        rgba(80, 177, 124, 0.95),
-        rgba(58, 143, 104, 0.95)
-    );
+    display: inline-block;
     color: #fff;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.5rem;
     border-radius: 50px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Buttons */
 .close-camera-btn {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: linear-gradient(135deg, #50b17c, #3a8f68);
+    top: 1rem;
+    right: 1rem;
+    background: rgba(231, 76, 60, 0.9);
     color: white;
     border: none;
-    padding: 1rem 2rem;
-    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
     z-index: 20;
-}
-
-.close-camera-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, #3a8f68, #50b17c);
-}
-
-.close-camera-btn i {
-    font-size: 1.3rem;
 }
 
 /* Controls Section */
 .controls-section {
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin: 2.5rem 0;
+    align-items: center;
+    margin: 2rem 0;
 }
 
 .scan-btn {
+    width: auto;
+    min-width: 200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
     background: linear-gradient(135deg, #50b17c, #3a8f68);
     color: white;
     border: none;
-    padding: 1.2rem 3rem;
     border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 1.2rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(80, 177, 124, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-width: 300px;
     justify-content: center;
+    gap: 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(80, 177, 124, 0.3);
 }
 
 .scan-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(80, 177, 124, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(80, 177, 124, 0.4);
     background: linear-gradient(135deg, #3a8f68, #50b17c);
-}
-
-.scan-btn i {
-    font-size: 1.4rem;
 }
 
 /* Attendance Records */
 .attendance-records {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 24px;
-    padding: 2.5rem;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-    border: 1px solid rgba(80, 177, 124, 0.2);
-    height: fit-content;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Table Styling */
 .table-container {
+    width: 100%;
     overflow-x: auto;
-    margin: 1.5rem 0;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    background: white;
-    padding: 1rem;
 }
 
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    min-width: 800px;
+    border-collapse: collapse;
 }
 
 th, td {
-    padding: 1.2rem 1.8rem;
+    padding: 0.8rem;
     text-align: left;
-    font-size: 1rem;
+    border-bottom: 1px solid #eee;
 }
 
 th {
-    background: linear-gradient(135deg, #3498db, #50b17c);
+    background: #50b17c;
     color: white;
-    font-weight: 600;
-    white-space: nowrap;
-    position: relative;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-th:first-child {
-    border-top-left-radius: 8px;
-}
-
-th:last-child {
-    border-top-right-radius: 8px;
-}
-
-th:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-}
-
-tbody tr {
-    transition: all 0.3s ease;
-    border-bottom: 1px solid rgba(52, 152, 219, 0.1);
-}
-
-tr:nth-child(even) {
-    background: rgba(52, 152, 219, 0.03);
-}
-
-tr:hover {
-    background: rgba(80, 177, 124, 0.05);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-td {
-    color: #2c3e50;
-    font-weight: 500;
-}
-
-/* Status Badge Styling */
 .status-badge {
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    display: inline-block;
-    text-align: center;
-    min-width: 120px;
-    transition: all 0.3s ease;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
 }
 
 .status-present {
-    background: rgba(46, 204, 113, 0.1);
-    color: #27ae60;
-    border: 1px solid rgba(46, 204, 113, 0.2);
-}
-
-.status-present:hover {
-    background: rgba(46, 204, 113, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.15);
+    background: rgba(80, 177, 124, 0.1);
+    color: #50b17c;
 }
 
 .status-late {
-    background: rgba(241, 196, 15, 0.1);
+    background: rgba(243, 156, 18, 0.1);
     color: #f39c12;
-    border: 1px solid rgba(241, 196, 15, 0.2);
-}
-
-.status-late:hover {
-    background: rgba(241, 196, 15, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(241, 196, 15, 0.15);
 }
 
 .status-absent {
     background: rgba(231, 76, 60, 0.1);
-    color: #c0392b;
-    border: 1px solid rgba(231, 76, 60, 0.2);
-}
-
-.status-absent:hover {
-    background: rgba(231, 76, 60, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
 }
 
 /* Animations */
@@ -429,73 +311,35 @@ td {
 }
 
 /* Responsive Design */
-@media screen and (max-width: 1200px) {
+@media (min-width: 768px) {
     .section {
-        margin: 1rem;
-        padding: 1.5rem;
+        padding: 2rem;
     }
 
     .camera-section {
-        padding: 1.5rem;
+        padding: 2rem;
     }
 
     .scan-area {
-        width: 350px;
-        height: 350px;
+        width: 400px;
+        height: 400px;
     }
 }
 
-@media screen and (max-width: 768px) {
-    .camera-section {
-        padding: 1rem;
-    }
-
-    .scan-area {
-        width: 300px;
-        height: 300px;
-    }
-
-    .status-text {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-    }
-
-    .close-camera-btn {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-    }
-
-    .scan-btn {
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-        min-width: 260px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .section {
-        margin: 0.5rem;
-        padding: 1rem;
+@media (min-width: 1200px) {
+    .attendance-container {
+        flex-direction: row;
+        align-items: flex-start;
     }
 
     .camera-section {
-        padding: 0.8rem;
+        flex: 0 0 60%;
+        position: sticky;
+        top: 2rem;
     }
 
-    .scan-area {
-        width: 250px;
-        height: 250px;
-    }
-
-    .status-text {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
-    }
-
-    .scan-btn {
-        padding: 0.9rem 1.8rem;
-        font-size: 1rem;
-        min-width: 220px;
+    .attendance-records {
+        flex: 0 0 38%;
     }
 }
 
@@ -517,3 +361,161 @@ td {
 .table-container::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(90deg, #2980b9, #3a8f68);
 }
+
+
+.modal-container {
+    width: 90vw;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+  
+  .attendance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    }
+
+    .camera-section {
+    width: 100%;
+    background: #1a1a1a;
+    border-radius: 24px;
+    padding: 1rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+  
+  .camera-wrapper {
+    width: 100%;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16/9;
+  }
+  
+  video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    }
+
+    .close-camera-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(231, 76, 60, 0.95);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    z-index: 30;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  
+  .scan-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+  }
+  
+  .scan-area {
+    width: 300px;
+    height: 300px;
+    border: 3px solid #50b17c;
+    border-radius: 24px;
+    position: relative;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 30px rgba(80, 177, 124, 0.4);
+    background: rgba(80, 177, 124, 0.1);
+  }
+  
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(80, 177, 124, 0.5), #50b17c, rgba(80, 177, 124, 0.5), transparent);
+    box-shadow: 0 0 15px #50b17c;
+    animation: scan 2s linear infinite;
+  }
+  
+  .camera-status {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+  
+  .status-text {
+    display: inline-block;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(80, 177, 124, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 30px rgba(80, 177, 124, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(80, 177, 124, 0);
+    }
+  }
+  
+  @keyframes scan {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(400px);
+      opacity: 0;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .modal-container {
+      padding: 1rem;
+      width: 95vw;
+    }
+  
+    .scan-area {
+      width: 250px;
+      height: 250px;
+    }
+  
+    .close-camera-btn {
+      top: 8px;
+      right: 8px;
+      font-size: 0.75rem;
+    }
+  }
+  
+

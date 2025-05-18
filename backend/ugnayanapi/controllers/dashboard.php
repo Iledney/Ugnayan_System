@@ -20,6 +20,17 @@ class Dashboard extends GlobalUtil
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($result) {
+                // Ensure quick_stats is properly decoded
+                if (isset($result['quick_stats']) && is_string($result['quick_stats'])) {
+                    $result['quick_stats'] = json_decode($result['quick_stats'], true);
+                } else {
+                    $result['quick_stats'] = [
+                        'total_attendance' => 0,
+                        'contributions_this_month' => 0,
+                        'upcoming_events' => 0
+                    ];
+                }
+                
                 // Decode JSON fields
                 $result['announcement'] = json_decode($result['announcement']);
                 $result['reminders'] = json_decode($result['reminders']);
@@ -42,6 +53,11 @@ class Dashboard extends GlobalUtil
             // Encode JSON data
             $announcement = json_encode($data->announcement);
             $reminders = isset($data->reminders) ? json_encode($data->reminders) : null;
+            $quick_stats = isset($data->quick_stats) ? json_encode($data->quick_stats) : json_encode([
+                'total_attendance' => 0,
+                'contributions_this_month' => 0,
+                'upcoming_events' => 0
+            ]);
     
             if ($exists) {
                 // Update existing record
@@ -49,6 +65,7 @@ class Dashboard extends GlobalUtil
                        SET daily_verse = ?, 
                            announcement = ?, 
                            reminders = ?,
+                           quick_stats = ?,
                            updated_at = CURRENT_TIMESTAMP
                        WHERE id = ?";
                 
@@ -57,18 +74,20 @@ class Dashboard extends GlobalUtil
                     $data->daily_verse,
                     $announcement,
                     $reminders,
+                    $quick_stats,
                     $exists['id']
                 ]);
             } else {
                 // Insert new record if none exists
-                $sql = "INSERT INTO dashboard (daily_verse, announcement, reminders) 
-                       VALUES (?, ?, ?)";
+                $sql = "INSERT INTO dashboard (daily_verse, announcement, reminders, quick_stats) 
+                       VALUES (?, ?, ?, ?)";
                 
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
                     $data->daily_verse,
                     $announcement,
-                    $reminders
+                    $reminders,
+                    $quick_stats
                 ]);
             }
             

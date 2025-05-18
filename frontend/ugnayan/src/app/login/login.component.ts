@@ -2,27 +2,46 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  username: string = '';
+  password: string = '';
+  errorMessage: string = '';
+  isLoading: boolean = false;
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  username: string = '';
-  password: string = '';
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   async login() {
+    if (!this.username || !this.password) {
+      this.errorMessage = 'Please enter both username and password';
+      return;
+    }
+
     try {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
       const response = await this.authService.login(this.username, this.password);
-      console.log('Login successful:', response.data);
+      console.log('Login response:', response.data);
+      
+      if (response.data.status === 401) {
+        this.errorMessage = response.data.message;
+        return;
+      }
       
       // Store JWT token
       localStorage.setItem('token', response.data.jwt);
@@ -33,16 +52,16 @@ export class LoginComponent {
       localStorage.setItem('user', JSON.stringify(userData));
       
       // Redirect based on isAdmin
-      if (userData && userData.isAdmin === 0) {
-        this.router.navigate(['/user-profile']);
-      } else {
+      if (userData && userData.isAdmin === 1) {
         this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/user-profile']);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login failed:', error);
-      // Handle specific error cases if needed
-      // this.errorMessage = 'Invalid username or password';
+      this.errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+    } finally {
+      this.isLoading = false;
     }
   }
-  
 }
