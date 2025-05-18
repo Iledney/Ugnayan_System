@@ -266,13 +266,16 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   async getAttendance() {
     try {
       const response = await this.fetch.fetchAttendance(this.eventId!);
-      this.attendance = response.data.map((record: any) => ({
-        username: record.username,
-        firstname: record.firstname,
-        lastname: record.lastname,
-        timeIn: new Date(record.date).toLocaleString(),
-        status: record.status || 'Present'
-      }));
+      console.log('Attendance response:', response);
+      if (response.data && response.data.data) {
+        this.attendance = response.data.data.map((record: any) => ({
+          username: record.user_username,
+          firstname: record.user_firstname,
+          lastname: record.user_lastname,
+          timeIn: new Date(record.created_at).toLocaleString(),
+          status: record.attendance_status || 'Present'
+        }));
+      }
     } catch (error) {
       console.error('Error fetching attendance:', error);
     }

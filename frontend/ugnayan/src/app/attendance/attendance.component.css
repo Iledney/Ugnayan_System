@@ -200,15 +200,14 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     margin: 2rem 0;
 }
 
-.scan-btn {
+.scan-btn, .view-btn {
     width: auto;
     min-width: 200px;
-    margin: 0 auto;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #50b17c, #3a8f68);
     color: white;
     border: none;
     border-radius: 50px;
@@ -220,13 +219,28 @@ canvas {
     font-size: 1rem;
     font-weight: 500;
     transition: all 0.3s ease;
+}
+
+.scan-btn {
+    background: linear-gradient(135deg, #50b17c, #3a8f68);
     box-shadow: 0 4px 15px rgba(80, 177, 124, 0.3);
+}
+
+.view-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .scan-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(80, 177, 124, 0.4);
     background: linear-gradient(135deg, #3a8f68, #50b17c);
+}
+
+.view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, #2980b9, #3498db);
 }
 
 /* Attendance Records */

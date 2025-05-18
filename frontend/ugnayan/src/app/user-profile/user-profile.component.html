@@ -1,35 +1,45 @@
-<app-sidenav></app-sidenav>
 <div class="profile-container">
-    <div class="profile-card">
-        <div class="profile-header">
-            <h1>User Profile</h1>
+    <app-sidenav></app-sidenav>
+    <div class="main-content">
+        <div class="profile-card">
+            <div class="profile-header">
+                <h1>User Profile</h1>
+            </div>
+
+            <div class="profile-info">
+
+                <div class="info-group">
+                    <label>First Name</label>
+                    <p>{{ user.firstname }}</p>
+                </div>
+
+                <div class="info-group">
+                    <label>Last Name</label>
+                    <p>{{ user.lastname }}</p>
+                </div>
+
+                <div class="info-group">
+                    <label>Username</label>
+                    <p>{{ user.username }}</p>
+                </div>
+
+                <div class="info-group">
+                    <label>Total Contribution</label>
+                    <p>₱{{ totalContribution | number:'1.2-2' }}</p>
+                </div>
+                
+
+            </div>
+
+            <div class="profile-qr" *ngIf="user.qr_code">
+                <label>QR Code</label>
+                <img [src]="user.qr_code" alt="QR Code" class="qr-img" />
+                <a [href]="user.qr_code" download="qr_code.png" class="download-btn">
+                    Download QR Code
+                </a>
+            </div>
+            
         </div>
 
-        <div class="profile-info">
-            <div class="info-group">
-                <label>First Name</label>
-                <p>{{ user.firstname }}</p>
-            </div>
-            <div class="info-group">
-                <label>Last Name</label>
-                <p>{{ user.lastname }}</p>
-            </div>
-            <div class="info-group">
-                <label>Username</label>
-                <p>{{ user.username }}</p>
-            </div>
-            <div class="info-group">
-                <label>Total Contribution</label>
-                <p>₱{{ totalContribution | number:'1.2-2' }}</p>
-            </div>
-        </div>
-
-        <div class="profile-qr" *ngIf="user.qr_code">
-            <label>QR Code</label>
-            <img [src]="user.qr_code" alt="QR Code" class="qr-img" />
-            <a [href]="user.qr_code" download="qr_code.png" class="download-btn">
-                Download QR Code
-            </a>
-        </div>
     </div>
 </div>

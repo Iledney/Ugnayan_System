@@ -15,8 +15,8 @@ export class SidenavComponent {
     constructor(private router: Router) {}
 
     menuItems = [
-        { path: '/home', icon: 'home', label: 'Home' },
-        { path: '/user-profile', icon: 'person', label: 'Profile' }
+        { path: '/home', label: 'Home' },
+        { path: '/user-profile', label: 'Profile' }
     ];
 
     toggleSidenav() {

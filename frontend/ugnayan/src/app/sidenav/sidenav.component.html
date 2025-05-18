@@ -1,18 +1,24 @@
-<div class="sidenav">
-    <div class="branding">
-        <img src="assets/images/logo.png" alt="Logo" class="logo">
-        <span class="brand-text">Ugnayan</span>
+<div class="sidenav" [class.closed]="!isOpen">
+    <div class="sidenav-header">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+        <button class="toggle-btn" (click)="toggleSidenav()">
+            {{ isOpen ? '←' : '→' }}
+        </button>
     </div>
-    <div class="nav-links">
-        <a routerLink="/home" routerLinkActive="active">
-            <span>Home</span>
+
+    <nav class="sidenav-menu">
+        <a *ngFor="let item of menuItems" 
+           [routerLink]="item.path" 
+           routerLinkActive="active"
+           class="menu-item">
+            <span class="menu-label" *ngIf="isOpen">{{ item.label }}</span>
         </a>
-        <a routerLink="/user-profile" routerLinkActive="active">
-            <span>Profile</span>
-        </a>
-        <a (click)="logout()" class="logout-link">
-            <span>Logout</span>
-        </a>
+    </nav>
+
+    <div class="sidenav-footer">
+        <button class="logout-btn" (click)="logout()">
+            <span class="menu-label" *ngIf="isOpen">Logout</span>
+        </button>
     </div>
-  </div>
+</div>
   

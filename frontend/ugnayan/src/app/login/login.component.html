@@ -34,7 +34,7 @@
             #passwordInput="ngModel"
           />
           <button type="button" class="show-password" (click)="togglePassword()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-            <i class="material-icons">{{ showPassword ? 'visibility' : 'visibility_off' }}</i>
+            <i class="material-icons"></i>
           </button>
         </div>
         <div class="error-message" *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">

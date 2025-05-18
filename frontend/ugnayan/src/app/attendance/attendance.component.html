@@ -9,6 +9,11 @@
                 Scan QR Code
             </button>
             
+            <button (click)="openAttendanceModal()" class="view-btn" *ngIf="!showCamera">
+                <i class="fas fa-list"></i>
+                View Attendance Records
+            </button>
+            
             <!-- Error Message -->
             <div class="error-message" *ngIf="cameraError">
                 <i class="fas fa-exclamation-circle"></i>

@@ -26,8 +26,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     },
     reminders: {
       reminders: []
-    }
+    },
+    activities: []
   };
+
+  stats = {
+    total_members: 0,
+    monthly_contributions: 0,
+    monthly_attendance: 0,
+    monthly_events: 0
+  };
+
   updateForm: FormGroup;
   showModal = false;
   private refreshInterval: any;
@@ -54,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Refresh dashboard data every 30 seconds
     this.refreshInterval = setInterval(() => {
       this.fetchDashboardData();
-      this.currentDate = new Date(); // Update the date on each refresh
+      this.currentDate = new Date();
     }, 30000);
   }
 
@@ -70,24 +79,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (response.data && response.data.data) {
         const data = response.data.data;
         
-        // Ensure quick_stats exists and has default values
-        if (!data.quick_stats) {
-          data.quick_stats = {
+        console.log('Dashboard Data:', data);
+        
+        // Update dashboard data
+        this.dashboardData = {
+          daily_verse: data.daily_verse || '',
+          quick_stats: {
             total_attendance: 0,
             contributions_this_month: 0,
             upcoming_events: 0
-          };
-        }
+          },
+          announcement: data.announcement || { announcements: [] },
+          reminders: data.reminders || { reminders: [] },
+          activities: []
+        };
 
-        // Convert contributions_this_month to number and format to 2 decimal places
-        if (data.quick_stats.contributions_this_month !== undefined) {
-          const amount = Number(data.quick_stats.contributions_this_month);
-          data.quick_stats.contributions_this_month = amount;
-        }
+        // Update stats
+        this.stats = {
+          total_members: 0,
+          monthly_contributions: 0,
+          monthly_attendance: 0,
+          monthly_events: 0
+        };
 
-        // Update the dashboard data
-        this.dashboardData = data;
-        console.log('Updated dashboard data:', this.dashboardData);
+        console.log('Updated Dashboard Data:', this.dashboardData);
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -131,22 +146,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
 
       // Add announcements
-      this.dashboardData.announcement.announcements.forEach((announcement: any) => {
-        this.announcements.push(this.fb.group({
-          icon: [announcement.icon],
-          title: [announcement.title],
-          description: [announcement.description]
-        }));
-      });
+      if (this.dashboardData.announcement?.announcements) {
+        this.dashboardData.announcement.announcements.forEach((announcement: any) => {
+          this.announcements.push(this.fb.group({
+            icon: [announcement.icon],
+            title: [announcement.title],
+            description: [announcement.description]
+          }));
+        });
+      }
 
       // Add reminders
-      this.dashboardData.reminders.reminders.forEach((reminder: any) => {
-        this.reminders.push(this.fb.group({
-          icon: [reminder.icon],
-          title: [reminder.title],
-          status: [reminder.status]
-        }));
-      });
+      if (this.dashboardData.reminders?.reminders) {
+        this.dashboardData.reminders.reminders.forEach((reminder: any) => {
+          this.reminders.push(this.fb.group({
+            icon: [reminder.icon],
+            title: [reminder.title],
+            status: [reminder.status]
+          }));
+        });
+      }
     }
   }
 
@@ -177,36 +196,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async onSubmit() {
     if (this.updateForm.valid) {
       try {
-        // Format the data to match the expected structure
         const formattedData = {
           daily_verse: this.updateForm.value.daily_verse,
-          quick_stats: this.updateForm.value.quick_stats, // Include Quick Stats
+          quick_stats: this.updateForm.value.quick_stats,
           announcement: {
-            announcements: this.updateForm.value.announcements,
-            last_updated: new Date().toISOString()
+            announcements: this.updateForm.value.announcements || []
           },
           reminders: {
-            reminders: this.updateForm.value.reminders,
-            last_updated: new Date().toISOString()
+            reminders: this.updateForm.value.reminders || []
           }
         };
 
-        console.log('Submitting Data:', formattedData); // Debugging
-
-        // Send data to the backend
         const result = await this.postService.updateDashboard(formattedData);
-        console.log('Backend Response:', result.data); // Check backend response
-
-        // Fetch updated data
-        await this.fetchDashboardData();
-
-        // Close the modal
-        this.closeModal();
+        if (result.data) {
+          await this.fetchDashboardData();
+          this.closeModal();
+        }
       } catch (error) {
         console.error('Error updating dashboard:', error);
       }
-    } else {
-      console.warn('Form is invalid. Please check the inputs.');
     }
   }
 }

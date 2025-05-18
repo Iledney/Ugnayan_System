@@ -104,28 +104,17 @@ class UserController extends GlobalUtil
             ]);
 
             // Create QR code with modern styling
-            $qr = QrCode::create($qrData)
-                ->setSize(300)
-                ->setMargin(10)
-                ->setEncoding(new Encoding('UTF-8'))
-                ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-                ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
-                ->setForegroundColor(new Color(80, 177, 124)) // #50b17c
-                ->setBackgroundColor(new Color(255, 255, 255));
-
-            // Create label
-            $label = Label::create('Ugnayan')
-                ->setFont(new NotoSans(14))
-                ->setAlignment(new LabelAlignmentCenter())
-                ->setTextColor(new Color(52, 152, 219)); // #3498db
+            $qr = new QrCode();
+            $qr->setText($qrData);
+            $qr->setSize(300);
+            $qr->setMargin(10);
+            $qr->setForegroundColor(['r' => 80, 'g' => 177, 'b' => 124]); // #50b17c
+            $qr->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255]);
 
             // Generate QR code
-            $writer = new PngWriter();
-            $qrResult = $writer->write($qr, null, $label);
-            
             $qrFileName = uniqid() . '.png';
             $qrPath = $qrDir . $qrFileName;
-            $qrResult->saveToFile($qrPath);
+            $qr->writeFile($qrPath);
             $qrCode = $qrFileName;
 
             // Insert into database

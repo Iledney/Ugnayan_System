@@ -20,25 +20,88 @@ class Dashboard extends GlobalUtil
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($result) {
-                // Ensure quick_stats is properly decoded
-                if (isset($result['quick_stats']) && is_string($result['quick_stats'])) {
-                    $result['quick_stats'] = json_decode($result['quick_stats'], true);
-                } else {
-                    $result['quick_stats'] = [
-                        'total_attendance' => 0,
-                        'contributions_this_month' => 0,
-                        'upcoming_events' => 0
-                    ];
-                }
-                
                 // Decode JSON fields
                 $result['announcement'] = json_decode($result['announcement']);
                 $result['reminders'] = json_decode($result['reminders']);
+
+                // Get stats data
+                $totalMembers = $this->getTotalMembers();
+                $monthlyContributions = $this->getMonthlyContributions();
+                $monthlyAttendance = $this->getMonthlyAttendance();
+                $monthlyEvents = $this->getMonthlyEvents();
+
+                $stats = [
+                    'total_members' => $totalMembers,
+                    'monthly_contributions' => $monthlyContributions,
+                    'monthly_attendance' => $monthlyAttendance,
+                    'monthly_events' => $monthlyEvents
+                ];
+
+                // Add stats to the result
+                $result = array_merge($result, $stats);
             }
             
             return $this->sendResponse($result, 200);
         } catch (\PDOException $e) {
             return $this->sendErrorResponse("Failed to retrieve dashboard: " . $e->getMessage(), 400);
+        }
+    }
+
+    private function getTotalMembers()
+    {
+        try {
+            $sql = "SELECT COUNT(id) as total FROM user WHERE isAdmin = 0";
+            $stmt = $this->pdo->query($sql);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (\PDOException $e) {
+            return 0;
+        }
+    }
+
+    private function getMonthlyContributions()
+    {
+        try {
+            $sql = "SELECT COALESCE(SUM(amount), 0) as total 
+                   FROM finance 
+                   WHERE MONTH(contribution_date) = MONTH(CURRENT_DATE()) 
+                   AND YEAR(contribution_date) = YEAR(CURRENT_DATE())";
+            $stmt = $this->pdo->query($sql);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (\PDOException $e) {
+            return 0;
+        }
+    }
+
+    private function getMonthlyAttendance()
+    {
+        try {
+            $sql = "SELECT COUNT(attendance_id) as total 
+                   FROM attendance 
+                   WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) 
+                   AND YEAR(created_at) = YEAR(CURRENT_DATE())
+                   AND attendance_status = 'Present'";
+            $stmt = $this->pdo->query($sql);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (\PDOException $e) {
+            return 0;
+        }
+    }
+
+    private function getMonthlyEvents()
+    {
+        try {
+            $sql = "SELECT COUNT(id) as total 
+                   FROM events 
+                   WHERE MONTH(date) = MONTH(CURRENT_DATE()) 
+                   AND YEAR(date) = YEAR(CURRENT_DATE())";
+            $stmt = $this->pdo->query($sql);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (\PDOException $e) {
+            return 0;
         }
     }
 
@@ -52,12 +115,8 @@ class Dashboard extends GlobalUtil
     
             // Encode JSON data
             $announcement = json_encode($data->announcement);
-            $reminders = isset($data->reminders) ? json_encode($data->reminders) : null;
-            $quick_stats = isset($data->quick_stats) ? json_encode($data->quick_stats) : json_encode([
-                'total_attendance' => 0,
-                'contributions_this_month' => 0,
-                'upcoming_events' => 0
-            ]);
+            $reminders = json_encode($data->reminders);
+            $quick_stats = json_encode($data->quick_stats);
     
             if ($exists) {
                 // Update existing record

@@ -15,7 +15,7 @@
         <p>{{ dashboardData.daily_verse || 'No verse set for today' }}</p>
     </section>
 
-    <!-- Stats Cards Section -->
+    <!-- Stats Grid -->
     <section class="stats-grid">
         <div class="stat-card">
             <div class="stat-icon">
@@ -23,7 +23,7 @@
             </div>
             <div class="stat-details">
                 <h3>Total Members</h3>
-                <p class="stat-number">{{ dashboardData.quick_stats.total_members || 0 }}</p>
+                <p class="stat-number">{{ stats.total_members }}</p>
                 <p class="stat-trend">Active Members</p>
             </div>
         </div>
@@ -34,7 +34,7 @@
             </div>
             <div class="stat-details">
                 <h3>Monthly Contributions</h3>
-                <p class="stat-number">₱{{ dashboardData.quick_stats.contributions_this_month | number:'1.2-2' }}</p>
+                <p class="stat-number">₱{{ stats.monthly_contributions | number:'1.2-2' }}</p>
                 <p class="stat-trend">This Month's Total</p>
             </div>
         </div>
@@ -45,8 +45,8 @@
             </div>
             <div class="stat-details">
                 <h3>Service Attendance</h3>
-                <p class="stat-number">{{ dashboardData.quick_stats.total_attendance || 0 }}</p>
-                <p class="stat-trend">Last Service</p>
+                <p class="stat-number">{{ stats.monthly_attendance }}</p>
+                <p class="stat-trend">This Month</p>
             </div>
         </div>
 
@@ -56,7 +56,7 @@
             </div>
             <div class="stat-details">
                 <h3>Events This Month</h3>
-                <p class="stat-number">{{ dashboardData.quick_stats.upcoming_events || 0 }}</p>
+                <p class="stat-number">{{ stats.monthly_events }}</p>
                 <p class="stat-trend">Scheduled Events</p>
             </div>
         </div>
@@ -98,14 +98,14 @@
             <div class="summary-card">
                 <h3>Announcements</h3>
                 <ul class="announcement-list">
-                    <li *ngFor="let announcement of dashboardData.announcement?.announcements">
+                    <li *ngFor="let announcement of dashboardData.announcement.announcements">
                         <i [class]="'fas ' + announcement.icon"></i>
                         <div class="announcement-details">
                             <h4>{{ announcement.title }}</h4>
                             <p>{{ announcement.description }}</p>
                         </div>
                     </li>
-                    <li *ngIf="!dashboardData.announcement?.announcements?.length" class="no-data">
+                    <li *ngIf="!dashboardData.announcement.announcements?.length" class="no-data">
                         No announcements
                     </li>
                 </ul>
@@ -115,14 +115,14 @@
             <div class="summary-card">
                 <h3>Reminders</h3>
                 <ul class="reminder-list">
-                    <li *ngFor="let reminder of dashboardData.reminders?.reminders">
+                    <li *ngFor="let reminder of dashboardData.reminders.reminders">
                         <i [class]="'fas ' + reminder.icon"></i>
                         <div class="reminder-details">
                             <h4>{{ reminder.title }}</h4>
                             <span class="status {{ reminder.status }}">{{ reminder.status }}</span>
                         </div>
                     </li>
-                    <li *ngIf="!dashboardData.reminders?.reminders?.length" class="no-data">
+                    <li *ngIf="!dashboardData.reminders.reminders?.length" class="no-data">
                         No reminders
                     </li>
                 </ul>
