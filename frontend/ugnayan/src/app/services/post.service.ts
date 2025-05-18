@@ -71,4 +71,8 @@ export class PostService {
     }
   }
 
+  verifyOTP(data: any) {
+    return axios.post(this.baseUrl + 'verifyotp', data);
+  }
+
 }

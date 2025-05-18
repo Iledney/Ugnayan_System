@@ -1,0 +1,36 @@
+<div class="otp-container">
+    <div class="otp-card">
+        <div class="otp-header">
+            <h1>Verify Your Account</h1>
+            <p>Please enter the 6-digit code sent to your account</p>
+        </div>
+
+        <div class="otp-form">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    [(ngModel)]="otp" 
+                    (input)="onOtpInput($event)"
+                    placeholder="Enter 6-digit code"
+                    maxlength="6"
+                    [class.error]="error"
+                >
+                <div class="error-message" *ngIf="error">{{ error }}</div>
+            </div>
+
+            <button 
+                class="verify-btn" 
+                (click)="verifyOTP()" 
+                [disabled]="loading || otp.length !== 6"
+            >
+                <span *ngIf="!loading">Verify Account</span>
+                <span *ngIf="loading" class="loading-spinner"></span>
+            </button>
+
+            <div class="resend-section">
+                <p>Didn't receive the code?</p>
+                <button class="resend-btn" [disabled]="loading">Resend Code</button>
+            </div>
+        </div>
+    </div>
+</div>

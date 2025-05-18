@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
       middlename: [''],
       lastname: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(4)]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, {
@@ -47,28 +48,29 @@ export class RegisterComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.registerForm.invalid) {
-      return;
-    }
+    if (this.registerForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
 
-    this.isLoading = true;
-    this.errorMessage = '';
+      try {
+        const formData = {
+          ...this.registerForm.value,
+          isAdmin: 0
+        };
+        delete formData.confirmPassword;
 
-    try {
-      const formData = {
-        ...this.registerForm.value,
-        isAdmin: 0 // Default to regular user
-      };
-      delete formData.confirmPassword; // Alising sa data list para di an sumama sa backend
-
-      const response = await this.authService.register(formData);
-      console.log('Registration successful:', response.data);
-      this.router.navigate(['']);
-    } catch (error: any) {
-      console.error('Registration failed:', error);
-      this.errorMessage = error?.response?.data?.message || 'Registration failed. Please try again.';
-    } finally {
-      this.isLoading = false;
+        const response = await this.authService.register(formData);
+        
+        // Store username temporarily for OTP verification
+        localStorage.setItem('tempUsername', formData.username);
+        
+        // Redirect to OTP page
+        this.router.navigate(['/otp']);
+      } catch (error: any) {
+        this.errorMessage = error.message || 'Registration failed. Please try again.';
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 }

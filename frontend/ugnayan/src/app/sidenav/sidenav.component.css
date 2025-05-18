@@ -58,6 +58,7 @@
     align-items: center;
     gap: 0.875rem;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .nav-links a .material-icons {
@@ -85,14 +86,32 @@
     color: white;
 }
 
+.logout-link {
+    margin-top: auto;
+    border-top: 1px solid #f1f1f1;
+    padding-top: 1rem !important;
+}
+
+/* Main content adjustment to accommodate sidenav */
+:host + * {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
 @media screen and (max-width: 768px) {
     .sidenav {
         transform: translateX(-100%);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
     }
 
     .sidenav.active {
         transform: translateX(0);
+    }
+    
+    :host + * {
+        margin-left: 0;
+        width: 100%;
     }
 }
 

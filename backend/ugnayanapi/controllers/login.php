@@ -35,6 +35,12 @@ class Login
             ];
         }
 
+        // Get total contribution amount
+        $contributionStmt = $this->conn->prepare("SELECT COALESCE(SUM(amount), 0) as total_contribution FROM finance WHERE user_id = ?");
+        $contributionStmt->execute([$user['id']]);
+        $contribution = $contributionStmt->fetch(PDO::FETCH_ASSOC);
+        $totalContribution = $contribution['total_contribution'];
+
         $qrCodeUrl = '';
         if (!empty($user['qr_code'])) {
             $qrCodeUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/uploads/qrcodes/' . $user['qr_code'];
@@ -50,7 +56,8 @@ class Login
                 'lastname' => $user['lastname'],
                 'username' => $user['username'],
                 'isAdmin' => $user['isAdmin'],
-                'qr_code' => $qrCodeUrl
+                'qr_code' => $qrCodeUrl,
+                'total_contribution' => $totalContribution
             ],
         ];
 
@@ -59,7 +66,8 @@ class Login
         return [
             'status' => 200,
             'jwt' => $jwt,
-            'message' => 'Login Successful'
+            'message' => 'Login Successful',
+            'total_contribution' => $totalContribution
         ];
     }
 

@@ -18,13 +18,18 @@
                 <label>Username</label>
                 <p>{{ user.username }}</p>
             </div>
-
+            <div class="info-group">
+                <label>Total Contribution</label>
+                <p>₱{{ totalContribution | number:'1.2-2' }}</p>
+            </div>
         </div>
 
         <div class="profile-qr" *ngIf="user.qr_code">
             <label>QR Code</label>
             <img [src]="user.qr_code" alt="QR Code" class="qr-img" />
-            <a [href]="user.qr_code" download="qr_code.png" class="download-btn">Download QR Code</a>
+            <a [href]="user.qr_code" download="qr_code.png" class="download-btn">
+                Download QR Code
+            </a>
         </div>
 
     </div>

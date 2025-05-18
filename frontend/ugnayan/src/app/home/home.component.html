@@ -1,8 +1,118 @@
 <app-sidenav></app-sidenav>
 
 <div class="main-content">
-    <div class="welcome-section">
-        <h1>{{ title }}</h1>
-        <p>Your church management system</p>
+    <div class="dashboard-header">
+        <h1>Welcome to the Dashboard</h1>
+        <p class="church-message">Stay updated with church activities, contributions, and more!</p>
+        <button class="refresh-btn" (click)="refreshDashboard()">
+            <i class="material-icons">refresh</i>
+        </button>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+        <p>Loading dashboard data...</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!loading && dashboardData" class="dashboard-content">
+        <!-- Top Row: Daily Verse and Reminders -->
+        <div class="top-row">
+            <!-- Daily Verse Section -->
+            <section class="section">
+                <h2>Daily Verse</h2>
+                <div class="content-item">
+                    <blockquote>{{ dashboardData.daily_verse }}</blockquote>
+                </div>
+            </section>
+
+            <!-- Reminders Section -->
+            <section class="section">
+                <h2>Reminders</h2>
+                <div class="content-item">
+                    <ul>
+                        <li *ngFor="let reminder of dashboardData.reminders?.reminders">
+                            <span>{{ reminder.icon }}</span> {{ reminder.title }}
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- Announcements Section -->
+        <section class="section announcements-section">
+            <h2>Church Announcements</h2>
+            <div class="content-item" *ngFor="let announcement of dashboardData.announcement?.announcements">
+                <div class="announcement-icon">{{ announcement.icon }}</div>
+                <h4>{{ announcement.title }}</h4>
+                <p>{{ announcement.description }}</p>
+            </div>
+        </section>
+
+        <!-- Sermons Section -->
+        <section class="section sermons-section">
+            <h2>Previous Sermons</h2>
+            <p>Rewatch past services or catch up on missed ones through audio recordings.</p>
+
+            <!-- Sermons List -->
+            <div class="sermons-list">
+                <h3>Available Sermons</h3>
+
+                <!-- Display message if no sermons are available -->
+                <div *ngIf="sermons.length === 0" class="no-sermons">
+                    <p>No sermons available. Please add a new sermon.</p>
+                </div>
+
+                <!-- Sermons List -->
+                <ul id="sermonsList" *ngIf="sermons.length > 0">
+                    <li *ngFor="let sermon of paginatedSermons">
+                        <div class="sermon-item">
+                            <div class="sermon-info">
+                                <strong>{{ sermon.title }}</strong>
+                                <span>{{ sermon.date }}</span>
+                            </div>
+                            <audio controls *ngIf="sermon.audioFile">
+                                <source [src]="sermon.audioFile" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-controls" *ngIf="sermons.length > itemsPerPage">
+                    <button [disabled]="currentPage === 1" 
+                            (click)="previousPage()" 
+                            class="pagination-btn prev-btn">
+                        &laquo; Previous
+                    </button>
+                    
+                    <div class="page-numbers">
+                        <button *ngFor="let page of getPageNumbers()" 
+                                [class.active]="page === currentPage"
+                                (click)="goToPage(page)"
+                                class="pagination-btn page-btn">
+                            {{ page }}
+                        </button>
+                    </div>
+                    
+                    <button [disabled]="currentPage === totalPages" 
+                            (click)="nextPage()" 
+                            class="pagination-btn next-btn">
+                        Next &raquo;
+                    </button>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
+
+<footer>
+    <p>
+        <i class="fa fa-heart"></i>
+        <strong>Lupon Ugnayan</strong> - Empowering communities through connection and collaboration.
+    </p>
+</footer>

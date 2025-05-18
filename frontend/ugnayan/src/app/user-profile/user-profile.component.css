@@ -1,23 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-style: normal;
 }
 
 .profile-container {
     min-height: 100vh;
     padding: 2rem;
-    margin-left: 250px;
     background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .profile-card {
+    width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    margin-top: 2rem;
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -25,7 +27,7 @@
 }
 
 .profile-header {
-    background: #2ecc71;
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
     padding: 2rem;
     position: relative;
 }
@@ -40,16 +42,20 @@
 .profile-info {
     padding: 2rem;
     background: white;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
 .info-group {
-    margin-bottom: 1.5rem;
     padding-left: 1rem;
     border-left: 3px solid #2ecc71;
+    transition: all 0.3s ease;
 }
 
-.info-group:last-child {
-    margin-bottom: 0;
+.info-group:hover {
+    transform: translateX(5px);
+    border-left-color: #27ae60;
 }
 
 .info-group label {
@@ -68,11 +74,20 @@
     margin: 0;
 }
 
+.info-group:last-child p {
+    color: #2ecc71;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
 .profile-qr {
     padding: 2rem;
     text-align: center;
     background: #f8f9fa;
     border-top: 1px solid #e1e1e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile-qr label {
@@ -93,11 +108,18 @@
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     margin-bottom: 1.5rem;
     border: 2px solid rgba(46, 204, 113, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.qr-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .download-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 0.75rem 1.5rem;
     background: #2ecc71;
     color: white;
@@ -105,20 +127,22 @@
     border-radius: 8px;
     font-weight: 500;
     font-size: 0.9375rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+    width: fit-content;
 }
 
 .download-btn:hover {
     background: #27ae60;
+    transform: translateY(-2px);
 }
 
 @media screen and (max-width: 768px) {
     .profile-container {
-        margin-left: 0;
         padding: 1rem;
     }
     
     .profile-card {
-        margin: 0;
+        margin-top: 1rem;
     }
     
     .profile-header {
@@ -131,14 +155,7 @@
     
     .profile-info {
         padding: 1.5rem;
-    }
-    
-    .info-group {
-        margin-bottom: 1.25rem;
-    }
-    
-    .info-group p {
-        font-size: 1rem;
+        grid-template-columns: 1fr;
     }
     
     .qr-img {

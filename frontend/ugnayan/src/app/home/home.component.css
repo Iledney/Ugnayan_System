@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 .main-content {
     margin-left: 250px;
     padding: 2rem;
@@ -5,21 +8,360 @@
     background-color: #f5f5f5;
 }
 
-.welcome-section {
-    background: white;
+.dashboard-header {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+    margin-bottom: 30px;
     text-align: center;
+    position: relative;
 }
 
-.welcome-section h1 {
-    color: #1a237e;
-    margin-bottom: 1rem;
+.dashboard-header h1 {
+    margin: 0;
     font-size: 2.5rem;
+    font-weight: 600;
 }
 
-.welcome-section p {
-    color: #666;
+.church-message {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.refresh-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(180deg);
+}
+
+.refresh-btn i {
+    color: white;
+    font-size: 24px;
+}
+
+.loading, .error-message, .no-sermons {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.error-message {
+    background: #fee;
+    color: #e53935;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    max-width: 1200px;
+    margin: 0;
+    padding: 0 2rem;
+}
+
+.top-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.top-row .section {
+    margin-bottom: 0;
+}
+
+.announcements-section {
+    margin-bottom: 2rem;
+}
+
+.sermons-section {
+    margin-top: 2rem;
+}
+
+.section {
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #50b17c;
+    padding-left: 15px;
+}
+
+.content-item {
+    background: #fffefa;
+    border-left: 5px solid #50b17c;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.content-item:hover {
+    background: #f0fdf4;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.content-item blockquote {
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+}
+
+.content-item ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content-item li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.content-item li:last-child {
+    margin-bottom: 0;
+}
+
+.content-item strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.announcement-icon {
+    font-size: 2rem;
+    color: #50b17c;
+    margin-bottom: 1rem;
+}
+
+.content-item h4 {
+    color: #2c3e50;
     font-size: 1.2rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.content-item p {
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Sermons Section */
+.sermons-list {
+    margin-bottom: 2rem;
+}
+
+.sermons-list h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.sermons-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sermon-item {
+    background: #fffefa;
+    border-left: 5px solid #50b17c;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sermon-item:hover {
+    background: #f0fdf4;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.sermon-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sermon-info strong {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.sermon-info span {
+    font-size: 0.9rem;
+    color: #777;
+    word-wrap: break-word;
+}
+
+audio {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 10px;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination-btn {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+}
+
+.pagination-btn.active {
+    background: #50b17c;
+    color: white;
+    border-color: #50b17c;
+}
+
+.pagination-btn:disabled {
+    background: #f8f9fa;
+    color: #adb5bd;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.prev-btn, .next-btn {
+    background: #f0f0f0;
+    font-weight: 500;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    margin-left: 250px;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer i.fa-heart {
+    color: #e74c3c;
+    margin: 0 5px;
+}
+
+footer strong {
+    color: #2ecc71;
+}
+
+@media screen and (max-width: 768px) {
+    .main-content, footer {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    
+    .dashboard-content {
+        padding: 0 1rem;
+    }
+    
+    .top-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .section {
+        padding: 1.5rem;
+    }
+
+    .content-item {
+        padding: 1rem;
+    }
+
+    .sermon-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sermons-list h3 {
+        font-size: 1.2rem;
+    }
+
+    .sermon-info strong {
+        font-size: 1rem;
+    }
+
+    .sermon-info span {
+        font-size: 0.8rem;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .pagination-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .pagination-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
 }
