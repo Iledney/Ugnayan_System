@@ -2,244 +2,220 @@
 
 * {
     font-family: 'Poppins', sans-serif;
-    font-weight: bold; /* Make all text bold */
-    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    font-weight: 900; /* Use the heaviest weight for boldness */
-    text-transform: uppercase; /* Make the text uppercase */
-    position: relative;
-    z-index: 1;
-    letter-spacing: 1px; /* Add spacing for emphasis */
-}
-
-.welcome-text {
-    color: #333;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    font-weight: 900 !important; /* Ensures the text is bold */
-    text-transform: uppercase; /* Makes the text uppercase */
-    letter-spacing: 1px; /* Add spacing for emphasis */
-}
-
-h3, label, button, .auth-link a {
-    font-weight: bold; /* Ensure specific elements are bold */
-    text-transform: uppercase; /* Make all text uppercase */
-}
-
-/* Body Styling */
 body {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, rgba(80, 177, 124, 0.1), rgba(52, 152, 219, 0.1));
+    padding: 2rem;
 }
 
-/* Login Container */
 .login-container {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 450px;
-    margin: 1rem;
-    position: relative; /* For additional design elements */
-    overflow: hidden; /* Hide decorative elements */
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Decorative Design for the Box */
-.login-container::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, #50b17c, #ffffff);
-    border-radius: 50%;
-    opacity: 0.2;
-    z-index: 0;
-}
-
+.login-container::before,
 .login-container::after {
     content: '';
     position: absolute;
-    bottom: -50px;
-    left: -50px;
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, #50b17c, #ffffff);
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, #50b17c, #3498db);
     border-radius: 50%;
-    opacity: 0.2;
-    z-index: 0;
+    z-index: -1;
+    opacity: 0.1;
+    filter: blur(20px);
 }
 
-/* Logo Styling */
-.logo-container {
+.login-container::before {
+    top: -100px;
+    right: -100px;
+}
+
+.login-container::after {
+    bottom: -100px;
+    left: -100px;
+}
+
+h1 {
+    color: #2c3e50;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 800;
     position: relative;
-    z-index: 1; /* Ensure it stays above decorative elements */
+    padding-bottom: 1rem;
 }
 
-.logo {
-    width: 120px;
-    height: auto;
-    margin-bottom: 1rem;
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
 }
 
-/* Form Styling */
 form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.input-group {
     position: relative;
-    z-index: 1;
 }
 
 label {
-    color: #555;
-    font-size: 0.9rem;
-    margin-bottom: -0.5rem;
-    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input {
-    padding: 0.9rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 2px solid rgba(80, 177, 124, 0.2);
+    border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background-color: #f9f9f9;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+}
+
+input::placeholder {
+    color: #95a5a6;
 }
 
 input:focus {
     outline: none;
     border-color: #50b17c;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(80, 177, 124, 0.2);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(80, 177, 124, 0.1);
 }
 
-/* Button Styling */
 button {
-    background: linear-gradient(135deg, #50b17c, #3a8f68); /* Gradient button */
+    background: linear-gradient(45deg, #50b17c, #3498db);
     color: white;
-    padding: 1rem;
+    padding: 1.2rem;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
     position: relative;
-    z-index: 1;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(80, 177, 124, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(80, 177, 124, 0.2);
 }
 
-/* Navigation Links */
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    background: #50b17c;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+button:hover::before {
+    left: 100%;
 }
 
-.nav-container a {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-
-.nav-container a:hover {
-    background: #3a8f68;
-}
-
-/* Auth Link */
 .auth-link {
-    text-align: center; /* Center the text */
-    margin-top: 1.5rem; /* Add spacing above the link */
-    font-size: 0.9rem; /* Set the font size */
-    color: #666; /* Default text color */
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #2c3e50;
 }
 
 .auth-link a {
-    color: #50b17c; /* Green color for the link */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the link bold */
-    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth hover effect */
+    color: #50b17c;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.auth-link a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
 }
 
 .auth-link a:hover {
-    color: #3a8f68; /* Darker green on hover */
-    text-decoration: none;
+    color: #3498db;
 }
 
-/* Error and Success Messages */
-.message {
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-size: 0.9rem;
+.auth-link a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
-.error {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ffcdd2;
-}
-
-.success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #c8e6c9;
-}
-
-/* Responsive Design */
 @media (max-width: 480px) {
-    .login-container {
-        padding: 1.5rem;
-        margin: 1rem;
+    body {
+        padding: 1rem;
     }
 
-    .logo {
-        width: 100px;
+    .login-container {
+        padding: 2rem;
+        border-radius: 20px;
     }
 
     h1 {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
-    input, button {
-        padding: 0.8rem;
+    input {
+        padding: 0.9rem 1rem;
     }
 
-    .nav-container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .nav-container a {
-        font-size: 0.9rem;
+    button {
+        padding: 1rem;
     }
 }

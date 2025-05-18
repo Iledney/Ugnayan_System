@@ -1,213 +1,264 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-html, body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 * {
     font-family: 'Poppins', sans-serif;
-    font-weight: bold; /* Make all text bold */
-    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* Body Styling */
 body {
-    background: linear-gradient(135deg, #50b17c 0%, #ffffff 100%);
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    background: linear-gradient(135deg, rgba(80, 177, 124, 0.1), rgba(52, 152, 219, 0.1));
+    padding: 2rem;
 }
 
-/* Register Container */
 .register-container {
-    margin: auto;
-    padding: 3rem; /* Increased padding for better spacing */
-    border-radius: 15px; /* Softer rounded corners */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Soft shadow for a modern look */
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px; /* Wider container */
-    background: white;
+    max-width: 480px;
     position: relative;
     overflow: hidden;
-    z-index: 1;
-    text-align: center; /* Keep content centered */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0 auto;
 }
 
-
-/* Decorative Design */
 .register-container::before,
 .register-container::after {
     content: '';
     position: absolute;
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, #50b17c, #ffffff);
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, #50b17c, #3498db);
     border-radius: 50%;
-    opacity: 0.2;
     z-index: -1;
+    opacity: 0.1;
+    filter: blur(20px);
 }
 
 .register-container::before {
-    top: -50px;
-    right: -50px;
+    top: -100px;
+    right: -100px;
 }
 
 .register-container::after {
-    bottom: -50px;
-    left: -50px;
+    bottom: -100px;
+    left: -100px;
 }
 
-/* Header Styling */
-.register-container h2 {
-  color: #333;
-  margin-bottom: 2rem;
-  font-size: 2rem; /* Increased font size for better visibility */
-  font-weight: 700; /* Make the header bold */
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 1;
-  text-align: center;
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    position: relative;
+    padding-bottom: 1rem;
 }
 
-/* Form Styling */
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
+}
+
 form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Increased gap for better spacing */
-    position: relative;
-    z-index: 1;
+    gap: 1.5rem;
+    margin-top: 2rem;
     width: 100%;
-    max-width: 700px; /* Wider form */
-    margin: 0 auto; /* Center the form */
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .form-group {
-    display: flex;
-    align-items: center; /* Align label and input vertically */
-    justify-content: space-between; /* Space between label and input */
+    position: relative;
     width: 100%;
-    position: relative; /* Ensure error messages don't shift layout */
 }
 
 label {
-    color: #555;
-    font-size: 1rem;
-    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     text-align: left;
-    flex: 1; /* Allow label to take up space */
-    margin-right: 1rem; /* Add spacing between label and input */
 }
 
 input {
-    flex: 2; /* Allow input to take up more space */
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 2px solid rgba(80, 177, 124, 0.2);
+    border-radius: 12px;
     font-size: 1rem;
-    background-color: #f9f9f9;
     transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+}
+
+input::placeholder {
+    color: #95a5a6;
 }
 
 input:focus {
     outline: none;
     border-color: #50b17c;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(80, 177, 124, 0.2);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(80, 177, 124, 0.1);
 }
 
 /* Error Input Styling */
 input.error {
     border-color: #e74c3c;
-    background-color: #ffecec;
+    background-color: rgba(231, 76, 60, 0.05);
 }
 
 .error-message {
     color: #e74c3c;
     font-size: 0.85rem;
-    margin-top: 0.5rem;
-    font-style: italic;
-    position: absolute; /* Prevent shifting of layout */
-    bottom: -1.5rem; /* Position error message below input */
-    left: 0;
+    margin-top: 0.4rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-/* Button Styling */
+.error-message::before {
+    content: '⚠';
+    font-size: 1rem;
+}
+
 button {
-    background: linear-gradient(135deg, #50b17c, #3a8f68); /* Gradient button */
+    background: linear-gradient(45deg, #50b17c, #3498db);
     color: white;
-    padding: 1rem; /* Increased padding for larger button */
+    padding: 1.2rem;
     border: none;
-    border-radius: 8px;
-    font-size: 1.1rem; /* Slightly larger font size */
+    border-radius: 12px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
     width: 100%;
-    max-width: 500px; /* Increased max width for buttons */
-    margin: 1rem auto 0; /* Center the button */
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(80, 177, 124, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(80, 177, 124, 0.2);
 }
 
-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(80, 177, 124, 0.4);
+button:hover::before {
+    left: 100%;
 }
 
-/* Responsive Design */
+.auth-link {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.auth-link a {
+    color: #50b17c;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.auth-link a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.auth-link a:hover {
+    color: #3498db;
+}
+
+.auth-link a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
 @media (max-width: 768px) {
     .register-container {
-        padding: 2rem;
+        padding: 2.5rem 2rem;
         margin: 1rem;
     }
 
-    .register-container h2 {
-        font-size: 1.8rem;
-    }
-
-    .form-group {
-        flex-direction: column; /* Stack label and input vertically */
-        align-items: flex-start;
-    }
-
-    label {
-        margin-right: 0;
-        margin-bottom: 0.5rem;
+    h2 {
+        font-size: 2rem;
     }
 
     input {
-        width: 100%;
+        padding: 0.9rem 1rem;
     }
 
     button {
-        font-size: 1rem;
-        padding: 0.9rem;
+        padding: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .register-container {
-        padding: 1.5rem;
-        margin: 1rem;
+        padding: 2rem 1.5rem;
     }
 
-    .register-container h2 {
-        font-size: 1.5rem;
+    h2 {
+        font-size: 1.8rem;
     }
 
-    input,
+    input {
+        font-size: 0.95rem;
+    }
+
     button {
-        font-size: 0.9rem;
-        padding: 0.8rem;
+        font-size: 1rem;
     }
 }

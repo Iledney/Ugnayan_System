@@ -2,8 +2,8 @@
 
 * {
     font-family: 'Poppins', sans-serif;
-    font-weight: bold; /* Make all text bold */
-    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    font-weight: 500;
+    letter-spacing: 0.3px;
 }
 *, *::after, *::before {
     margin: 0;
@@ -11,15 +11,15 @@
     box-sizing: border-box;
 }
 
-
-body{
-    color: rgb(249, 0, 0);
-    overflow: hidden;
-    background-color: rgb(255, 255, 255);
+body {
+    color: #2c3e50;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
 }
 .dashboard {
     max-width: 1200px;
     margin: auto;
+    padding: 0 1rem;
 }
 
 /* Quick Stats Section */
@@ -60,22 +60,35 @@ body{
 
 .dashboard-header {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center-align items horizontally */
-    justify-content: center; /* Center-align items vertically */
-    margin-bottom: 2rem; /* Keep spacing below the header */
-    margin-top: 2rem; /* Add spacing above the header */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2.5rem 0;
+    position: relative;
 }
 
 .dashboard-header h1 {
-    color: #333;
-    font-weight: bold; /* Make all text bold */
-    letter-spacing: 0.5px; /* Add slight spacing between letters */
-    text-transform: uppercase; /* Make all text uppercase */
-    text-align: center; /* Center-align the text */
-    font-size: 2.5rem; /* Optional: Adjust font size */
-    font-weight: bold; /* Optional: Make it bold */
-    margin-bottom: 1rem; /* Add spacing below the heading */
+    color: #50b17c;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
 }
 
 .dashboard-widgets {
@@ -87,55 +100,68 @@ body{
 }
 
 .church-message {
-    text-align: center; /* Center-align the text */
-    font-size: 1.0rem; /* Adjust font size for better readability */
-    font-weight: 500; /* Slightly bold text */
-    color: #353232; /* Light gray color for better contrast */
-    margin-top: -2.0rem; /* Negative margin to lift the text higher */
-    margin-bottom: 1.5rem; /* Keep spacing below the text */
-    font-family: 'Poppins', sans-serif; /* Ensure consistent font */
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
 }
 
 .widget-card {
     flex: 1 1 300px;
-    background-color: #f9f9f9;
-    padding: 1.8rem;
-    border-radius: 20px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
     position: relative;
-    border-top: 4px solid transparent;
-    overflow: hidden;
+    border-left: 5px solid #50b17c;
+    backdrop-filter: blur(10px);
 }
 
 .widget-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
 }
 
 .widget-card h1 {
-    font-size: 1.4rem;
-    margin-bottom: 0.75rem;
-    color: #333;
-    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: #50b17c;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.widget-card h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
 }
 
 /* Color Variants */
 .widget-card.verse {
     background: #ffffff;
-    border-left: 6px solid #8BC34A;
+    border-left: 6px solid  #50b17c;
 }
 
 
 .widget-card.stats {
     background: #ffffff;
-    border-left: 6px solid #8BC34A;
+    border-left: 6px solid  #50b17c;
 }
 
 .widget-card.todo {
     background: #ffffff;
-    border-left: 6px solid #8BC34A;
-
+    border-left: 6px solid  #50b17c;
 }
 
 .daily-verse blockquote {
@@ -156,25 +182,36 @@ body{
 
 /* Announcement Section */
 .announcement-section {
-    margin: 3rem 2rem; /* Add spacing around the section */
-    padding: 2rem; /* Add internal spacing */
-    background-color: #f9f9f9; /* Light background for distinction */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    text-align: center; /* Center-align the section title */
-    overflow: hidden; /* Hide overflowing content */
+    margin: 3rem 1rem;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
 }
 
 /* Church Announcements Heading */
 .announcement-section h2 {
-    margin-top: 0; /* Remove any default margin above the heading */
-    margin-bottom: 1rem; /* Add spacing below the heading */
-    font-size: 1.8rem; /* Adjust font size for better visibility */
-    font-weight: bold; /* Ensure the heading is bold */
-    color: #333; /* Darker color for better readability */
-    text-align: center; /* Center-align the heading */
-    position: relative; /* Allow positioning adjustments */
-    top: -10px; /* Move the heading upwards */
+    color: #50b17c;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    position: relative;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.announcement-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
 }
 
 /* Scrollable Carousel */
@@ -202,27 +239,19 @@ body{
 
 /* Announcement Cards */
 .announcement-card {
-    flex: 0 0 300px; /* Set a fixed width for each card */
-    background-color: #fffefa;
-    border-left: 5px solid #F2BE22;
-    padding: 1.5rem; /* Ensure proper spacing inside the card */
-    border-radius: 14px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    flex: 0 0 300px;
+    background: rgba(255, 255, 255, 0.98);
+    border-left: 5px solid #50b17c;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
-    scroll-snap-align: start; /* Snap to the start of each card */
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; /* Add spacing between elements inside the card */
-    overflow: hidden; /* Prevent content overflow */
-    text-align: left; /* Align text to the left for better readability */
+    scroll-snap-align: start;
 }
 
-
-
-/* Announcement Card Hover Effect */
 .announcement-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* Announcement Icon */
@@ -231,13 +260,6 @@ body{
     margin-bottom: 0.5rem;
     color: #000000;
 }
-
-/* Announcement Card Hover Effect */
-.announcement-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
 
 /* Scrollable Carousel */
 .announcement-carousel {
@@ -250,35 +272,78 @@ body{
 /* ========== Video Section ========== */
 .video-tab {
     text-align: center;
-    margin-top: 20px;
+    margin: 4rem 0 3rem;
+}
+
+.video-tab h2 {
+    color: #50b17c;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    position: relative;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.video-tab h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    border-radius: 2px;
 }
 
 .video-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 2rem;
+    padding: 0 1rem;
 }
 
 .video-box {
     flex: 1;
     min-width: 300px;
     max-width: 400px;
-    background: white;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 5px solid #50b17c;
+    backdrop-filter: blur(10px);
 }
 
 .video-box:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .video-box iframe {
     width: 100%;
-    height: 200px;
-    border-radius: 5px;
+    height: 225px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.video-box h3 {
+    font-size: 1.5rem;
+    color: #50b17c;
+    margin: 1rem 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.video-box p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #2c3e50;
+    margin-bottom: 1rem;
 }
 
 /* Modal Background */
@@ -309,12 +374,13 @@ body{
 
 
 /* Modal Headings */
-.modal-content h2,
-.modal-content h3 {
-    margin-top: 0;
-    color: #333;
+.modal-content h2 {
+    font-size: 2rem;
+    color: #50b17c;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
     text-align: center;
-    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 /* Form Groups */
@@ -342,45 +408,38 @@ input:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: #40db52; /* Green border on focus */
+    border-color:  #50b17c;
     box-shadow: 0 0 5px rgba(64, 219, 82, 0.3);
 }
 
 /* Buttons */
 /* General Modal Button Styling */
 .modal-content button {
-    padding: 0.8rem 1.5rem; /* Adjust padding for better size */
-    background-color: #40db52; /* Green background */
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #50b17c, #3498db);
     color: white;
     border: none;
-    border-radius: 8px; /* Rounded corners */
-    font-size: 1rem; /* Adjust font size */
-    font-weight: 600; /* Bold text */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    margin: 0.5rem; /* Add spacing between buttons */
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(80, 177, 124, 0.2);
 }
 
-/* Hover Effect */
 .modal-content button:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(80, 177, 124, 0.3);
 }
 
-/* Active Effect */
-.modal-content button:active {
-    background-color: #3e8e41; /* Even darker green when clicked */
-    transform: translateY(1px); /* Slight press effect */
-}
-
-/* Danger/Remove Button Styling */
 .modal-content button.remove-btn {
-    background-color: #dc3545; /* Red background */
+    background: #e74c3c;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
 }
 
 .modal-content button.remove-btn:hover {
-    background-color: #b02a37; /* Darker red on hover */
+    background: #c0392b;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
 }
 
 /* Danger/Remove Button */
@@ -419,32 +478,28 @@ button[type="button"]:hover {
 
 /* ========== Update Button ========== */
 .update-btn {
-    background: #40db52; /* Green background */
-    color: white; /* White text */
-    padding: 0.8rem 1.5rem; /* Adjust padding for better size */
-    border: none; /* Remove border */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 1rem; /* Adjust font size */
-    font-weight: 600; /* Bold text */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    margin: 2rem auto; /* Add spacing above and center-align the button */
-    display: block; /* Center-align the button */
-    position: relative; /* Ensure it doesn't overlap with the footer */
-    z-index: 1; /* Ensure it stays above other elements */
+    background: linear-gradient(45deg, #50b17c, #3498db);
+    color: white;
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(80, 177, 124, 0.2);
+    margin: 2.5rem auto;
+    display: block;
 }
 
 .update-btn:hover {
-    background: #45a049; /* Darker green on hover */
-    transform: translateY(-3px); /* Slight lift on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(80, 177, 124, 0.3);
 }
 
 .update-btn:active {
-    background: #3e8e41; /* Even darker green when clicked */
-    transform: translateY(1px); /* Slight press effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(80, 177, 124, 0.2);
 }
 
 /* Ensure the button doesn't overlap with the footer */
@@ -459,28 +514,3 @@ button[type="button"]:hover {
 }
 
 
-footer {
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-}
-
-footer p {
-    margin: 5px 0;
-}
-
-footer i {
-    color: red;
-    margin: 0 10px;
-}
-
-footer a {
-    color: greenyellow;
-    text-decoration: none;
-}
