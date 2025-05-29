@@ -5,51 +5,70 @@
     <form (ngSubmit)="login()">
       <div class="input-group">
         <label for="username">Username</label>
-        <input 
-          type="text" 
-          id="username" 
-          name="username" 
-          [(ngModel)]="username" 
-          placeholder="Enter your username" 
-          required 
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Enter your username"
+          required
           [disabled]="isLoading"
           #usernameInput="ngModel"
         />
-        <div class="error-message" *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)">
-          <span *ngIf="usernameInput.errors?.['required']">Username is required to log in</span>
+        <div
+          class="error-message"
+          *ngIf="
+            usernameInput.invalid &&
+            (usernameInput.dirty || usernameInput.touched)
+          "
+        >
+          <span *ngIf="usernameInput.errors?.['required']"
+            >Username is required to log in</span
+          >
         </div>
       </div>
 
       <div class="input-group">
         <label for="password">Password</label>
         <div class="password-input">
-          <input 
+          <input
             [type]="showPassword ? 'text' : 'password'"
-            id="password" 
-            name="password" 
-            [(ngModel)]="password" 
-            placeholder="Enter your password" 
-            required 
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            required
             [disabled]="isLoading"
             #passwordInput="ngModel"
           />
-          <button type="button" class="show-password" (click)="togglePassword()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+          <button
+            type="button"
+            class="show-password"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
             <i class="material-icons"></i>
           </button>
         </div>
-        <div class="error-message" *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
-          <span *ngIf="passwordInput.errors?.['required']">Password is required to log in</span>
+        <div
+          class="error-message"
+          *ngIf="
+            passwordInput.invalid &&
+            (passwordInput.dirty || passwordInput.touched)
+          "
+        >
+          <span *ngIf="passwordInput.errors?.['required']"
+            >Password is required to log in</span
+          >
         </div>
       </div>
 
-      <div class="error-message" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
-
       <button type="submit" [disabled]="isLoading">
-        {{ isLoading ? 'Logging in...' : 'Login' }}
+        {{ isLoading ? "Logging in..." : "Login" }}
       </button>
     </form>
-    <p class="auth-link">Don't have an account? <a href="/register">Register here</a></p>
+    <p class="auth-link">
+      Don't have an account? <a href="/register">Register here</a>
+    </p>
   </div>
 </body>

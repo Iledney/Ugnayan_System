@@ -1,6 +1,10 @@
 <div class="register-container">
   <h2>Register</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    class="register-form"
+  >
     <div class="form-group">
       <label for="firstname">First Name</label>
       <input
@@ -10,9 +14,16 @@
         placeholder="Enter your first name"
         [class.is-invalid]="f['firstname'].touched && f['firstname'].invalid"
       />
-      <div class="error-message" *ngIf="f['firstname'].touched && f['firstname'].invalid">
-        <span *ngIf="f['firstname'].errors?.['required']">First name is required</span>
-        <span *ngIf="f['firstname'].errors?.['minlength']">First name must be at least 2 characters</span>
+      <div
+        class="error-message"
+        *ngIf="f['firstname'].touched && f['firstname'].invalid"
+      >
+        <span *ngIf="f['firstname'].errors?.['required']"
+          >First name is required</span
+        >
+        <span *ngIf="f['firstname'].errors?.['minlength']"
+          >First name must be at least 2 characters</span
+        >
       </div>
     </div>
 
@@ -35,9 +46,16 @@
         placeholder="Enter your last name"
         [class.is-invalid]="f['lastname'].touched && f['lastname'].invalid"
       />
-      <div class="error-message" *ngIf="f['lastname'].touched && f['lastname'].invalid">
-        <span *ngIf="f['lastname'].errors?.['required']">Last name is required</span>
-        <span *ngIf="f['lastname'].errors?.['minlength']">Last name must be at least 2 characters</span>
+      <div
+        class="error-message"
+        *ngIf="f['lastname'].touched && f['lastname'].invalid"
+      >
+        <span *ngIf="f['lastname'].errors?.['required']"
+          >Last name is required</span
+        >
+        <span *ngIf="f['lastname'].errors?.['minlength']"
+          >Last name must be at least 2 characters</span
+        >
       </div>
     </div>
 
@@ -50,9 +68,36 @@
         placeholder="Choose a username"
         [class.is-invalid]="f['username'].touched && f['username'].invalid"
       />
-      <div class="error-message" *ngIf="f['username'].touched && f['username'].invalid">
-        <span *ngIf="f['username'].errors?.['required']">Username is required</span>
-        <span *ngIf="f['username'].errors?.['minlength']">Username must be at least 4 characters</span>
+      <div
+        class="error-message"
+        *ngIf="f['username'].touched && f['username'].invalid"
+      >
+        <span *ngIf="f['username'].errors?.['required']"
+          >Username is required</span
+        >
+        <span *ngIf="f['username'].errors?.['minlength']"
+          >Username must be at least 4 characters</span
+        >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        [class.is-invalid]="f['email'].touched && f['email'].invalid"
+      />
+      <div
+        class="error-message"
+        *ngIf="f['email'].touched && f['email'].invalid"
+      >
+        <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+        <span *ngIf="f['email'].errors?.['email']"
+          >Please enter a valid email address</span
+        >
       </div>
     </div>
 
@@ -60,19 +105,30 @@
       <label for="password">Password</label>
       <div class="password-input">
         <input
-          type="password"
+          [type]="showPassword ? 'text' : 'password'"
           id="password"
           formControlName="password"
           placeholder="Enter your password"
           [class.is-invalid]="f['password'].touched && f['password'].invalid"
         />
-        <button type="button" class="show-password" (click)="togglePassword('password')">
+        <button
+          type="button"
+          class="show-password"
+          (click)="togglePassword('password')"
+        >
           <i class="material-icons">visibility_off</i>
         </button>
       </div>
-      <div class="error-message" *ngIf="f['password'].touched && f['password'].invalid">
-        <span *ngIf="f['password'].errors?.['required']">Password is required</span>
-        <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+      <div
+        class="error-message"
+        *ngIf="f['password'].touched && f['password'].invalid"
+      >
+        <span *ngIf="f['password'].errors?.['required']"
+          >Password is required</span
+        >
+        <span *ngIf="f['password'].errors?.['minlength']"
+          >Password must be at least 6 characters</span
+        >
       </div>
     </div>
 
@@ -80,24 +136,41 @@
       <label for="confirmPassword">Confirm Password</label>
       <div class="password-input">
         <input
-          type="password"
+          [type]="showConfirmPassword ? 'text' : 'password'"
           id="confirmPassword"
           formControlName="confirmPassword"
           placeholder="Confirm your password"
-          [class.is-invalid]="f['confirmPassword'].touched && (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))"
+          [class.is-invalid]="
+            f['confirmPassword'].touched &&
+            (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))
+          "
         />
-        <button type="button" class="show-password" (click)="togglePassword('confirm')">
+        <button
+          type="button"
+          class="show-password"
+          (click)="togglePassword('confirm')"
+        >
           <i class="material-icons">visibility_off</i>
         </button>
       </div>
-      <div class="error-message" *ngIf="f['confirmPassword'].touched && (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))">
-        <span *ngIf="f['confirmPassword'].errors?.['required']">Please confirm your password</span>
-        <span *ngIf="registerForm.hasError('mismatch')">Passwords do not match</span>
+      <div
+        class="error-message"
+        *ngIf="
+          f['confirmPassword'].touched &&
+          (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))
+        "
+      >
+        <span *ngIf="f['confirmPassword'].errors?.['required']"
+          >Please confirm your password</span
+        >
+        <span *ngIf="registerForm.hasError('mismatch')"
+          >Passwords do not match</span
+        >
       </div>
     </div>
 
     <button type="submit" [disabled]="registerForm.invalid || isLoading">
-      {{ isLoading ? 'Registering...' : 'Register' }}
+      {{ isLoading ? "Registering..." : "Register" }}
     </button>
 
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
@@ -107,4 +180,3 @@
     Already have an account? <a routerLink="/login">Login here</a>
   </p>
 </div>
-  
