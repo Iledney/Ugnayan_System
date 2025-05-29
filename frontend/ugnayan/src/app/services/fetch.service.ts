@@ -1,31 +1,29 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FetchService {
-
   baseUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/';
-  
+
   private getHeaders() {
     const token = localStorage.getItem('token');
     return {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     };
   }
 
-  getViolations(){
+  getViolations() {
     return axios.get(this.baseUrl + 'violations', this.getHeaders());
   }
-  
+
   getUsers() {
     return axios.get(this.baseUrl + 'users', this.getHeaders());
   }
-  
+
   getEvents() {
     return axios.get(this.baseUrl + 'events', this.getHeaders());
   }
@@ -35,14 +33,17 @@ export class FetchService {
   }
 
   getUserContributions(userId: number) {
-    return axios.get(this.baseUrl + 'user-contributions/' + userId, this.getHeaders());
+    return axios.get(
+      this.baseUrl + 'user-contributions/' + userId,
+      this.getHeaders()
+    );
   }
 
   getSermons() {
     return axios.get(this.baseUrl + 'sermons', this.getHeaders());
   }
 
-  fetchAttendance(eventId: string){
+  fetchAttendance(eventId: string) {
     return axios.get(this.baseUrl + 'attendance/' + eventId, this.getHeaders());
   }
 
@@ -50,4 +51,10 @@ export class FetchService {
     return axios.get(this.baseUrl + 'dashboard', this.getHeaders());
   }
 
+  getUserProfile(userId: number) {
+    return axios.get(
+      this.baseUrl + 'user-profile/' + userId,
+      this.getHeaders()
+    );
+  }
 }

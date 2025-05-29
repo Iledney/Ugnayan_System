@@ -2,31 +2,34 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 
 interface User {
-    id: number;
-    firstname: string;
-    lastname: string;
-    username: string;
-    isAdmin: number;
+  id: number;
+  firstname: string;
+  lastname: string;
+  username: string;
+  isAdmin: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostService {
-
   baseUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/';
 
   private getHeaders() {
     const token = localStorage.getItem('token');
     return {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     };
   }
 
   addViolation(violation: any) {
-    return axios.post(this.baseUrl + 'addviolations', violation, this.getHeaders());
+    return axios.post(
+      this.baseUrl + 'addviolations',
+      violation,
+      this.getHeaders()
+    );
   }
 
   addEvent(event: any) {
@@ -34,7 +37,11 @@ export class PostService {
   }
 
   addAttendance(attendance: any) {
-    return axios.post(this.baseUrl + 'addattendance', attendance, this.getHeaders());
+    return axios.post(
+      this.baseUrl + 'addattendance',
+      attendance,
+      this.getHeaders()
+    );
   }
 
   updateEvent(event: any) {
@@ -54,24 +61,43 @@ export class PostService {
   }
 
   deleteSermon(sermonId: any) {
-    return axios.post(this.baseUrl + 'deletesermon', sermonId, this.getHeaders());
+    return axios.post(
+      this.baseUrl + 'deletesermon',
+      sermonId,
+      this.getHeaders()
+    );
   }
 
   updateDashboard(dashboardData: any) {
-    return axios.post(this.baseUrl + 'updatedashboard', dashboardData, this.getHeaders());
+    return axios.post(
+      this.baseUrl + 'updatedashboard',
+      dashboardData,
+      this.getHeaders()
+    );
   }
-  
+
   getUsersByLastname(lastname: string) {
-    return axios.get(this.baseUrl + 'users-by-lastname/' + lastname, this.getHeaders());
+    return axios.get(
+      this.baseUrl + 'users-by-lastname/' + lastname,
+      this.getHeaders()
+    );
   }
 
   addContribution(contribution: any) {
-    return axios.post(this.baseUrl + 'addcontribution', contribution, this.getHeaders());
+    return axios.post(
+      this.baseUrl + 'addcontribution',
+      contribution,
+      this.getHeaders()
+    );
   }
 
   async updateUser(user: User): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await axios.put(`${this.baseUrl}/update-user`, user, this.getHeaders());
+      const response = await axios.put(
+        `${this.baseUrl}/update-user`,
+        user,
+        this.getHeaders()
+      );
       return response.data;
     } catch (error) {
       console.error('Error updating user:', error);
@@ -83,4 +109,15 @@ export class PostService {
     return axios.post(this.baseUrl + 'verifyotp', data);
   }
 
+  resendOTP(data: any) {
+    return axios.post(this.baseUrl + 'resendotp', data);
+  }
+
+  updateProfile(profile: any) {
+    return axios.post(
+      this.baseUrl + 'updateprofile',
+      profile,
+      this.getHeaders()
+    );
+  }
 }

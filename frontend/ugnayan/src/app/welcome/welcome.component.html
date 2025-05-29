@@ -1,65 +1,81 @@
-<div class="welcome-container">
-    <div class="content">
-        <div class="logo-section">
-            <img src="assets/UGNAYAN.PNG" alt="Ugnayan Logo" class="logo">
-            <h1>Lupon Ugnayan</h1>
-            <p class="tagline">Empowering communities through connection and collaboration</p>
-        </div>
-
-        <div class="features">
-            <div class="feature-item">
-                <i class="fas fa-users"></i>
-                <h3>Community Building</h3>
-                <p>Connect with your local community members</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Event Management</h3>
-                <p>Stay updated with community events</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-hands-helping"></i>
-                <h3>Collaboration</h3>
-                <p>Work together for community development</p>
-            </div>
-        </div>
-
-        <div class="cta-buttons">
-            <a routerLink="/login" class="btn login-btn">
-                <i class="fas fa-sign-in-alt"></i>
-                Login
-            </a>
-            <a routerLink="/register" class="btn register-btn">
-                <i class="fas fa-user-plus"></i>
-                Register
-            </a>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome - Ugnayan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="welcome-landing">
+    <div class="decorative-bg">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
     </div>
-    
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Contact Us</h4>
-                <p><i class="fas fa-envelope"></i> info&#64;ugnayan.com</p>
-                <p><i class="fas fa-phone"></i> +63 912 345 6789</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <a href="#">About Us</a>
-                <a href="#">Services</a>
-                <a href="#">Privacy Policy</a>
-            </div>
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
+    <div class="welcome-content animate-fadein">
+      <div class="headline-section animate-slidein">
+        <img src="assets/UGNAYAN.PNG" alt="Ugnayan Logo" class="logo">
+        <h1>Welcome to <span class="brand">Ugnayan</span></h1>
+        <p class="tagline">Connecting Communities, Empowering Lives</p>
+      </div>
+      <div class="info-section animate-fadein-delay">
+        <div class="info-card">
+          <h2>What is Ugnayan?</h2>
+          <p>Ugnayan is a modern community management platform designed to streamline communication, announcements, and services for barangays and organizations. Our system empowers both residents and administrators to connect, collaborate, and grow together.</p>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Ugnayan Church Management System. All rights reserved.</p>
+        <div class="info-card">
+          <h2>About Church Inc</h2>
+          <p>Church Inc is a faith-based organization committed to serving the community, fostering spiritual growth, and supporting individuals and families through outreach, worship, and fellowship. Join us in our mission to inspire hope and make a positive impact.</p>
         </div>
+      </div>
+      <div class="features-section animate-slidein-up">
+
+        <div class="feature">
+          <i class="fas fa-bell"></i>
+          <h3>Reminders & Sermons</h3>
+          <p>Receive timely reminders, inspirational sermons, and important updates for your community.</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Events</h3>
+          <p>Stay informed and participate in upcoming community events and activities.</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-hands-helping"></i>
+          <h3>Community Support</h3>
+          <p>Get help and support from our church community—whether you need guidance, resources, or someone to talk to, we are here for you.</p>
+        </div>
+      </div>
+      <div class="cta-section animate-fadein-delay2">
+        <a routerLink="/login" class="cta-btn login-btn">Login</a>
+        <a routerLink="/register" class="cta-btn register-btn">Register</a>
+      </div>
+    </div>
+    <!-- New Footer Sections -->
+    <footer class="welcome-footer animate-fadein">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a routerLink="/about">About</a>
+          <span class="footer-sep">|</span>
+          <a routerLink="/privacy">Privacy Policy</a>
+          <span class="footer-sep">|</span>
+          <a routerLink="/terms">Terms</a>
+        </div>
+        <div class="footer-contact">
+          <a href="mailto:infougnayan&#64;gmail.com">infougnayan&#64;gmail.com</a>
+          <span class="footer-sep">|</span>
+          <i class="fas fa-phone"></i> <a href="tel:09632232477">0963 223 2477</a>
+        </div>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="footer-copy">&copy; 2025 Ugnayan Inc. All rights reserved.</div>
+      </div>
     </footer>
-</div> 
+  </div>
+</body>
+</html>

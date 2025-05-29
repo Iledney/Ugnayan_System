@@ -1,33 +1,71 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  userLoginForm: FormGroup;
+  adminLoginForm: FormGroup;
   isLoading: boolean = false;
   showPassword: boolean = false;
+  showAdminPassword: boolean = false;
+  activeTab: 'user' | 'admin' = 'user';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.userLoginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [false],
+    });
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+    this.adminLoginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [false],
+    });
+
+    // Check for remembered username
+    const rememberedUsername = localStorage.getItem('rememberedUsername');
+    if (rememberedUsername) {
+      this.userLoginForm.patchValue({ username: rememberedUsername });
+    }
   }
 
-  async login() {
-    if (!this.username || !this.password) {
+  switchTab(tab: 'user' | 'admin') {
+    this.activeTab = tab;
+  }
+
+  togglePassword(type: 'user' | 'admin') {
+    if (type === 'user') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showAdminPassword = !this.showAdminPassword;
+    }
+  }
+
+  async onSubmit(type: 'user' | 'admin') {
+    const form = type === 'user' ? this.userLoginForm : this.adminLoginForm;
+
+    if (form.invalid) {
       Swal.fire({
         icon: 'error',
         title: 'Validation Error',
@@ -39,11 +77,11 @@ export class LoginComponent {
 
     try {
       this.isLoading = true;
-      this.errorMessage = '';
+      const formValue = form.value;
 
       const response = await this.authService.login(
-        this.username,
-        this.password
+        formValue.username,
+        formValue.password
       );
       console.log('Login response:', response.data);
 
@@ -65,8 +103,15 @@ export class LoginComponent {
       const userData = decoded.data;
       localStorage.setItem('user', JSON.stringify(userData));
 
-      // This will show a success message
-      Swal.fire({
+      // Handle remember me
+      if (formValue.rememberMe) {
+        localStorage.setItem('rememberedUsername', formValue.username);
+      } else {
+        localStorage.removeItem('rememberedUsername');
+      }
+
+      // Show success message
+      await Swal.fire({
         icon: 'success',
         title: 'Login Successful!',
         text: 'Welcome back!',
@@ -83,7 +128,6 @@ export class LoginComponent {
       }
     } catch (error: any) {
       console.error('Login failed:', error);
-      // if there is an this swal will show
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',

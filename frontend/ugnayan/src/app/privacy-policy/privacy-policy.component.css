@@ -1,0 +1,131 @@
+.privacy-container {
+    min-height: 100vh;
+    padding: 2rem;
+    background: url('../../assets/church.png') no-repeat center center;
+    background-size: cover;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.privacy-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+h1 {
+    color: #00843D;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    grid-column: 1 / -1;
+}
+
+.privacy-section {
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    color: #00843D;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    color: #333;
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+li:before {
+    content: "•";
+    color: #00843D;
+    position: absolute;
+    left: 0;
+}
+
+.contact-info {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    grid-column: 1 / -1;
+}
+
+.contact-info p {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-info i {
+    color: #00843D;
+    width: 20px;
+}
+
+.back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: #00843D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background: #006b31;
+}
+
+.back-button i {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .privacy-container {
+        padding: 1rem;
+    }
+
+    .privacy-content {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+} 

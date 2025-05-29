@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+
+interface OtpVerificationData {
+  username: string;
+  otp: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  baseUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/'
+  baseUrl = 'http://localhost/ugnayan_system/backend/ugnayanapi/';
 
   login(username: string, password: string) {
     return axios.post(this.baseUrl + 'login', { username, password });
@@ -15,4 +20,7 @@ export class AuthService {
     return axios.post(this.baseUrl + 'register', data);
   }
 
+  async verifyOTP(data: OtpVerificationData) {
+    return axios.post(this.baseUrl + 'verify-otp', data);
+  }
 }

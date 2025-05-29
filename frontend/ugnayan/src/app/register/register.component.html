@@ -1,182 +1,481 @@
 <div class="register-container">
-  <h2>Register</h2>
-  <form
-    [formGroup]="registerForm"
-    (ngSubmit)="onSubmit()"
-    class="register-form"
-  >
-    <div class="form-group">
-      <label for="firstname">First Name</label>
-      <input
-        type="text"
-        id="firstname"
-        formControlName="firstname"
-        placeholder="Enter your first name"
-        [class.is-invalid]="f['firstname'].touched && f['firstname'].invalid"
-      />
-      <div
-        class="error-message"
-        *ngIf="f['firstname'].touched && f['firstname'].invalid"
-      >
-        <span *ngIf="f['firstname'].errors?.['required']"
-          >First name is required</span
-        >
-        <span *ngIf="f['firstname'].errors?.['minlength']"
-          >First name must be at least 2 characters</span
-        >
+  <div class="register-box">
+    <a routerLink="/" class="back-btn" *ngIf="!otpVerificationMode">Back</a>
+
+    <!-- Registration Form Step 1 -->
+    <div *ngIf="!otpVerificationMode && step === 1">
+      <div class="welcome-message">
+        <h2>Create Account</h2>
+        <p>Join our community and start connecting</p>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="middlename">Middle Name (Optional)</label>
-      <input
-        type="text"
-        id="middlename"
-        formControlName="middlename"
-        placeholder="Enter your middle name"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="lastname">Last Name</label>
-      <input
-        type="text"
-        id="lastname"
-        formControlName="lastname"
-        placeholder="Enter your last name"
-        [class.is-invalid]="f['lastname'].touched && f['lastname'].invalid"
-      />
-      <div
-        class="error-message"
-        *ngIf="f['lastname'].touched && f['lastname'].invalid"
-      >
-        <span *ngIf="f['lastname'].errors?.['required']"
-          >Last name is required</span
-        >
-        <span *ngIf="f['lastname'].errors?.['minlength']"
-          >Last name must be at least 2 characters</span
-        >
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        formControlName="username"
-        placeholder="Choose a username"
-        [class.is-invalid]="f['username'].touched && f['username'].invalid"
-      />
-      <div
-        class="error-message"
-        *ngIf="f['username'].touched && f['username'].invalid"
-      >
-        <span *ngIf="f['username'].errors?.['required']"
-          >Username is required</span
-        >
-        <span *ngIf="f['username'].errors?.['minlength']"
-          >Username must be at least 4 characters</span
-        >
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        placeholder="Enter your email"
-        [class.is-invalid]="f['email'].touched && f['email'].invalid"
-      />
-      <div
-        class="error-message"
-        *ngIf="f['email'].touched && f['email'].invalid"
-      >
-        <span *ngIf="f['email'].errors?.['required']">Email is required</span>
-        <span *ngIf="f['email'].errors?.['email']"
-          >Please enter a valid email address</span
-        >
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
-      <div class="password-input">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          formControlName="password"
-          placeholder="Enter your password"
-          [class.is-invalid]="f['password'].touched && f['password'].invalid"
-        />
-        <button
-          type="button"
-          class="show-password"
-          (click)="togglePassword('password')"
-        >
-          <i class="material-icons">visibility_off</i>
+      <form [formGroup]="registerForm" class="register-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="firstname"
+                formControlName="firstname"
+                placeholder="Enter your first name"
+                [class.is-invalid]="
+                  registerForm.get('firstname')?.touched &&
+                  registerForm.get('firstname')?.invalid
+                "
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('firstname')?.touched &&
+                registerForm.get('firstname')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('firstname')?.errors?.['required']"
+                >First name is required</span
+              >
+              <span *ngIf="registerForm.get('firstname')?.errors?.['minlength']"
+                >First name must be at least 2 characters</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="middlename">Middle Name (Optional)</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="middlename"
+                formControlName="middlename"
+                placeholder="Enter your middle name"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="lastname"
+                formControlName="lastname"
+                placeholder="Enter your last name"
+                [class.is-invalid]="
+                  registerForm.get('lastname')?.touched &&
+                  registerForm.get('lastname')?.invalid
+                "
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('lastname')?.touched &&
+                registerForm.get('lastname')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('lastname')?.errors?.['required']"
+                >Last name is required</span
+              >
+              <span *ngIf="registerForm.get('lastname')?.errors?.['minlength']"
+                >Last name must be at least 2 characters</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sex">Sex</label>
+            <div class="input-group">
+              <i class="fas fa-venus-mars"></i>
+              <select id="sex" formControlName="sex" class="select-input">
+                <option value="">Select sex</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('sex')?.touched &&
+                registerForm.get('sex')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('sex')?.errors?.['required']"
+                >Please select your sex</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="birthdate">Birth Date</label>
+            <div class="input-group">
+              <i class="fas fa-calendar"></i>
+              <input
+                type="date"
+                id="birthdate"
+                formControlName="birthdate"
+                [class.is-invalid]="
+                  registerForm.get('birthdate')?.touched &&
+                  registerForm.get('birthdate')?.invalid
+                "
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('birthdate')?.touched &&
+                registerForm.get('birthdate')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('birthdate')?.errors?.['required']"
+                >Birth date is required</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                placeholder="Enter your username"
+                [class.is-invalid]="
+                  registerForm.get('username')?.touched &&
+                  registerForm.get('username')?.invalid
+                "
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('username')?.touched &&
+                registerForm.get('username')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('username')?.errors?.['required']"
+                >Username is required</span
+              >
+              <span *ngIf="registerForm.get('username')?.errors?.['minlength']"
+                >Username must be at least 4 characters</span
+              >
+            </div>
+          </div>
+        </div>
+        <button type="button" class="register-button" (click)="goToStep2()">
+          Next
         </button>
-      </div>
-      <div
-        class="error-message"
-        *ngIf="f['password'].touched && f['password'].invalid"
-      >
-        <span *ngIf="f['password'].errors?.['required']"
-          >Password is required</span
-        >
-        <span *ngIf="f['password'].errors?.['minlength']"
-          >Password must be at least 6 characters</span
-        >
-      </div>
+      </form>
     </div>
 
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password</label>
-      <div class="password-input">
-        <input
-          [type]="showConfirmPassword ? 'text' : 'password'"
-          id="confirmPassword"
-          formControlName="confirmPassword"
-          placeholder="Confirm your password"
-          [class.is-invalid]="
-            f['confirmPassword'].touched &&
-            (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))
-          "
-        />
-        <button
-          type="button"
-          class="show-password"
-          (click)="togglePassword('confirm')"
-        >
-          <i class="material-icons">visibility_off</i>
+    <!-- Registration Form Step 2 -->
+    <div *ngIf="!otpVerificationMode && step === 2">
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="register-form"
+      >
+        <div class="contact-type">
+          <label>Contact Information</label>
+          <div class="contact-options">
+            <button
+              type="button"
+              [class.active]="contactType === 'email'"
+              (click)="toggleContact('email')"
+            >
+              <i class="fas fa-envelope"></i> Email
+            </button>
+            <button
+              type="button"
+              [class.active]="contactType === 'phone'"
+              (click)="toggleContact('phone')"
+            >
+              <i class="fas fa-phone"></i> Phone
+            </button>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="contactType === 'email'">
+          <label for="email">Email Address</label>
+          <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              [class.is-invalid]="
+                registerForm.get('email')?.touched &&
+                registerForm.get('email')?.invalid
+              "
+            />
+          </div>
+          <div
+            class="error-message"
+            *ngIf="
+              registerForm.get('email')?.touched &&
+              registerForm.get('email')?.invalid
+            "
+          >
+            <span *ngIf="registerForm.get('email')?.errors?.['required']"
+              >Email is required</span
+            >
+            <span *ngIf="registerForm.get('email')?.errors?.['email']"
+              >Please enter a valid email</span
+            >
+          </div>
+        </div>
+        <div class="form-group" *ngIf="contactType === 'phone'">
+          <label for="phone">Phone Number</label>
+          <div class="input-group">
+            <i class="fas fa-phone"></i>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              placeholder="Enter your phone number"
+              [class.is-invalid]="
+                registerForm.get('phone')?.touched &&
+                registerForm.get('phone')?.invalid
+              "
+            />
+          </div>
+          <div
+            class="error-message"
+            *ngIf="
+              registerForm.get('phone')?.touched &&
+              registerForm.get('phone')?.invalid
+            "
+          >
+            <span *ngIf="registerForm.get('phone')?.errors?.['required']"
+              >Phone number is required</span
+            >
+            <span *ngIf="registerForm.get('phone')?.errors?.['pattern']"
+              >Please enter a valid phone number</span
+            >
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                placeholder="Enter your password"
+                [class.is-invalid]="
+                  registerForm.get('password')?.touched &&
+                  registerForm.get('password')?.invalid
+                "
+              />
+              <i
+                [class]="
+                  showPassword
+                    ? 'fas fa-eye toggle-password'
+                    : 'fas fa-eye-slash toggle-password'
+                "
+                (click)="togglePassword('password')"
+                style="right: 1rem; left: auto"
+              ></i>
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('password')?.touched &&
+                registerForm.get('password')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('password')?.errors?.['required']"
+                >Password is required</span
+              >
+              <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
+                >Password must be at least 8 characters</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                placeholder="Confirm your password"
+                [class.is-invalid]="
+                  registerForm.get('confirmPassword')?.touched &&
+                  registerForm.get('confirmPassword')?.invalid
+                "
+              />
+              <i
+                [class]="
+                  showConfirmPassword
+                    ? 'fas fa-eye toggle-password'
+                    : 'fas fa-eye-slash toggle-password'
+                "
+                (click)="togglePassword('confirmPassword')"
+                style="right: 1rem; left: auto"
+              ></i>
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('confirmPassword')?.touched &&
+                registerForm.get('confirmPassword')?.invalid
+              "
+            >
+              <span
+                *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+                >Please confirm your password</span
+              >
+            </div>
+            <div
+              class="error-message"
+              *ngIf="(registerForm.get('confirmPassword')?.touched || registerForm.get('password')?.touched) && registerForm.errors?.['passwordMismatch']"
+            >
+              Passwords do not match
+            </div>
+          </div>
+        </div>
+        <div class="terms-section">
+          <div class="terms-checkbox">
+            <input
+              type="checkbox"
+              id="terms"
+              formControlName="terms"
+              [class.is-invalid]="
+                registerForm.get('terms')?.touched &&
+                registerForm.get('terms')?.invalid
+              "
+            />
+            <label for="terms">
+              I agree to the
+              <a href="#" (click)="showTerms()">Terms and Conditions</a>
+            </label>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="
+              registerForm.get('terms')?.touched &&
+              registerForm.get('terms')?.invalid
+            "
+          >
+            <span *ngIf="registerForm.get('terms')?.errors?.['required']"
+              >You must accept the terms and conditions</span
+            >
+          </div>
+        </div>
+        <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <button type="button" class="register-button" (click)="step = 1">
+          Back
         </button>
-      </div>
-      <div
-        class="error-message"
-        *ngIf="
-          f['confirmPassword'].touched &&
-          (f['confirmPassword'].invalid || registerForm.hasError('mismatch'))
-        "
-      >
-        <span *ngIf="f['confirmPassword'].errors?.['required']"
-          >Please confirm your password</span
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="isLoading || registerForm.invalid || registerForm.errors?.['passwordMismatch']"
         >
-        <span *ngIf="registerForm.hasError('mismatch')"
-          >Passwords do not match</span
-        >
-      </div>
+          <i class="fas fa-user-plus"></i>
+          {{ isLoading ? "Creating Account..." : "Create Account" }}
+        </button>
+      </form>
     </div>
 
-    <button type="submit" [disabled]="registerForm.invalid || isLoading">
-      {{ isLoading ? "Registering..." : "Register" }}
-    </button>
+    <!-- OTP Verification Form -->
+    <div *ngIf="otpVerificationMode">
+      <div class="welcome-message">
+        <h2>Verify Your Account</h2>
+        <p>
+          An OTP has been sent to <strong>{{ registeredUsername }}</strong
+          >. Please enter it below.
+        </p>
+      </div>
+      <form [formGroup]="otpForm" (ngSubmit)="onOtpSubmit()" class="otp-form">
+        <div class="form-group">
+          <label for="otp">One-Time Password (OTP)</label>
+          <div class="input-group">
+            <i class="fas fa-key"></i>
+            <input
+              type="text"
+              id="otp"
+              formControlName="otp"
+              placeholder="Enter 6-digit OTP"
+              maxlength="6"
+              [class.is-invalid]="
+                otpForm.get('otp')?.touched && otpForm.get('otp')?.invalid
+              "
+            />
+          </div>
+          <div
+            class="error-message"
+            *ngIf="otpForm.get('otp')?.touched && otpForm.get('otp')?.invalid"
+          >
+            <span *ngIf="otpForm.get('otp')?.errors?.['required']"
+              >OTP is required.</span
+            >
+            <span
+              *ngIf="otpForm.get('otp')?.errors?.['minlength'] || otpForm.get('otp')?.errors?.['maxlength'] || otpForm.get('otp')?.errors?.['pattern']"
+            >
+              OTP must be 6 digits.
+            </span>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="otpErrorMessage">
+          {{ otpErrorMessage }}
+        </div>
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="isLoading || otpForm.invalid"
+        >
+          <i class="fas fa-check-circle"></i>
+          {{ isLoading ? "Verifying..." : "Verify OTP" }}
+        </button>
+        <div class="form-actions">
+          <button
+            type="button"
+            (click)="
+              otpVerificationMode = false;
+              errorMessage = '';
+              otpErrorMessage = ''
+            "
+            class="link-button"
+          >
+            Back to Registration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
-  </form>
-
-  <p class="auth-link">
-    Already have an account? <a routerLink="/login">Login here</a>
-  </p>
+<!-- Terms and Conditions Modal -->
+<div class="modal" *ngIf="termsVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Terms and Conditions</h3>
+      <button class="close-btn" (click)="closeTerms()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>By using Ugnayan, you agree to:</p>
+      <ul>
+        <li>Provide accurate and complete information</li>
+        <li>Maintain the security of your account</li>
+        <li>Not share your account credentials</li>
+        <li>Use the platform responsibly and ethically</li>
+        <li>Respect other users' privacy and rights</li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeTerms()">Close</button>
+      <button class="accept-btn" (click)="acceptTerms()">Accept</button>
+    </div>
+  </div>
 </div>
