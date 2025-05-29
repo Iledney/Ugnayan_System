@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'MyCLabs\\Enum\\' => array($vendorDir . '/myclabs/php-enum/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
     'DASPRiD\\Enum\\' => array($vendorDir . '/dasprid/enum/src'),

@@ -1,9 +1,9 @@
 <div class="register-container">
   <div class="register-box">
-    <a routerLink="/" class="back-btn" *ngIf="!otpVerificationMode">Back</a>
+    <a routerLink="/" class="back-btn">Back</a>
 
     <!-- Registration Form Step 1 -->
-    <div *ngIf="!otpVerificationMode && step === 1">
+    <div *ngIf="step === 1">
       <div class="welcome-message">
         <h2>Create Account</h2>
         <p>Join our community and start connecting</p>
@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="middlename">Middle Name (Optional)</label>
+            <label for="middlename">Middle Name</label>
             <div class="input-group">
               <i class="fas fa-user"></i>
               <input
@@ -85,59 +85,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="sex">Sex</label>
-            <div class="input-group">
-              <i class="fas fa-venus-mars"></i>
-              <select id="sex" formControlName="sex" class="select-input">
-                <option value="">Select sex</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-            <div
-              class="error-message"
-              *ngIf="
-                registerForm.get('sex')?.touched &&
-                registerForm.get('sex')?.invalid
-              "
-            >
-              <span *ngIf="registerForm.get('sex')?.errors?.['required']"
-                >Please select your sex</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="birthdate">Birth Date</label>
-            <div class="input-group">
-              <i class="fas fa-calendar"></i>
-              <input
-                type="date"
-                id="birthdate"
-                formControlName="birthdate"
-                [class.is-invalid]="
-                  registerForm.get('birthdate')?.touched &&
-                  registerForm.get('birthdate')?.invalid
-                "
-              />
-            </div>
-            <div
-              class="error-message"
-              *ngIf="
-                registerForm.get('birthdate')?.touched &&
-                registerForm.get('birthdate')?.invalid
-              "
-            >
-              <span *ngIf="registerForm.get('birthdate')?.errors?.['required']"
-                >Birth date is required</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Username (Email/Phone Number)</label>
             <div class="input-group">
               <i class="fas fa-user"></i>
               <input
@@ -167,6 +115,61 @@
             </div>
           </div>
         </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sex">Sex</label>
+            <div class="input-group">
+              <i class="fas fa-venus-mars"></i>
+              <select
+                id="sex"
+                formControlName="sex"
+                [class.is-invalid]="
+                  registerForm.get('sex')?.touched && registerForm.get('sex')?.invalid
+                "
+              >
+                <option value="">Select sex</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('sex')?.touched && registerForm.get('sex')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('sex')?.errors?.['required']"
+                >Please select your sex</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Birth Date</label>
+            <div class="input-group">
+              <i class="fas fa-calendar"></i>
+              <input
+                type="date"
+                id="birthdate"
+                formControlName="birthdate"
+                [class.is-invalid]="
+                  registerForm.get('birthdate')?.touched &&
+                  registerForm.get('birthdate')?.invalid
+                "
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                registerForm.get('birthdate')?.touched &&
+                registerForm.get('birthdate')?.invalid
+              "
+            >
+              <span *ngIf="registerForm.get('birthdate')?.errors?.['required']"
+                >Birth date is required</span
+              >
+            </div>
+          </div>
+        </div>
         <button type="button" class="register-button" (click)="goToStep2()">
           Next
         </button>
@@ -174,91 +177,12 @@
     </div>
 
     <!-- Registration Form Step 2 -->
-    <div *ngIf="!otpVerificationMode && step === 2">
+    <div *ngIf="step === 2">
       <form
         [formGroup]="registerForm"
         (ngSubmit)="onSubmit()"
         class="register-form"
       >
-        <div class="contact-type">
-          <label>Contact Information</label>
-          <div class="contact-options">
-            <button
-              type="button"
-              [class.active]="contactType === 'email'"
-              (click)="toggleContact('email')"
-            >
-              <i class="fas fa-envelope"></i> Email
-            </button>
-            <button
-              type="button"
-              [class.active]="contactType === 'phone'"
-              (click)="toggleContact('phone')"
-            >
-              <i class="fas fa-phone"></i> Phone
-            </button>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="contactType === 'email'">
-          <label for="email">Email Address</label>
-          <div class="input-group">
-            <i class="fas fa-envelope"></i>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              placeholder="Enter your email"
-              [class.is-invalid]="
-                registerForm.get('email')?.touched &&
-                registerForm.get('email')?.invalid
-              "
-            />
-          </div>
-          <div
-            class="error-message"
-            *ngIf="
-              registerForm.get('email')?.touched &&
-              registerForm.get('email')?.invalid
-            "
-          >
-            <span *ngIf="registerForm.get('email')?.errors?.['required']"
-              >Email is required</span
-            >
-            <span *ngIf="registerForm.get('email')?.errors?.['email']"
-              >Please enter a valid email</span
-            >
-          </div>
-        </div>
-        <div class="form-group" *ngIf="contactType === 'phone'">
-          <label for="phone">Phone Number</label>
-          <div class="input-group">
-            <i class="fas fa-phone"></i>
-            <input
-              type="tel"
-              id="phone"
-              formControlName="phone"
-              placeholder="Enter your phone number"
-              [class.is-invalid]="
-                registerForm.get('phone')?.touched &&
-                registerForm.get('phone')?.invalid
-              "
-            />
-          </div>
-          <div
-            class="error-message"
-            *ngIf="
-              registerForm.get('phone')?.touched &&
-              registerForm.get('phone')?.invalid
-            "
-          >
-            <span *ngIf="registerForm.get('phone')?.errors?.['required']"
-              >Phone number is required</span
-            >
-            <span *ngIf="registerForm.get('phone')?.errors?.['pattern']"
-              >Please enter a valid phone number</span
-            >
-          </div>
-        </div>
         <div class="form-row">
           <div class="form-group">
             <label for="password">Password</label>
@@ -383,72 +307,6 @@
           <i class="fas fa-user-plus"></i>
           {{ isLoading ? "Creating Account..." : "Create Account" }}
         </button>
-      </form>
-    </div>
-
-    <!-- OTP Verification Form -->
-    <div *ngIf="otpVerificationMode">
-      <div class="welcome-message">
-        <h2>Verify Your Account</h2>
-        <p>
-          An OTP has been sent to <strong>{{ registeredUsername }}</strong
-          >. Please enter it below.
-        </p>
-      </div>
-      <form [formGroup]="otpForm" (ngSubmit)="onOtpSubmit()" class="otp-form">
-        <div class="form-group">
-          <label for="otp">One-Time Password (OTP)</label>
-          <div class="input-group">
-            <i class="fas fa-key"></i>
-            <input
-              type="text"
-              id="otp"
-              formControlName="otp"
-              placeholder="Enter 6-digit OTP"
-              maxlength="6"
-              [class.is-invalid]="
-                otpForm.get('otp')?.touched && otpForm.get('otp')?.invalid
-              "
-            />
-          </div>
-          <div
-            class="error-message"
-            *ngIf="otpForm.get('otp')?.touched && otpForm.get('otp')?.invalid"
-          >
-            <span *ngIf="otpForm.get('otp')?.errors?.['required']"
-              >OTP is required.</span
-            >
-            <span
-              *ngIf="otpForm.get('otp')?.errors?.['minlength'] || otpForm.get('otp')?.errors?.['maxlength'] || otpForm.get('otp')?.errors?.['pattern']"
-            >
-              OTP must be 6 digits.
-            </span>
-          </div>
-        </div>
-        <div class="error-message" *ngIf="otpErrorMessage">
-          {{ otpErrorMessage }}
-        </div>
-        <button
-          type="submit"
-          class="register-button"
-          [disabled]="isLoading || otpForm.invalid"
-        >
-          <i class="fas fa-check-circle"></i>
-          {{ isLoading ? "Verifying..." : "Verify OTP" }}
-        </button>
-        <div class="form-actions">
-          <button
-            type="button"
-            (click)="
-              otpVerificationMode = false;
-              errorMessage = '';
-              otpErrorMessage = ''
-            "
-            class="link-button"
-          >
-            Back to Registration
-          </button>
-        </div>
       </form>
     </div>
   </div>

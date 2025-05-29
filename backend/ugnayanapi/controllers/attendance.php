@@ -10,7 +10,7 @@ class Attendance extends GlobalUtil{
         $this->pdo = $pdo;
     }
 
-    public function getAttendance()
+    public function getAttendance($eventId)
     {
         try {
             $sql = "
@@ -26,9 +26,12 @@ class Attendance extends GlobalUtil{
                     u.username AS user_username
                 FROM attendance a
                 LEFT JOIN users u ON a.userId = u.id
+                WHERE a.eventId = :eventId
+                ORDER BY a.created_at DESC
             ";
     
-            $stmt = $this->pdo->query($sql);
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['eventId' => $eventId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
             return $this->sendResponse($result, 200);

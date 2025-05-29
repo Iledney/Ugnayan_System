@@ -66,6 +66,24 @@ class Finance extends GlobalUtil{
                 return $this->sendErrorResponse("Missing required fields", 400);
             }
 
+            // Validate amount
+            if (!is_numeric($data->amount) || $data->amount <= 0) {
+                return $this->sendErrorResponse("Invalid contribution amount", 400);
+            }
+
+            // Validate date
+            if (!strtotime($data->contribution_date)) {
+                return $this->sendErrorResponse("Invalid contribution date", 400);
+            }
+
+            // Check if user exists
+            $checkUserQuery = "SELECT id FROM users WHERE id = ?";
+            $checkUserStmt = $this->pdo->prepare($checkUserQuery);
+            $checkUserStmt->execute([$data->user_id]);
+            if (!$checkUserStmt->fetch()) {
+                return $this->sendErrorResponse("User not found", 404);
+            }
+
             // Insert contribution
             $query = "INSERT INTO finance (user_id, amount, contribution_date) VALUES (?, ?, ?)";
             $stmt = $this->pdo->prepare($query);
@@ -82,8 +100,14 @@ class Finance extends GlobalUtil{
 
             $contributionId = $this->pdo->lastInsertId();
 
-            // Update dashboard with new total
-            $monthlyTotal = $this->updateDashboardTotal();
+            try {
+                // Update dashboard with new total
+                $monthlyTotal = $this->updateDashboardTotal();
+            } catch (PDOException $e) {
+                // Log the error but don't fail the transaction
+                error_log("Failed to update dashboard total: " . $e->getMessage());
+                $monthlyTotal = 0;
+            }
 
             // Get the newly added contribution
             $query = "SELECT f.*, u.firstname, u.lastname 
@@ -97,6 +121,7 @@ class Finance extends GlobalUtil{
             $this->pdo->commit();
 
             return $this->sendResponse([
+                'status' => 'success',
                 'message' => 'Contribution added successfully',
                 'contribution' => $contribution,
                 'monthly_total' => $monthlyTotal
@@ -106,6 +131,10 @@ class Finance extends GlobalUtil{
             $this->pdo->rollBack();
             error_log("Database error in addContribution: " . $e->getMessage());
             return $this->sendErrorResponse("Database error: " . $e->getMessage(), 500);
+        } catch(Exception $e) {
+            $this->pdo->rollBack();
+            error_log("Error in addContribution: " . $e->getMessage());
+            return $this->sendErrorResponse("Error: " . $e->getMessage(), 500);
         }
     }
 

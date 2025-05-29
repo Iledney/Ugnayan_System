@@ -2,34 +2,34 @@
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
-            "version": "2.0.8",
-            "version_normalized": "2.0.8.0",
+            "version": "v3.0.1",
+            "version_normalized": "3.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bacon/BaconQrCode.git",
-                "reference": "8674e51bb65af933a5ffaf1c308a660387c35c22"
+                "reference": "f9cc1f52b5a463062251d666761178dbdb6b544f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/8674e51bb65af933a5ffaf1c308a660387c35c22",
-                "reference": "8674e51bb65af933a5ffaf1c308a660387c35c22",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/f9cc1f52b5a463062251d666761178dbdb6b544f",
+                "reference": "f9cc1f52b5a463062251d666761178dbdb6b544f",
                 "shasum": ""
             },
             "require": {
                 "dasprid/enum": "^1.0.3",
                 "ext-iconv": "*",
-                "php": "^7.1 || ^8.0"
+                "php": "^8.1"
             },
             "require-dev": {
-                "phly/keep-a-changelog": "^2.1",
-                "phpunit/phpunit": "^7 | ^8 | ^9",
-                "spatie/phpunit-snapshot-assertions": "^4.2.9",
-                "squizlabs/php_codesniffer": "^3.4"
+                "phly/keep-a-changelog": "^2.12",
+                "phpunit/phpunit": "^10.5.11 || 11.0.4",
+                "spatie/phpunit-snapshot-assertions": "^5.1.5",
+                "squizlabs/php_codesniffer": "^3.9"
             },
             "suggest": {
                 "ext-imagick": "to generate QR code images"
             },
-            "time": "2022-12-07T17:46:57+00:00",
+            "time": "2024-10-01T13:55:55+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -53,7 +53,7 @@
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "support": {
                 "issues": "https://github.com/Bacon/BaconQrCode/issues",
-                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.8"
+                "source": "https://github.com/Bacon/BaconQrCode/tree/v3.0.1"
             },
             "install-path": "../bacon/bacon-qr-code"
         },
@@ -112,42 +112,40 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "3.9.7",
-            "version_normalized": "3.9.7.0",
+            "version": "5.1.0",
+            "version_normalized": "5.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "94563d7b3105288e6ac53a67ae720e3669fac1f6"
+                "reference": "393fec6c4cbdc1bd65570ac9d245704428010122"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/94563d7b3105288e6ac53a67ae720e3669fac1f6",
-                "reference": "94563d7b3105288e6ac53a67ae720e3669fac1f6",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/393fec6c4cbdc1bd65570ac9d245704428010122",
+                "reference": "393fec6c4cbdc1bd65570ac9d245704428010122",
                 "shasum": ""
             },
             "require": {
-                "bacon/bacon-qr-code": "^2.0",
-                "khanamiryan/qrcode-detector-decoder": "^1.0.5",
-                "myclabs/php-enum": "^1.5",
-                "php": "^7.3||^8.0",
-                "symfony/options-resolver": "^3.4||^4.4||^5.0",
-                "symfony/property-access": "^3.4||^4.4||^5.0"
+                "bacon/bacon-qr-code": "^3.0",
+                "php": "^8.1"
             },
             "require-dev": {
-                "endroid/quality": "^1.5.2",
-                "setasign/fpdf": "^1.8"
+                "endroid/quality": "dev-main",
+                "ext-gd": "*",
+                "khanamiryan/qrcode-detector-decoder": "^2.0.2",
+                "setasign/fpdf": "^1.8.2"
             },
             "suggest": {
-                "ext-gd": "Required for generating PNG images",
-                "roave/security-advisories": "Avoids installation of package versions with vulnerabilities",
-                "setasign/fpdf": "Required to use the FPDF writer.",
-                "symfony/security-checker": "Checks your composer.lock for vulnerabilities"
+                "ext-gd": "Enables you to write PNG images",
+                "khanamiryan/qrcode-detector-decoder": "Enables you to use the image validator",
+                "roave/security-advisories": "Makes sure package versions with known security issues are not installed",
+                "setasign/fpdf": "Enables you to use the PDF writer"
             },
-            "time": "2021-04-20T19:10:54+00:00",
+            "time": "2024-09-08T08:52:55+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-main": "5.x-dev"
                 }
             },
             "installation-source": "dist",
@@ -169,7 +167,6 @@
             "description": "Endroid QR Code",
             "homepage": "https://github.com/endroid/qr-code",
             "keywords": [
-                "bundle",
                 "code",
                 "endroid",
                 "php",
@@ -178,7 +175,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/3.9.7"
+                "source": "https://github.com/endroid/qr-code/tree/5.1.0"
             },
             "funding": [
                 {
@@ -190,29 +187,35 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v5.5.1",
-            "version_normalized": "5.5.1.0",
+            "version": "v6.11.1",
+            "version_normalized": "6.11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6"
+                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/83b609028194aa042ea33b5af2d41a7427de80e6",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
+                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=4.8 <=9"
+                "guzzlehttp/guzzle": "^7.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psr/cache": "^2.0||^3.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "suggest": {
+                "ext-sodium": "Support EdDSA (Ed25519) signatures",
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
             },
-            "time": "2021-11-08T20:18:51+00:00",
+            "time": "2025-04-09T20:32:01+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -244,9 +247,75 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v5.5.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.11.1"
             },
             "install-path": "../firebase/php-jwt"
+        },
+        {
+            "name": "myclabs/php-enum",
+            "version": "1.8.5",
+            "version_normalized": "1.8.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/php-enum.git",
+                "reference": "e7be26966b7398204a234f8673fdad5ac6277802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/e7be26966b7398204a234f8673fdad5ac6277802",
+                "reference": "e7be26966b7398204a234f8673fdad5ac6277802",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "1.*",
+                "vimeo/psalm": "^4.6.2 || ^5.2"
+            },
+            "time": "2025-01-14T11:49:03+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "MyCLabs\\Enum\\": "src/"
+                },
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP Enum contributors",
+                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
+                }
+            ],
+            "description": "PHP Enum implementation",
+            "homepage": "https://github.com/myclabs/php-enum",
+            "keywords": [
+                "enum"
+            ],
+            "support": {
+                "issues": "https://github.com/myclabs/php-enum/issues",
+                "source": "https://github.com/myclabs/php-enum/tree/1.8.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/php-enum",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../myclabs/php-enum"
         },
         {
             "name": "phpmailer/phpmailer",

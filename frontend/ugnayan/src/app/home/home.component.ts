@@ -48,7 +48,17 @@ export class HomeComponent implements OnInit {
   async loadSermons() {
     try {
       const response = await this.fetchService.getSermons();
-      this.sermons = response.data.data || [];
+      if (!response || !response.data) {
+        console.error('Invalid response structure:', response);
+        return;
+      }
+
+      // Process sermons to ensure valid audio URLs
+      this.sermons = (response.data.data || []).map((sermon: any) => ({
+        ...sermon,
+        audioFile: sermon.audioFile ? `http://localhost${sermon.audioFile}` : null
+      }));
+
       this.totalPages = Math.ceil(this.sermons.length / this.itemsPerPage);
       this.updatePaginatedSermons();
       console.log('Sermons loaded:', this.sermons);

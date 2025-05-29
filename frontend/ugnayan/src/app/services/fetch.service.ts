@@ -44,7 +44,10 @@ export class FetchService {
   }
 
   fetchAttendance(eventId: string) {
-    return axios.get(this.baseUrl + 'attendance/' + eventId, this.getHeaders());
+    return axios.get(
+      `${this.baseUrl}attendance/${eventId}`,
+      this.getHeaders()
+    );
   }
 
   getDashboard() {

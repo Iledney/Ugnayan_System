@@ -28,12 +28,6 @@ interface UserContribution {
   lastname: string;
 }
 
-interface MonthlyBreakdown {
-  name: string;
-  total: number;
-  percentage: number;
-}
-
 @Component({
   selector: 'app-finance',
   standalone: true,
@@ -49,7 +43,6 @@ export class FinanceComponent implements OnInit {
   selectedSurname: string = '';
   userContributions: UserContribution[] = [];
   selectedUserId: number | null = null;
-  monthlyBreakdown: MonthlyBreakdown[] = [];
 
   // Modal properties
   showModal: boolean = false;
@@ -67,7 +60,6 @@ export class FinanceComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSurnames();
-    this.calculateMonthlyBreakdown();
   }
 
   async fetchSurnames() {
@@ -120,9 +112,7 @@ export class FinanceComponent implements OnInit {
       if (response.data && response.data.data) {
         this.userContributions = response.data.data;
         this.selectedUserId = userId;
-        console.log('Fetched contributions:', this.userContributions);
       } else {
-        console.error('Invalid response format:', response);
         this.userContributions = [];
         throw new Error('Invalid response format from server');
       }
@@ -152,103 +142,6 @@ export class FinanceComponent implements OnInit {
     );
   }
 
-  getTotalContributions(): number {
-    return this.userContributions.reduce(
-      (total, contribution) => total + contribution.amount,
-      0
-    );
-  }
-
-  getWeeklyTotal(): number {
-    const now = new Date();
-    const weekStart = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() - now.getDay()
-    );
-
-    return this.userContributions
-      .filter(
-        (contribution) => new Date(contribution.contribution_date) >= weekStart
-      )
-      .reduce((total, contribution) => total + contribution.amount, 0);
-  }
-
-  getMonthlyTotal(): number {
-    const now = new Date();
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    return this.userContributions
-      .filter(
-        (contribution) => new Date(contribution.contribution_date) >= monthStart
-      )
-      .reduce((total, contribution) => total + contribution.amount, 0);
-  }
-
-  getUserTotalContributions(userId: number): number {
-    return this.userContributions
-      .filter((contribution) => contribution.user_id === userId)
-      .reduce((total, contribution) => total + contribution.amount, 0);
-  }
-
-  getLastContributionDate(userId: number): Date | null {
-    const userContributions = this.userContributions
-      .filter((contribution) => contribution.user_id === userId)
-      .sort(
-        (a, b) =>
-          new Date(b.contribution_date).getTime() -
-          new Date(a.contribution_date).getTime()
-      );
-
-    return userContributions.length > 0
-      ? new Date(userContributions[0].contribution_date)
-      : null;
-  }
-
-  calculateMonthlyBreakdown() {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-
-    const now = new Date();
-    const currentYear = now.getFullYear();
-
-    // Calculate totals for each month
-    const monthlyTotals = months.map((name, index) => {
-      const monthStart = new Date(currentYear, index, 1);
-      const monthEnd = new Date(currentYear, index + 1, 0);
-
-      const total = this.userContributions
-        .filter((contribution) => {
-          const date = new Date(contribution.contribution_date);
-          return date >= monthStart && date <= monthEnd;
-        })
-        .reduce((sum, contribution) => sum + contribution.amount, 0);
-
-      return { name, total };
-    });
-
-    // Calculate percentages based on the highest month
-    const maxTotal = Math.max(...monthlyTotals.map((month) => month.total));
-
-    this.monthlyBreakdown = monthlyTotals.map((month) => ({
-      name: month.name,
-      total: month.total,
-      percentage: maxTotal > 0 ? (month.total / maxTotal) * 100 : 0,
-    }));
-  }
-
   openContributionModal(user: User) {
     this.selectedUser = user;
     this.contribution.user_id = user.id;
@@ -266,74 +159,48 @@ export class FinanceComponent implements OnInit {
   }
 
   async addContribution() {
-    try {
-      if (!this.contribution.amount || this.contribution.amount <= 0) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Invalid Amount',
-          text: 'Please enter a valid amount greater than 0',
-          confirmButtonColor: '#d33',
-        });
-        return;
-      }
-
-      if (!this.contribution.contribution_date) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Date Required',
-          text: 'Please select a contribution date',
-          confirmButtonColor: '#d33',
-        });
-        return;
-      }
-
-      // Show loading state
+    if (!this.contribution.amount || this.contribution.amount <= 0) {
       Swal.fire({
-        title: 'Adding Contribution',
-        text: 'Please wait...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        icon: 'error',
+        title: 'Invalid Amount',
+        text: 'Please enter a valid contribution amount.',
+        confirmButtonColor: '#d33',
       });
+      return;
+    }
 
-      console.log('Sending contribution:', this.contribution);
-      const result = await this.postService.addContribution(this.contribution);
-      console.log('Server response:', result);
-
-      if (result.data && result.data.data) {
-        // Refresh the user's contributions if we're viewing them
+    try {
+      const response = await this.postService.addContribution(this.contribution);
+      if (response.data && response.data.status === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Contribution Added',
+          text: 'The contribution has been successfully recorded.',
+          confirmButtonColor: '#50b17c',
+        });
+        this.closeModal();
+        // Refresh contributions if we're viewing them
         if (this.selectedUserId === this.contribution.user_id) {
           await this.fetchUserContributions(this.selectedUserId);
         }
-
-        // Recalculate monthly breakdown
-        this.calculateMonthlyBreakdown();
-
-        await Swal.fire({
-          icon: 'success',
-          title: 'Contribution Added',
-          text: 'The contribution has been recorded successfully!',
-          confirmButtonColor: '#28a745',
-          timer: 2000,
-          showConfirmButton: false,
-        });
-
-        this.closeModal();
       } else {
-        console.error('Invalid server response:', result);
-        throw new Error('Invalid server response');
+        throw new Error(response.data?.message || 'Failed to add contribution');
       }
     } catch (error: any) {
       console.error('Error adding contribution:', error);
-      const errorMessage = error.response?.data?.message || 'Please try again.';
-
       Swal.fire({
         icon: 'error',
         title: 'Error Adding Contribution',
-        text: 'Failed to add contribution: ' + errorMessage,
+        text: error.response?.data?.message || error.message || 'Failed to add the contribution. Please try again.',
         confirmButtonColor: '#d33',
       });
     }
+  }
+
+  getTotalContributions(): number {
+    return this.userContributions.reduce(
+      (total, contribution) => total + contribution.amount,
+      0
+    );
   }
 }

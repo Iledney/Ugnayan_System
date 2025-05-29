@@ -1,165 +1,177 @@
 <app-navbar></app-navbar>
-<section id="events" class="section hidden">
-  <h2>Events Management</h2>
+<div class="events-container">
+    <header class="events-header">
+        <h1>Events Management</h1>
+    </header>
 
-  <!-- events Table -->
-  <div class="events-table">
-    <h3>Events Records</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Event Name</th>
-          <th>Description</th>
-          <th>Image</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let event of events.data"
-          class="clickable-row"
-          (click)="onRowClick(event)"
-        >
-          <td>{{ event.date }}</td>
-          <td>{{ event.eventname }}</td>
-          <td>{{ event.description }}</td>
-          <td>
-            <img
-              *ngIf="event.image"
-              [src]="event.image"
-              alt="Event Image"
-              class="event-image"
-            />
-            <span *ngIf="!event.image">No image</span>
-          </td>
-          <td class="action-buttons">
-            <button
-              class="update-btn"
-              (click)="$event.stopPropagation(); openUpdateModal(event)"
-            >
-              Update
-            </button>
-            <button
-              class="delete-btn"
-              (click)="$event.stopPropagation(); deleteEvent(event.id)"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <main class="events-content">
+        <!-- Events Table -->
+        <section class="events-section">
+            <div class="table-container">
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event Name</th>
+                            <th>Description</th>
+                            <th>Image</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let event of events.data">
+                            <td>{{ event.date | date:'mediumDate' }}</td>
+                            <td>{{ event.eventname }}</td>
+                            <td>{{ event.description }}</td>
+                            <td>
+                                <img
+                                    *ngIf="event.image"
+                                    [src]="event.image"
+                                    alt="Event Image"
+                                    class="event-image"
+                                />
+                                <span *ngIf="!event.image">No image</span>
+                            </td>
+                            <td class="action-buttons">
+                                <button class="action-btn view" (click)="onRowClick(event)">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit" (click)="openUpdateModal(event)">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="action-btn delete" (click)="deleteEvent(event.id)">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-  <!-- Add events Form -->
-  <div class="add-events-form">
-    <h3>Add New Event</h3>
-    <form id="eventsForm" [formGroup]="eventForm" (ngSubmit)="addEvent()">
-      <label for="date">Date:</label>
-      <input type="date" id="date" formControlName="date" required />
+        <!-- Add Event Form -->
+        <section class="add-event-section">
+            <h2>Add New Event</h2>
+            <form class="event-form" [formGroup]="eventForm" (ngSubmit)="addEvent()">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" formControlName="date" required />
+                </div>
 
-      <label for="eventname">Event Name:</label>
-      <input
-        type="text"
-        id="eventname"
-        formControlName="eventname"
-        placeholder="Event Name"
-        required
-      />
+                <div class="form-group">
+                    <label for="eventname">Event Name</label>
+                    <input
+                        type="text"
+                        id="eventname"
+                        formControlName="eventname"
+                        placeholder="Enter event name"
+                        required
+                    />
+                </div>
 
-      <label for="description">Description:</label>
-      <textarea
-        id="description"
-        formControlName="description"
-        placeholder="Event Description"
-        required
-      ></textarea>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        formControlName="description"
+                        placeholder="Enter event description"
+                        required
+                    ></textarea>
+                </div>
 
-      <label for="image">Event Image:</label>
-      <input
-        type="file"
-        id="image"
-        (change)="onFileSelected($event)"
-        accept="image/*"
-      />
-      <div *ngIf="previewImage" class="image-preview">
-        <img [src]="previewImage" alt="Preview" />
-      </div>
+                <div class="form-group">
+                    <label for="image">Event Image</label>
+                    <input
+                        type="file"
+                        id="image"
+                        (change)="onFileSelected($event)"
+                        accept="image/*"
+                    />
+                    <div *ngIf="previewImage" class="image-preview">
+                        <img [src]="previewImage" alt="Preview" />
+                    </div>
+                </div>
 
-      <button type="submit" [disabled]="eventForm.invalid">Add Event</button>
-    </form>
-  </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn" [disabled]="eventForm.invalid">
+                        Add Event
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
 
-  <div class="update-modal" *ngIf="showUpdateModal">
+<!-- Update Modal -->
+<div class="modal" *ngIf="showUpdateModal">
     <div class="modal-content">
-      <h3>Update Event</h3>
-      <form [formGroup]="updateForm" (ngSubmit)="updateEvent()">
-        <div class="form-group">
-          <label for="update-date">Date:</label>
-          <input type="date" id="update-date" formControlName="date" required />
+        <div class="modal-header">
+            <h3>Update Event</h3>
+            <button class="close-btn" (click)="closeUpdateModal()">&times;</button>
         </div>
+        
+        <div class="modal-body">
+            <form class="update-form" [formGroup]="updateForm" (ngSubmit)="updateEvent()">
+                <div class="form-group">
+                    <label for="update-date">Date</label>
+                    <input type="date" id="update-date" formControlName="date" required />
+                </div>
 
-        <div class="form-group">
-          <label for="update-eventname">Event Name:</label>
-          <input
-            type="text"
-            id="update-eventname"
-            formControlName="eventname"
-            required
-          />
-        </div>
+                <div class="form-group">
+                    <label for="update-eventname">Event Name</label>
+                    <input
+                        type="text"
+                        id="update-eventname"
+                        formControlName="eventname"
+                        required
+                    />
+                </div>
 
-        <div class="form-group">
-          <label for="update-description">Description:</label>
-          <textarea
-            id="update-description"
-            formControlName="description"
-            required
-          ></textarea>
-        </div>
+                <div class="form-group">
+                    <label for="update-description">Description</label>
+                    <textarea
+                        id="update-description"
+                        formControlName="description"
+                        required
+                    ></textarea>
+                </div>
 
-        <div class="form-group">
-          <label for="update-image">Image:</label>
-          <input
-            type="file"
-            id="update-image"
-            (change)="onUpdateFileSelected($event)"
-            accept="image/*"
-          />
-          <img
-            *ngIf="updatePreviewImage"
-            [src]="updatePreviewImage"
-            alt="Preview"
-            class="preview-image"
-          />
-        </div>
+                <div class="form-group">
+                    <label for="update-image">Image</label>
+                    <input
+                        type="file"
+                        id="update-image"
+                        (change)="onUpdateFileSelected($event)"
+                        accept="image/*"
+                    />
+                    <div *ngIf="updatePreviewImage" class="image-preview">
+                        <img [src]="updatePreviewImage" alt="Preview" />
+                    </div>
+                </div>
 
-        <div class="form-actions">
-          <button type="submit" [disabled]="!updateForm.valid">Update</button>
-          <button type="button" (click)="closeUpdateModal()">Cancel</button>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" (click)="closeUpdateModal()">Cancel</button>
+                    <button type="submit" class="submit-btn" [disabled]="!updateForm.valid">Update</button>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
+</div>
 
-  <!-- Attendance Modal -->
-  <div class="attendance-modal" *ngIf="showAttendanceModal">
+<!-- Attendance Modal -->
+<div class="modal" *ngIf="showAttendanceModal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3>Attendance for {{ selectedEvent?.eventname }}</h3>
-        <button class="close-btn" (click)="closeAttendanceModal()">
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-attendance
-          *ngIf="showAttendanceModal"
-          [eventId]="selectedEvent?.id"
-          (close)="closeAttendanceModal()"
-        >
-        </app-attendance>
-      </div>
+        <div class="modal-header">
+            <h3>Attendance for {{ selectedEvent?.eventname }}</h3>
+            <button class="close-btn" (click)="closeAttendanceModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <app-attendance
+                *ngIf="showAttendanceModal"
+                [eventId]="selectedEvent?.id"
+                (close)="closeAttendanceModal()"
+            >
+            </app-attendance>
+        </div>
     </div>
-  </div>
-</section>
+</div>

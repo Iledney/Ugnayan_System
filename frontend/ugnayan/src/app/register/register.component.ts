@@ -26,16 +26,11 @@ interface ApiResponse {
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  otpForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
-  otpErrorMessage: string = '';
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
-  contactType: 'email' | 'phone' = 'email';
   termsVisible: boolean = false;
-  otpVerificationMode: boolean = false;
-  registeredUsername: string = '';
   step: number = 1;
 
   constructor(
@@ -49,8 +44,6 @@ export class RegisterComponent implements OnInit {
         middlename: [''],
         lastname: ['', [Validators.required, Validators.minLength(2)]],
         username: ['', [Validators.required, Validators.minLength(4)]],
-        email: ['', [Validators.required, Validators.email]],
-        phone: [''],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]],
         sex: ['', [Validators.required]],
@@ -61,13 +54,6 @@ export class RegisterComponent implements OnInit {
         validators: [this.passwordMatchValidator],
       }
     );
-
-    this.otpForm = this.fb.group({
-      otp: [
-        '',
-        [Validators.required, Validators.minLength(6), Validators.maxLength(6)],
-      ],
-    });
   }
 
   ngOnInit() {}
@@ -89,26 +75,6 @@ export class RegisterComponent implements OnInit {
     } else {
       this.showConfirmPassword = !this.showConfirmPassword;
     }
-  }
-
-  toggleContact(type: 'email' | 'phone') {
-    this.contactType = type;
-    if (type === 'email') {
-      this.registerForm.get('phone')?.clearValidators();
-      this.registerForm
-        .get('email')
-        ?.setValidators([Validators.required, Validators.email]);
-    } else {
-      this.registerForm.get('email')?.clearValidators();
-      this.registerForm
-        .get('phone')
-        ?.setValidators([
-          Validators.required,
-          Validators.pattern(/^[0-9]{11}$/),
-        ]);
-    }
-    this.registerForm.get('email')?.updateValueAndValidity();
-    this.registerForm.get('phone')?.updateValueAndValidity();
   }
 
   showTerms() {
@@ -182,15 +148,13 @@ export class RegisterComponent implements OnInit {
       const apiResponse = response.data as ApiResponse;
 
       if (apiResponse.status === 'success') {
-        this.registeredUsername = formData.username;
-        this.otpVerificationMode = true;
-
         await Swal.fire({
           icon: 'success',
           title: 'Registration Successful!',
-          text: 'Please verify your account with the OTP sent to your email.',
+          text: 'You can now login with your username and password.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/login']);
       } else {
         throw new Error(apiResponse.message || 'Registration failed');
       }
@@ -204,42 +168,6 @@ export class RegisterComponent implements OnInit {
           'Registration failed. Please try again.',
         confirmButtonColor: '#d33',
       });
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async onOtpSubmit() {
-    if (this.otpForm.invalid) {
-      return;
-    }
-
-    this.isLoading = true;
-
-    try {
-      const response = await this.authService.verifyOTP({
-        username: this.registeredUsername,
-        otp: this.otpForm.get('otp')?.value || '',
-      });
-      const apiResponse = response.data as ApiResponse;
-
-      if (apiResponse.status === 'success') {
-        await Swal.fire({
-          icon: 'success',
-          title: 'Account Verified!',
-          text: 'You can now login to your account.',
-          confirmButtonColor: '#28a745',
-        });
-        this.router.navigate(['/login']);
-      } else {
-        this.otpErrorMessage =
-          apiResponse.message || 'Invalid OTP. Please try again.';
-      }
-    } catch (error: any) {
-      this.otpErrorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'Failed to verify OTP. Please try again.';
     } finally {
       this.isLoading = false;
     }
@@ -268,22 +196,6 @@ export class RegisterComponent implements OnInit {
     }
     if (controls['username'].errors?.['minlength']) {
       errors.push('Username must be at least 4 characters');
-    }
-
-    if (this.contactType === 'email') {
-      if (controls['email'].errors?.['required']) {
-        errors.push('Email is required');
-      }
-      if (controls['email'].errors?.['email']) {
-        errors.push('Please enter a valid email address');
-      }
-    } else {
-      if (controls['phone'].errors?.['required']) {
-        errors.push('Phone number is required');
-      }
-      if (controls['phone'].errors?.['pattern']) {
-        errors.push('Please enter a valid phone number');
-      }
     }
 
     if (controls['password'].errors?.['required']) {

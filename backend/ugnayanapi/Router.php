@@ -33,7 +33,7 @@ require_once('./config/db.php');
 require_once('./controllers/login.php');
 require_once('./controllers/violations.php');
 require_once('./controllers/events.php');
-require_once('./controllers/regsiter.php');
+require_once('./controllers/register.php');
 require_once('./controllers/attendance.php');
 require_once('./controllers/sermons.php');
 require_once('./controllers/dashboard.php');
@@ -152,7 +152,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
 
             case 'attendance':
-                echo json_encode($attendance->getAttendance());
+                $eventId = isset($request[1]) ? $request[1] : null;
+                if ($eventId) {
+                    echo json_encode($attendance->getAttendance($eventId));
+                } else {
+                    echo json_encode([
+                        'status' => 400,
+                        'message' => 'Event ID is required'
+                    ]);
+                }
                 break;
 
             case 'dashboard':

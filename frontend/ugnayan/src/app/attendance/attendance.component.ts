@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -49,15 +50,27 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   scanCooldown: number = 2000; // 2 seconds cooldown between scans
   cameraError: string = '';
   showAttendanceModal = false;
+  isCameraInitialized = false;
 
-  constructor(private post: PostService, private fetch: FetchService) {}
+  constructor(
+    private post: PostService, 
+    private fetch: FetchService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.getAttendance();
+    if (this.eventId) {
+      this.getAttendance();
+    }
   }
 
   ngAfterViewInit() {
-    this.activateCamera();
+    // Wait for view initialization before activating camera
+    setTimeout(() => {
+      if (this.showCamera) {
+        this.activateCamera();
+      }
+    }, 1000);
   }
 
   ngOnDestroy() {
@@ -65,6 +78,8 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async activateCamera() {
+    if (this.isCameraInitialized) return;
+
     try {
       // First check if camera permissions are granted
       const permissions = await navigator.permissions.query({
@@ -78,11 +93,12 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // Show camera UI first
       this.showCamera = true;
+      this.cdr.detectChanges();
 
-      // Wait a bit for the DOM to update and elements to be available
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Wait for the DOM to update and elements to be available
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      if (!this.videoElement || !this.canvasElement) {
+      if (!this.videoElement?.nativeElement || !this.canvasElement?.nativeElement) {
         throw new Error(
           'Camera elements not found. Please refresh the page and try again.'
         );
@@ -105,7 +121,11 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
         video.onloadedmetadata = () => {
           video
             .play()
-            .then(() => resolve(true))
+            .then(() => {
+              this.isCameraInitialized = true;
+              this.cdr.detectChanges();
+              resolve(true);
+            })
             .catch((error) => {
               console.error('Error playing video:', error);
               reject(
@@ -127,6 +147,8 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
         error.message || 'Error accessing camera. Please check permissions.';
       this.scanStatus = 'Camera error occurred';
       this.showCamera = false;
+      this.isCameraInitialized = false;
+      this.cdr.detectChanges();
 
       Swal.fire({
         icon: 'error',
@@ -169,13 +191,12 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showCamera = false;
     this.scanStatus = 'I-click ang "Scan QR Code" para mag-scan';
     this.cameraError = '';
+    this.isCameraInitialized = false;
+    this.cdr.detectChanges();
   }
 
   private startQRScanning() {
-    if (
-      !this.videoElement?.nativeElement ||
-      !this.canvasElement?.nativeElement
-    ) {
+    if (!this.isCameraInitialized || !this.videoElement?.nativeElement || !this.canvasElement?.nativeElement) {
       this.cameraError =
         'Camera components not found. Please refresh and try again.';
       Swal.fire({
@@ -272,10 +293,8 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
           showConfirmButton: false,
         });
 
-        // Add the new record to the attendance list with animation
-        if (response.data.record) {
-          this.addWithAnimation(response.data.record);
-        }
+        // Refresh attendance list
+        await this.getAttendance();
 
         this.scanStatus = 'QR code processed successfully';
       } else {
@@ -294,15 +313,12 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private addWithAnimation(record: AttendanceRecord) {
-    // Add the new record at the beginning of the array
-    this.attendance.unshift(record);
-  }
-
   async getAttendance() {
+    if (!this.eventId) return;
+
     try {
-      const response = await this.fetch.fetchAttendance(this.eventId!);
-      if (response.data.status === 'success') {
+      const response = await this.fetch.fetchAttendance(this.eventId);
+      if (response.data && response.data.data) {
         this.attendance = response.data.data.map((record: any) => ({
           username: record.user_username,
           firstname: record.user_firstname,
@@ -310,19 +326,16 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
           timeIn: new Date(record.created_at).toLocaleString(),
           status: record.attendance_status || 'Present',
         }));
+        this.cdr.detectChanges();
       } else {
-        throw new Error(
-          response.data.message || 'Failed to fetch attendance records'
-        );
+        throw new Error('No attendance records found');
       }
     } catch (error: any) {
       console.error('Error fetching attendance:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error Loading Attendance',
-        text:
-          error.message ||
-          'Failed to load attendance records. Please try again.',
+        text: error.response?.data?.message || 'Failed to load attendance records. Please try again.',
         confirmButtonColor: '#d33',
       });
     }
@@ -331,10 +344,12 @@ export class AttendanceComponent implements OnInit, OnDestroy, AfterViewInit {
   openAttendanceModal() {
     this.showAttendanceModal = true;
     document.body.classList.add('modal-open');
+    this.getAttendance();
   }
 
   closeAttendanceModal() {
     this.showAttendanceModal = false;
     document.body.classList.remove('modal-open');
+    this.closeCamera();
   }
 }

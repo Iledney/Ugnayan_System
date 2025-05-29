@@ -105,14 +105,6 @@ export class PostService {
     }
   }
 
-  verifyOTP(data: any) {
-    return axios.post(this.baseUrl + 'verifyotp', data);
-  }
-
-  resendOTP(data: any) {
-    return axios.post(this.baseUrl + 'resendotp', data);
-  }
-
   updateProfile(profile: any) {
     return axios.post(
       this.baseUrl + 'updateprofile',
